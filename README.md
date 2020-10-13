@@ -1,4 +1,4 @@
 # projekt-zespolony
 
 Obrazek przedstawiający jak ma ~~nie~~ wyglądać gotowy produkt:
-![](img1.png)
+![Very crude website layout](images/img1.png)
