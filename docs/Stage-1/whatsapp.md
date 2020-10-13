@@ -35,7 +35,7 @@ Umożliwa także wykonywanie połączeń głosowych i wideo.
 
 Udostępnienie lokalizacji w tej aplikacji jest możliwe w formie adresu oraz odnośnika do pinezki w Google Maps. Dodatkowo istnieje opcja transmisji aktualnej lokalizacji przez wybraną ilość czasu z 3 dostępnych opcji: 15 minut, 1 godzina lub 8 godzin. Nie ma możliwości ustawienia własnego czasu udostępniania lokalizacji. 
    
-[](https://github.com/impune-pl/projekt-zespolowy/tree/therobby-docs/images/whatsapp1.jpg)
+[](https://github.com/impune-pl/projekt-zespolowy/blob/therobby-docs/images/whatsapp.jpg)
 
 ## Dostępne klienty
 
