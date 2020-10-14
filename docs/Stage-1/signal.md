@@ -1,5 +1,15 @@
 # Istniejące, funkcjonujące systemy: Signal
 
+## Spis treści
+
+- [Istniejące, funkcjonujące systemy: Signal](#istniejące-funkcjonujące-systemy-signal)
+  - [Spis treści](#spis-treści)
+  - [Wstęp](#wstęp)
+  - [Prywatność](#prywatność)
+  - [Możliwości przesyłania treści](#możliwości-przesyłania-treści)
+  - [Więcej o lokalizacji](#więcej-o-lokalizacji)
+  - [Dostępne klienty](#dostępne-klienty)
+
 ## Wstęp
 
 Signal jest otwartoźródłowym komunikatorem skupionym na zachowaniu prywatności użytkowników. Twórcą projektu jest organizacja non-profit Signal Technology Foundation, albo, w skróconej formie, Signal Foundation. Organizacja, oprócz tworzenia oprogramowania, zapewnia serwery potrzebne go korzystania z niego. Zarówno siedziba Signal Foundation jak i serwery znajdują się w Stanach Zjednoczonych.
@@ -18,7 +28,9 @@ Komunikator uwzględnia możliwość wysłania różnych treści:
 Umożliwa także wykonywanie połączeń głosowych i wideo.
   
 ## Więcej o lokalizacji
-Udostępnianie lokalizacji jest wygodne, jednak nie pozwala na aktualizację położenia telefonu na żywo. Można w tym celu wkorzystać z Google Maps, które pozwalają na udostępnienie linka do mapy pokazującej aktualne położenie telefonu przez dowolny komunikator, jednak funkcja ta nie jest wspierana przez aplikacje.
+Udostępnianie lokalizacji jest wygodne, jednak nie pozwala na aktualizację położenia telefonu na żywo. Można w tym celu wkorzystać z Google Maps, które pozwalają na udostępnienie linka do mapy pokazującej aktualne położenie telefonu przez dowolny komunikator, jednak funkcja ta nie jest wspierana przez aplikacje (brak podglądu na żywo), co oznacza że adresat będzie musiał otworzyć link w Google Maps albo przeglądarce.
+
+![Udostępnianie lokalizacji](../../images/signal1.png)
    
 ## Dostępne klienty
 Nie istnieje klient webowy, który można znaleźć chociażby w Facebook Messenger. Dostępne są jednak aplikacje na poniższe platformy:  
@@ -31,3 +43,5 @@ Nie istnieje klient webowy, który można znaleźć chociażby w Facebook Messen
 - Linux (nieoficjalne paczki snap i flatpak)
   
 Aplikacje klienckie dla Androida i iOS są natywne, podczas gdy pozostałe bazują na frameworku Electron. Twórcy komunikatora nie planują tworzenia klienta w formie aplikacji webowej ze względu na liczne potencjalne podatności oraz fakt, że w wypadku takiej aplikacji niemożliwe jest zapewnienie prawdziwego szyfrowania end-to-end.
+
+![Klient desktopowy](../../images/signal2.png) ![Klient mobilny - Android](../../images/signal3.png)
