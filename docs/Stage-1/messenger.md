@@ -18,13 +18,14 @@ Od 2008 r. aplikacja była rozwijana jako Facebook Chat, później oddzielono j�
 Komunikacja przez platformę Messenger ma docelowo zostać wprowadzona we wszystkich serwisach Facebook'a, dotąd działal już w:
 - Witrynie Facebook
 - Portalu Oculus
+
 W niedługim czasie Messenger zostanie wprowadzony jako opcja wysyłania wiadomości w aplikacji [Instagram](https://about.fb.com/news/2020/09/new-messaging-features-for-instagram/)
 
 <a name="prywatnosc"></a>
 ## Prywatność
 
 Facebook zapewnia że wiadomości wysyłane w Messengerze są jedynie weryfikowane przez zautomatyzowane systemy pod kątem naruszania [standardów społeczności](https://www.facebook.com/communitystandards/). Standardowo treści wysyłane w serwisie są transportowane przez kanał szyfrowany z użyciem SSL, natomiast domyślnie nie są one zabepieczone szyfrowaniem end-to-end.
-Messenger oferuje funkcję [poufne rozmowy](https://fbnewsroomus.files.wordpress.com/2016/07/messenger-secret-conversations-technical-whitepaper.pdf) które są szyfrowane z użyciem protokołu [Signal](https://github.com/impune-pl/projekt-zespolowy/blob/therobby-docs/docs/Stage-1/whatsapp.md#prywatno%C5%9B%C4%87), aplikacja używa otwartoźródłowej implementacji libsignal-protocol-java na platformie Android oraz libsignal-protocol-c na platformie iOS.
+Messenger oferuje funkcję [poufne rozmowy](https://fbnewsroomus.files.wordpress.com/2016/07/messenger-secret-conversations-technical-whitepaper.pdf) które są szyfrowane z użyciem protokołu [Signal](https://github.com/impune-pl/projekt-zespolowy/blob/therobby-docs/docs/Stage-1/whatsapp.md#prywatno%C5%9B%C4%87), aplikacja używa otwartoźródłowej implementacji `libsignal-protocol-java` na platformie Android oraz `libsignal-protocol-c` na platformie iOS.
 
 <a name="mozliwosci-przesylania-tresci"></a>
 ## Możliwości przesyłania treści
@@ -38,6 +39,7 @@ Messenger umożliwia wysyłanie:
 - różnych plików
 - lokalizacji (także w czasie rzeczywistym)
 - wiadmomości do [botów udostępnianych przez organizacje](https://developers.facebook.com/products/messenger/)
+
 Konwersacje w serwisie mogą być personalizowane przez uczestników poprzez zmianę pseudonimów, koloru wiadomości, zdjęcia konwersacji etc.
 Do aplikacji na bierząco wprowadzane są i usuwane funkcje eksperymentalne jak np. dodawanie animowanych efektów do wiadomości czy tworzenie naklejek selfie.
   
