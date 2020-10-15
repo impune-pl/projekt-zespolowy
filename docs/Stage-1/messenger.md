@@ -10,7 +10,8 @@
 
 <a name="wstep"></a>
 ## Wstęp
-![](https://pl.wikipedia.org/wiki/Facebook_Messenger#/media/Plik:Facebook_Messenger_logo_2020.svg)
+![messenger-logo](https://raw.githubusercontent.com/impune-pl/projekt-zespolowy/cubix-docs/images/messenger-logo-128.png "Logo aplikacji Messenger")
+
 Messenger – komunikator internetowy stworzony przez Facebooka. Usługa umożliwia wysyłanie wiadomości tekstowych, wszelkiego rodzaju treści a również realizację połączeń głosowych i wideorozmów także dla większych grup użytkowników. Aplikacja oferuje możliwość szyfrowania wiadomości oraz dostęp do minigier.
 Od 2008 r. aplikacja była rozwijana jako Facebook Chat, później oddzielono ją od Facebooka oraz przemianowano na Facebook Messenger. W 2015 r. wprowadzono możliwość korzystania z aplikacji bez posiadania konta w serwisie Facebook, natowmiast w 2019 możliwość ta została usunięta i od tego czasu do kożystania z Messengera wymagane jest konto Facebook.
 
@@ -59,4 +60,4 @@ Aplikacja natywna Messenger jest dostępna na poniższe platformy:
 - Windows (aplikacja UWP)
 - macOS
 
-![](https://github.com/impune-pl/projekt-zespolowy/blob/therobby-docs/images/whatsapp.jpg)
+![messenger-ios](https://www.tabletowo.pl/wp-content/uploads/2018/10/facebook-messenger-4-1.png "Wygląd aplikacji na platformie iOS")
