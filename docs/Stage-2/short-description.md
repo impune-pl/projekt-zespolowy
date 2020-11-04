@@ -12,7 +12,7 @@ Użytkownik może zmienić hasło do konta. Zmiana hasła odbywa się przez form
 
 ## Mechanizm listy znajomych
 
-Każde konto ma powiązaną listę znajomych. Dodanie użytkownika do listy znajomych wymaga znajomości jego **unikatowy identyfikator** oraz zaakceptowania przez niego prośby o dodanie do znajomych. Lista znajomych umożliwia 
+Każde konto ma powiązaną listę znajomych. Dodanie użytkownika do listy znajomych wymaga znajomości jego **unikatowy identyfikator** oraz zaakceptowania przez niego prośby o dodanie do znajomych. Lista znajomych umożliwia również zablokowanie użytkownika (ignorowanie wszystkich wysyłanych przez niego wiadomości).
 
 ## Mechanizm chatu
 
