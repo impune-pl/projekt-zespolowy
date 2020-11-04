@@ -7,7 +7,8 @@ Celem powstania systemu jest umożliwienie użytkownikom komunikacji oraz udost�
 ## Konta użytkowników
 
 Każde konto w systemie posiada unikalny identyfikator **proponuję użyć nr telefonu żeby było prościej**. Identyfikator ten służy do przesyłania wiadomości, logowania użytkownika oraz odnajdywania użytkowników do dodania do listy znajomych.  
-Logowanie na konto wymaga podania hasła. Hasła są przechowywane w formie zasolonego i popieprzonego hasha uzyskanego za pomocą algorytmu Argon2. 
+Logowanie na konto wymaga podania hasła. Hasła są przechowywane w formie zasolonego i popieprzonego hasha uzyskanego za pomocą algorytmu Argon2. **Aplikacja obsługuje 2FA za pomocą Google Authenticator.**  
+Użytkownik może zmienić hasło do konta. Zmiana hasła odbywa się przez formularz, do którego link jest wysłany na adres email powiązany z kontem. Link jest jednorazowy i wygasa po godzinie od wysłania.
 
 ## Mechanizm listy znajomych
 
@@ -19,4 +20,4 @@ Aplikacja kliencka umożliwia redagowanie i wysyłanie wiadomości tekstowych do
 
 ## Mechanizm udostępniania lokalizacji
 
-Aplikacja kliencka aktualizuje lokalizację urządzenia przechowywaną na serwerze kiedy jest uruchomiona (w pięciominutowych odstępach). Serwer umożliwia dostęp do lokalizacji użytkownikom znajdującym się na liście znajomych.
+Aplikacja kliencka aktualizuje lokalizację urządzenia przechowywaną na serwerze kiedy jest uruchomiona (w pięciominutowych odstępach). Serwer umożliwia dostęp do lokalizacji użytkownikom znajdującym się na liście znajomych którzy otrzymali na to zgodę od właściciela konta.
