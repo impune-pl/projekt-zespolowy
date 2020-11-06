@@ -18,7 +18,7 @@ WhatsApp jest mobilną aplikacją dla smartfonów, która służy jako komunikat
 <a name="prywatnosc"></a>
 ## Prywatność
 
-Wiadomości wysyłane za pośrednictwem WhatsApp są wysyłane z szyfrowaniem [end-to-end](https://en.wikipedia.org/wiki/End-to-end_encryption). Jest to ten sam protokół, który został użyty do szyfrowania wiadomości w aplikacji [Signal](https://github.com/impune-pl/projekt-zespolowy/blob/impune-pl-docs/docs/Stage-1/signal.md), zaimplementowany z pomocą firmy Open Whisper Systems (OWS), która miała spory wkład w rozwój Signal Messengera. Współpraca OWS i WhatsApp nad wprowadzeniem tego protokołu została ogłoszona 18 listopada 2014 roku. Prace nad wdrożeniem protokołu szyfrowania end-to-end dla "każdej formy komunikacji" zakończono prawie dwa lata później, 5 kwietnia 2016 roku.
+Wiadomości wysyłane za pośrednictwem WhatsApp są wysyłane z szyfrowaniem [end-to-end](https://en.wikipedia.org/wiki/End-to-end_encryption). Jest to ten sam protokół, który został użyty do szyfrowania wiadomości w aplikacji [Signal](https://github.com/impune-pl/projekt-zespolowy/blob/main/docs/Stage-1/signal.md), zaimplementowany z pomocą firmy Open Whisper Systems (OWS), która miała spory wkład w rozwój Signal Messengera. Współpraca OWS i WhatsApp nad wprowadzeniem tego protokołu została ogłoszona 18 listopada 2014 roku. Prace nad wdrożeniem protokołu szyfrowania end-to-end dla "każdej formy komunikacji" zakończono prawie dwa lata później, 5 kwietnia 2016 roku.
 
 <a name="mozliwosci-przesylania-tresci"></a>
 ## Możliwości przesyłania treści
@@ -62,7 +62,7 @@ Aplikacja posiada dobrze wykonaną opcję udostępniania lokalizacji. Umożliwia
 
 <a name="zrodla"></a>
 ## Źródła
-https://en.wikipedia.org/wiki/WhatsApp oraz własne doświadczenia
+[Wikipedia](https://en.wikipedia.org/wiki/WhatsApp) oraz własne doświadczenia
 
 ---
 
