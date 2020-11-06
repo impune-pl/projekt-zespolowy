@@ -58,12 +58,11 @@ Dodatkowo aplikacja webowa (oraz te na Windows oraz macOS) wymagają posiadania 
 <a name="wnioski"></a>
 ## Wnioski
 
-Aplikacja posiada dobrze wykonaną opcję udostępniania lokalizacji. Brakuje jej jednak w pełni działających odpowiedników stacjonarnych. Sporym plusem jest obecność protokołu end-to-end umożliwiając.
+Aplikacja posiada dobrze wykonaną opcję udostępniania lokalizacji. Umożliwia wybranie jednej z trzech opcji czasowych, jednakże nie umożliwia ustawienia własnej, nie znajdującej się na liście. Brakuje jej również w pełni działających odpowiedników stacjonarnych, posiadających chociażby połowę funkcji pełnej aplikacji na telefon. Sporym plusem jest obecność protokołu end-to-end, który szyfruje dane wysyłane między klientami.
 
 <a name="zrodla"></a>
 ## Źródła
-https://en.wikipedia.org/wiki/WhatsApp
-Własne doświadczenia
+https://en.wikipedia.org/wiki/WhatsApp oraz własne doświadczenia
 
 ---
 
