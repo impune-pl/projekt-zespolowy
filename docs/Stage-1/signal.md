@@ -63,6 +63,10 @@ Brakuje funkcji udostępnienia aktualnej lokalizacji przez określony czas. Obej
 Interfejy, zarówno w aplikacji mobilnej, jak i desktopowej, są intuicyjne. Sam przyzwyczaiłem się do nich w ciągu kilku minut. Dużą zaletą jest pełne i automatyczne dostosowanie kolorystyki interfejsu do motywu systemu, oraz dostosowanie ciemnego motywu do ekranów OLED i AMOLED.  
 Dużą wadą, częściowo rekompensowaną dostępnością klienta desktopowego, jest brak klienta webowego, jednak wypowiedź moderatora forum w logiczny sposób wyjaśnia powód takiego stanu rzeczy[[1]](#źródła).  
 
+## Uwagi
+Flagową funkcją Signala jest zapewnianie bezpieczeństwa i absolutnej poufności wymienianych przy jego użyciu wiadomości. Signal osiąga to dzięki zastosowaniu szyfrowania end-to-end, specjalnie zaprojektowanemu protokołowi dostarczania wiadomości oraz zapisywaniu minimum danych potrzebnych do identyfikacji użytkownika. Podczas gdy zapewnienie takiego samego poziomu poufności nie jest sprzeczne z celem projektu, wymagałoby znacznego nakładu nie tylko pracy, ale prawdopodobnie również środków finansowych. W związku z tym lepiej jest skupić się na zapewnieniu funkcjonalności wymaganej w projekcie, jednocześnie wykorzystując istniejące technologie, np. protokół HTTPS, do zapewnienia akceptowalnego poziomu bezpieczeństwa.  
+Warte uwagi i naśladowania przy tworzeniu projektu są projekty interfejsów, które dzięki przejrzystości i podobieństwu do innych popularnych komunikatorów ułatwiają przyzwyczajenie się do nowej aplikacji.  
+Funkcja udostępniania lokalizacji w Signal jest stosunkowo mało rozbudowana. W projekcie powinna znaleźć się znacznie bardziej zaawansowana funkcja, pozwalająca na umożliwić kontaktom dostęp do lokalizacji w dowolnym momencie, oraz aktualizująca podawaną lokalizację w określonych odstępach czasowych.
 
 ## Źródła
 [Blog Signal](https://signal.org/blog/)  
