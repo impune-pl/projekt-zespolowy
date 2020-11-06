@@ -2,16 +2,15 @@
 
 ## Spis treści
 
-- [Istniejące, funkcjonujące systemy: Signal](#istniejące-funkcjonujące-systemy-signal)
-  - [Spis treści](#spis-treści)
-  - [Wstęp](#wstęp)
-  - [Prywatność](#prywatność)
-  - [Możliwości przesyłania treści](#możliwości-przesyłania-treści)
-  - [Więcej o lokalizacji](#więcej-o-lokalizacji)
-  - [Dostępne klienty](#dostępne-klienty)
-  - [Interfejsy graficzne](#interfejsy-graficzne)
-  - [Podsumowanie](#podsumowanie)
-  - [Źródła](#źródła)
+ - [Spis treści](#spis-treści)
+ - [Wstęp](#wstęp)
+ - [Prywatność](#prywatność)
+ - [Możliwości przesyłania treści](#możliwości-przesyłania-treści)
+ - [Więcej o lokalizacji](#więcej-o-lokalizacji)
+ - [Dostępne klienty](#dostępne-klienty)
+ - [Interfejsy graficzne](#interfejsy-graficzne)
+ - [Podsumowanie](#podsumowanie)
+ - [Źródła](#źródła)
 
 ## Wstęp
 
