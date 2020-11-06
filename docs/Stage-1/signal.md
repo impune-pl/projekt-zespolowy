@@ -74,3 +74,5 @@ Funkcja udostępniania lokalizacji w Signal jest stosunkowo mało rozbudowana. W
 Przeprowadzone samodzielnie testy poszczególnych funkcji aplikacji dla systemów Android i Windows.  
 [1][Wypowiedź moderatora forum społeczności Signal o problemach dotyczących klientów webowych](https://community.signalusers.org/t/google-to-retire-chrome-apps-what-will-be-with-signal-desktop/469/6)  
 [2][Wypowiedź jednego z developerów Signal na forum](https://community.signalusers.org/t/is-it-possible-to-extend-signal-for-desktop-for-browser/1151/3)
+
+Wszystkie zrzuty ekranu pochodzą z zasobów własnych autora.
