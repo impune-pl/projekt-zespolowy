@@ -2,7 +2,6 @@
 
 ## Spis treści
 
- - [Spis treści](#spis-treści)
  - [Wstęp](#wstęp)
  - [Prywatność](#prywatność)
  - [Możliwości przesyłania treści](#możliwości-przesyłania-treści)
