@@ -6,7 +6,9 @@
 2. [Prywatność](#prywatnosc)
 3. [Możliwości przesyłania treści](#mozliwosci-przesylania-tresci)
 4. [Więcej o lokalizacji](#wiecej-o-lokalizacji)
-5. [Dostępne klienty](#dostepne-klienty)
+5. [Dostępne klienty](#dostepni-klienci)
+6. [Wnioski](#wnioski)
+7. [Źródła](#zrodla)
 
 <a name="wstep"></a>
 ## Wstęp
@@ -39,8 +41,8 @@ Umożliwa także wykonywanie połączeń głosowych i wideo.
 
 Udostępnienie lokalizacji w tej aplikacji jest możliwe w formie adresu oraz odnośnika do pinezki w Google Maps. Dodatkowo istnieje opcja transmisji aktualnej lokalizacji przez wybraną ilość czasu z 3 dostępnych opcji: 15 minut, 1 godzina lub 8 godzin. Nie ma możliwości ustawienia własnego czasu udostępniania lokalizacji. 
 
-<a name="dostepne-klienty"></a>
-## Dostępne klienty
+<a name="dostepni-klienci"></a>
+## Dostępni klienci
 
 Aplikacja jest dostępna głównie na urządzenia mobilne, aczkolwiek istnieje forma webowa. Niestety oferuje ona jedynie ułamek możliwości pełnej aplikacji. WhatsApp jest dostępny na poniższe platformy:
 - Android
@@ -52,5 +54,17 @@ Aplikacja jest dostępna głównie na urządzenia mobilne, aczkolwiek istnieje f
 WhatsApp zapowiadał również aplikację dla systemu iPadOS, czyli na tablety Apple iPad, jednakże na październik 2020 roku, aplikacja ta nie jest jeszcze na ten sprzęt dostępna. 
 Mimo dostępności aplikacji na systemy Windows oraz macOS, funkcje oraz jej działanie do złudzenia przypomina wersję webową, nie zachęcając tym samym do jej instalacji.
 Dodatkowo aplikacja webowa (oraz te na Windows oraz macOS) wymagają posiadania telefonu z zailstalowaną aplikacją WhatsApp w tej samej sieci. Aby uruchomić aplikację webową należy też zeskanować przez aplikację na telefonie wyświetlony kod QR.
+
+<a name="wnioski"></a>
+## Wnioski
+
+Aplikacja posiada dobrze wykonaną opcję udostępniania lokalizacji. Brakuje jej jednak w pełni działających odpowiedników stacjonarnych. Sporym plusem jest obecność protokołu end-to-end umożliwiając.
+
+<a name="zrodla"></a>
+## Źródła
+https://en.wikipedia.org/wiki/WhatsApp
+Własne doświadczenia
+
+---
 
 ![](https://github.com/impune-pl/projekt-zespolowy/blob/therobby-docs/images/whatsapp.jpg)
