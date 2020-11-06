@@ -7,8 +7,9 @@
 3. [Możliwości przesyłania treści](#mozliwosci-przesylania-tresci)
 4. [Więcej o lokalizacji](#wiecej-o-lokalizacji)
 5. [Dostępne klienty](#dostepni-klienci)
-6. [Wnioski](#wnioski)
-7. [Źródła](#zrodla)
+6. [Opis interfejsu](#interface)
+7. [Wnioski](#wnioski)
+8. [Źródła](#zrodla)
 
 <a name="wstep"></a>
 ## Wstęp
@@ -55,10 +56,14 @@ WhatsApp zapowiadał również aplikację dla systemu iPadOS, czyli na tablety A
 Mimo dostępności aplikacji na systemy Windows oraz macOS, funkcje oraz jej działanie do złudzenia przypomina wersję webową, nie zachęcając tym samym do jej instalacji.
 Dodatkowo aplikacja webowa (oraz te na Windows oraz macOS) wymagają posiadania telefonu z zailstalowaną aplikacją WhatsApp w tej samej sieci. Aby uruchomić aplikację webową należy też zeskanować przez aplikację na telefonie wyświetlony kod QR.
 
+<a name="interface"></a>
+## Opis interfejsu
+Interface aplikacji WhatsApp należy do jednych z prostrzych dostępnych na rynku. Główne główna część aplikacji zawiera listę czatów, status - czyli odpowiednik stories w messenger oraz listę połączeń. Istnieje tam też możliwość uruchomienia kamery w celu zrobienia zdjęcia lub nagrania wideo. Okno czatu wygląda podobnie jak w większości aplikacji tego typu. Posiada dymki różniące się kolorem w zależności od tego, kto wysłał którą wiadomość. Na dole znajduje się pole tekstowe umożliwiające wpisanie wiadomości, przycisk pozwalający wstawić emoji, załącznik w postaci zdjęcia, kontaktu lub lokalizacji oraz przycisk aparatu dający możliwość zrobienia zdjęcia lub nagrania filmiku bezpośrednio z aplikacji. W przypadku, gdy nie wpisaliśmy zadnej wiadomości, zamiast przycisku "wyślij wiadomość" znajduje się "nagraj wiadomość", który umożliwia wysłanie wiadomość głosową. W górnej części okna czatu znajduje się nazwa imię współrozmówcy, wraz z datą "ostatnio widziano", możliwość wykonania połączenia audio/wideo oraz dodatkowe opcje, jak przykładowo wyciszenie powiadomień lub zablokowanie znajomego. 
+
 <a name="wnioski"></a>
 ## Wnioski
 
-Aplikacja posiada dobrze wykonaną opcję udostępniania lokalizacji. Umożliwia wybranie jednej z trzech opcji czasowych, jednakże nie umożliwia ustawienia własnej, nie znajdującej się na liście. Brakuje jej również w pełni działających odpowiedników stacjonarnych, posiadających chociażby połowę funkcji pełnej aplikacji na telefon. Sporym plusem jest obecność protokołu end-to-end, który szyfruje dane wysyłane między klientami.
+Aplikacja posiada dobrze wykonaną opcję udostępniania lokalizacji. Umożliwia wybranie jednej z trzech opcji czasowych, jednakże nie umożliwia ustawienia własnej, nie znajdującej się na liście. Brakuje jej również w pełni działających odpowiedników stacjonarnych, posiadających chociażby połowę funkcji pełnej aplikacji na telefon. Sporym plusem jest obecność protokołu end-to-end, który szyfruje dane wysyłane między klientami. Dodatkowo posiada prosty interface, który nie jest trudny w obsłudze, a swoim wyglądem bardzo przypomina aplikację do wiadomości SMS.
 
 <a name="zrodla"></a>
 ## Źródła
