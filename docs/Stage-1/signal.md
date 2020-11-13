@@ -66,7 +66,7 @@ Dużą wadą, częściowo rekompensowaną dostępnością klienta desktopowego, 
 
 ## Źródła
 [Blog Signal](https://signal.org/blog/)  
+[1][Wypowiedź moderatora forum społeczności Signal o problemach dotyczących klientów webowych](https://community.signalusers.org/t/google-to-retire-chrome-apps-what-will-be-with-signal-desktop/469/6)  
+[2][Wypowiedź jednego z developerów Signal na forum](https://community.signalusers.org/t/is-it-possible-to-extend-signal-for-desktop-for-browser/1151/3)  
 [3][Artykuły FAQ Signal](https://support.signal.org/hc/pl)  
 Przeprowadzone samodzielnie testy poszczególnych funkcji aplikacji dla systemów Android i Windows.  
-[1][Wypowiedź moderatora forum społeczności Signal o problemach dotyczących klientów webowych](https://community.signalusers.org/t/google-to-retire-chrome-apps-what-will-be-with-signal-desktop/469/6)  
-[2][Wypowiedź jednego z developerów Signal na forum](https://community.signalusers.org/t/is-it-possible-to-extend-signal-for-desktop-for-browser/1151/3)
