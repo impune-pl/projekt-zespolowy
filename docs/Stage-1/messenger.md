@@ -7,6 +7,10 @@
 3. [Możliwości przesyłania treści](#mozliwosci-przesylania-tresci)
 4. [Więcej o lokalizacji](#wiecej-o-lokalizacji)
 5. [Dostępne klienty](#dostepne-klienty)
+6. [Opis interfejsu](#opis=interfejsu)
+7. [Wnioski](#wnioski)
+8. [Źródła](#zrodla)
+
 
 <a name="wstep"></a>
 ## Wstęp
@@ -61,5 +65,20 @@ Aplikacja natywna Messenger jest dostępna na poniższe platformy:
 - Tizen
 - Windows (aplikacja UWP)
 - macOS
+
+<a name="opis-interfejsu"></a>
+## Opis interfejsu
+
+W ostatnich latach interfejs użytkownika aplikacji Messenger przeszedł sporo zmian, które miały ułatwić odbiorcom codzienne kożystanie z aplikacji. Ekran główny listuje ostatnie konwersacje i umożliwia łatwy dostęp do najczęściej używanych funkcji, w ekranie konwersacji, na środku, wyświetlają się ostatnie wiadomości, na dole ekranu znajduje się pole tekstowe służące do wpisywania treści wiadomości. Na dolnej belce znajdują się też przyciski skrótów do poszczególnych dodatkowych funkcji, jak np. wysyłanie zdjęć i filmów, udostępnianie lokalizacji czy wysyłanie emotikon. Z górnej belki można wykonać połączenie głosowe lub wideo oraz wejść w menu z zaawansowanymi opcjami. 
+Wszystkie przyciski są oznaczone łatwymi do zrozumienia piktogramami.
+
+<a name="wnioski"></a>
+## Wnioski
+
+Aplikacja Messenger to bardzo rozbudowany serwis z wieloma funkcjami, z najważniejszych warto wyróżnić łatwą nawigację po niezywkle przejrzystym interfejsie, rozbudowane możliwości udostępniania lokalizacji oraz wysyłanie zdjęć. Dużo mniej istotne są dodatkowe funkcje jak wysyłanie filmów, plików GIF czy wysyłanie nagrań głosowych. Warto wyróżnić też dostęp przez przeglądarkę internetową, natomiast udostępnianie aplikacji natywnej na dużą ilość niszowych platform nie jest rzeczą nezbędną.
+
+<a name="zrodla"></a>
+## Źródła
+Dane historyczne z [wikipedii](https://pl.wikipedia.org/wiki/Facebook_Messenger), artykuły oraz publikacje wydane przez Facebook (liknowane w treści), własne doświadczenia zebrane podczas użtkowania aplikcji.
 
 ![messenger-ios](https://www.tabletowo.pl/wp-content/uploads/2018/10/facebook-messenger-4-1.png "Wygląd aplikacji na platformie iOS")
