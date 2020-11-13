@@ -41,5 +41,5 @@ Możliwe rodzaje relacji to:
 
   
 ## Projekt bazy danych
-
+Wstępny projekt bazy danych obrazujący relacje między tabelami oraz kolumny znajdujące się w tabelach jest widoczny na poniższym obrazku. 
 ![Projekt bazy](../../images/db-schema.png)
