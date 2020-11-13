@@ -9,6 +9,7 @@
  - [Dostępne klienty](#dostępne-klienty)
  - [Interfejsy graficzne](#interfejsy-graficzne)
  - [Podsumowanie](#podsumowanie)
+ - [Uwagi](#uwagi)
  - [Źródła](#źródła)
 
 ## Wstęp
