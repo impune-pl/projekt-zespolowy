@@ -33,15 +33,12 @@ Możliwe rodzaje relacji to:
 
 |   | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|
-|1  | - |1:W|1:W|1:W|1:W|
-|2  |W:1| - | - | - | - |
-|3  |W:1| - | - |1:W| - |
-|4  |W:1| - |W:1| - | - |
-|5  |W:1| - | - | - | - |
-
-## Diagram ERD
-Diagram ERD obrazuje relacje między tabelami.
-![Diagram ERD](../../images/erd-schema.png)
+|1  |   |1:W|1:W|1:W|1:W|
+|2  |W:1|   |   |   |   |
+|3  |W:1|   |   |1:W|   |
+|4  |W:1|   |W:1|   |   |
+|5  |W:1|   |   |   |   |
+  
   
 ## Projekt bazy danych
 Wstępny projekt bazy danych obrazujący relacje między tabelami oraz kolumny znajdujące się w tabelach jest widoczny na poniższym obrazku. 
