@@ -19,12 +19,12 @@ Nie wszystkie obiekty muszą znaleźć się w bazie danych. Na przykład lista k
 Na podstawie obiektów w systemie zidentyfikowane zostały nasępujące tabele:
 1. Użytkownicy - tabela zawierająca informacje potrzebne do identyfikacji i autentykacji użytkownika w systemie
 2. Kontakty - tabela zawierające informacje o powiązaniach między użytkownikami w ramach listy kontaktów.
-3. Konwersacje - tabela ułatwiająca znalezienie wiadomości wymienianych między dwoma użytkownikami.
-4. Wiadomości - tabela zawierająca wiadomości wymieniane w ramach konwersacji.
-5. Tokeny - tabela przechowująca tokeny logowania oraz metadane ich dotyczące.
+3. Wiadomości - tabela zawierająca wiadomości wymieniane w ramach konwersacji.
+4. Tokeny - tabela przechowująca tokeny logowania oraz metadane ich dotyczące.
+5. Rodzaje wiadomości - tabela przechowująca rodzaje wiadomości.
 
 ## Identyfikacja relacji między tabelami w bazie i ich rodzajów
-Liczby w pierwszym wierszu i w pierwszej kolumnie odpowiadają numerom którymi oznaczono tabele w poprzedniej sekcji.  
+Liczby w pierwszym wierszu i w pierwszej kolumnie odpowiadają numerom którymi oznaczono tabele w poprzedniej sekcji. Tabelę należy czytać wg. formuły [Wiersz][Relacja][Kolumna].
 Możliwe rodzaje relacji to:
 - 1:1 - relacja jeden do jednego
 - 1:W - relacja jeden do wielu
@@ -33,11 +33,11 @@ Możliwe rodzaje relacji to:
 
 |   | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|
-|1  |   |1:W|1:W|1:W|1:W|
-|2  |W:1|   |   |   |   |
-|3  |W:1|   |   |1:W|   |
-|4  |W:1|   |W:1|   |   |
-|5  |W:1|   |   |   |   |
+| 1 |   |1:W|   |1:W|   |
+| 2 |W:1|   |1:W|   |   |
+| 3 |   |W:1|   |   |W:1|
+| 4 |W:1|   |   |   |   |
+| 5 |   |   |1:W|   |   |
   
   
 ## Projekt bazy danych
