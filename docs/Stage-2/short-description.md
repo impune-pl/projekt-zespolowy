@@ -1,5 +1,9 @@
 # Przedstawienie koncepcji systemu
 Informacje zawarte w tym dokumencie mogą się zmieniać w trakcie prac nad projektem.
+
+## Definicje wstępne
+Projekt w fazie rozwoju otrzymuje nazwę roboczą ciat
+
 ## Przeznaczenie systemu
 
 Celem powstania systemu jest umożliwienie użytkownikom komunikacji oraz udostępniania lokalizacji za pomocą aplikacji webowej przystosowanej zarówno do komputerów jak i urządzeń mobilnych.
