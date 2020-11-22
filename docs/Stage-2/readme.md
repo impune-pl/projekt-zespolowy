@@ -5,4 +5,4 @@ W pliku DHF.docx znajduje się diagram hierarchii funkcji oraz lista funkcji z o
 ---
 Diagram przypadków użycia:
 
-![func.png](../../images/func.png)
+![func.png](https://github.com/impune-pl/projekt-zespolowy/blob/therobby-docs/images/Diagram%20Przypadk%C3%B3w%20U%C5%BCycia.PNG)
