@@ -1,6 +1,5 @@
 # Opis modelu danych
 
-Informacje zawarte w tym dokumencie mogą się zmieniać w czasie prac nad projektem.
 ## Identyfikacja obiektów w systemie
 
 Na podstawie opisu sytemu oraz specyfikacji można zidentyfikować następujące obiekty:  
