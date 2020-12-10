@@ -15,7 +15,9 @@ Testy bazy danych będą polegały na manualnym sprawdzeniu prawidłowości dzia
 ### Metodologia testów bazy danych
 Stan przed rozpoczęciem każdego testu:  
 - Baza danych istnieje i zawiera puste tabele ze zdefiniowanymi relacjami, ograniczeniami, wyzwalaczami oraz procedurami składowymi.
-- Istnieje konto użytkownika mającego uprawnienia do bazy danych identyczne z uprawnieniami którymi posługuje się serwer produkcyjny.
+- Istnieje konto użytkownika w systemie zarządzania bazą danych mającego uprawnienia do bazy danych identyczne z uprawnieniami którymi posługuje się serwer produkcyjny.
+
+Uwaga - jeśli w opisie rekordów umieszczanych w bazie danych pole nie jest uwzględnione, oznacza to że ma mieć dowolną prawidłową z punktu widzenia ograniczeń nałożonych na to pole zawartość. Wyjątkiem jest pole id (klucz główny), które ma być puste.
 
 #### Ad. 1. Test 1:  
 ----
@@ -63,8 +65,31 @@ Kontakty wiążą konta użytkowników w następujący sposób:
 
   
 Przeprowadzanie testu:  
-- Aktualizacja pola isAccepted dwóch losowo wybranych kontaktów do wartości 1 (prawda)
+- Aktualizacja pola isAccepted dwóch losowo wybranych kontaktów do wartości 1 (prawda).
 
 Spodziewany wynik:
-- Powstanie dwóch nowych kontaktów o wartościach odwrotnych 
-- Wszystkie siedem tokenów należących do zestawu A pozostało w bazie, a ich rekordy nie zostały zmodyfikowane
+- Powstanie dwóch nowych kontaktów o wartościach w polach userId i contactId zamienionych miejscami w stosunku do wybranych i wartości zawartej w polach isAccepted równej 1 (prawda).
+- Zmiana wartości w polach isAccepted wybranych kontaktów do na wartość 1 (prawda).
+- Brak zmian w innych polach niż opisane powyżej.
+- Brak zmian w nie wybranych kontaktach.
+
+#### Ad. 3. Test 1:  
+----
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+- brak
+
+Przeprowadzanie testu:  
+- Próba umieszczenia w bazie siedmiu kont użytkowników:
+  - konto z pustym ciągiem znaków w polu email
+  - konto z pustym ciągiem znaków w polu phoneNumber
+  - konto z pustymi ciągami znaków w polach email i phoneNumer
+  - konto z ciągiem losowych znaków (co najmniej jeden znak specjalny inny niż . lub @) w polu email
+  - konto z ciągiem losowych znaków (co najmniej jeden znak inny niż cyfra 0-9) w polu phoneNumer
+  - konto z ciągami losowych znaków, (co najmniej jeden znak inny niż cyfra 0-9) w polu phoneNumer, (co najmniej jeden znak specjalny inny niż . lub @) w polu email
+  - konto z prawidłowymi wartościami wszystki pól
+
+Spodziewany wynik:
+- Pierwsze sześć prób umieszczenia w bazie nowego konta użytkownika zakończy się niepowodzeniem.
+- Siódma próba doprowadzi do umieszczenia w bazie konta użytkownika o parametrach indentycznych z przekazanymi.
