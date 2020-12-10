@@ -17,7 +17,7 @@ Testy bazy danych muszą sprawdzić działanie procedur składowanych, ogranicze
 2. Automatyczne tworzenie kontaktów po zaakceptowaniu prośby o dodanie do kontaktów w tabeli Contacts.
 3. Sprawdzenie poprawności działania wyrażeń regularnych na kolumnach phone number i email tabeli Users.
   
-### Metodologia testów bazy danych
+### Przygotowanie testów bazy danych
 
 Stan przed rozpoczęciem każdego testu:  
 - Baza danych istnieje i zawiera puste tabele ze zdefiniowanymi relacjami, ograniczeniami, wyzwalaczami oraz procedurami składowymi.
@@ -110,7 +110,7 @@ Testy integracyjne służą sprawdzeniu wszystkich elementów systemu oraz ich w
 2. Wysyłanie wiadomoście tekstowej do użytkownika z listy kontaktów.
 3. Udostępnianie lokalizacji użytkownikowi z listy kontaktów.
 
-### Metodologia testów integracyjnych
+### Przygotowanie testów integracyjnych
 
 Stan przed rozpoczęciem każdego testu:  
 - Aplikacja kliencka jest uruchomiona i ma połączenie z serwerem. Większość testów wymaga dwóch lub więcej instancji aplikacji klienckiej.
