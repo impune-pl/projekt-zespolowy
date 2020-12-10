@@ -16,7 +16,7 @@ Testy serwera będą polegały na sprawdzeniu prawidłowości działania następ
 3. Wysłanie wiadomości
 4. Sprawdzenie nowych wiadomości
 
-### Metodologia testów bazy danych
+### Metodologia testów serwera
 
 Stan przed rozpoczęciem każdego testu:
 
