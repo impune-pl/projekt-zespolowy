@@ -40,7 +40,7 @@ Przeprowadzanie testu:
 Spodziewany wynik:
 
 -   W bazie danych został utworzony token dla użytkownika
--   Rządanie zwrócuło wartość pozytywną (true), oznaczającą pomyślny przebieg logowania
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg logowania
 
 #### Ad. 1. Test 2:
 
@@ -58,7 +58,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą nieudane logowanie do systemu
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane logowanie do systemu
 
 #### Ad. 2. Test 1:
 
@@ -76,7 +76,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą nieudaną rejestrację w systemie
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudaną rejestrację w systemie
 
 #### Ad. 2. Test 2:
 
@@ -95,7 +95,7 @@ Przeprowadzanie testu:
 Spodziewany wynik:
 
 -   W bazie danych pojawił się nowy użytkownik z podanymi przy rejestracji danymi
--   Rządanie zwrócuło wartość pozytywną (true), oznaczającą pomyślny przebieg rejestracji
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg rejestracji
 
 #### Ad. 3. Test 1:
 
@@ -115,7 +115,7 @@ Przeprowadzanie testu:
 Spodziewany wynik:
 
 -   W bazie danych w tabeli z wiadomościami pojawi się nowy wpis z wiadomością i jej typem
--   Rządanie zwrócuło wartość pozytywną (true), oznaczającą pomyślny przebieg wysłania wiadomosci
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg wysłania wiadomosci
 
 #### Ad. 3. Test 2:
 
@@ -134,7 +134,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 #### Ad. 3. Test 3:
 
@@ -153,7 +153,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 #### Ad. 3. Test 4:
 
@@ -172,7 +172,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 #### Ad. 3. Test 5:
 
@@ -191,7 +191,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 #### Ad. 4. Test 1:
 
@@ -211,7 +211,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość pozytywną (true), oznaczającą obecność nowych wiadomości
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą obecność nowych wiadomości
 
 #### Ad. 4. Test 2:
 
@@ -231,7 +231,7 @@ Przeprowadzanie testu:
 
 Spodziewany wynik:
 
--   Rządanie zwrócuło wartość negatywną (false), oznaczającą brak nowych wiadomości
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą brak nowych wiadomości
 
 ## Testy bazy danych
 
