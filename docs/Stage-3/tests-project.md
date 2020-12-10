@@ -11,10 +11,12 @@ Poniżej opisane są sposoby przeprowadzania testów wybranych funkcjonalności 
 
 Testy serwera będą polegały na sprawdzeniu prawidłowości działania następujących elementów:
 
-1. Logowanie użytkownika z poprawnymi oraz nieprawidłowymi danymi w postaci numeru oraz hasła.
-2. Rejestracja użytkownika w przypadku gdy już taki użytkownik istnieje oraz kiedy nie istnieje.
-3. Wysłanie wiadomości
-4. Sprawdzenie nowych wiadomości
+1. Logowanie użytkownika z poprawnymi w postaci numeru oraz hasła.
+2. Logowanie użytkownika z nieprawidłowymi danymi w postaci numeru oraz hasła.
+3. Rejestracja użytkownika w przypadku gdy już taki użytkownik istnieje.
+4. Rejestracja użytkownika w przypadku gdy taki użytkownik nie istnieje.
+5. Wysłanie wiadomości
+6. Sprawdzenie nowych wiadomości
 
 ### Metodologia testów serwera
 
@@ -42,7 +44,7 @@ Spodziewany wynik:
 -   W bazie danych został utworzony token dla użytkownika
 -   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg logowania
 
-#### Ad. 1. Test 2:
+#### Ad. 2. Test 1:
 
 ---
 
@@ -60,7 +62,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane logowanie do systemu
 
-#### Ad. 2. Test 1:
+#### Ad. 3. Test 1:
 
 ---
 
@@ -78,7 +80,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudaną rejestrację w systemie
 
-#### Ad. 2. Test 2:
+#### Ad. 4. Test 1:
 
 ---
 
@@ -97,7 +99,7 @@ Spodziewany wynik:
 -   W bazie danych pojawił się nowy użytkownik z podanymi przy rejestracji danymi
 -   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg rejestracji
 
-#### Ad. 3. Test 1:
+#### Ad. 5. Test 1:
 
 ---
 
@@ -117,7 +119,7 @@ Spodziewany wynik:
 -   W bazie danych w tabeli z wiadomościami pojawi się nowy wpis z wiadomością i jej typem
 -   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg wysłania wiadomosci
 
-#### Ad. 3. Test 2:
+#### Ad. 5. Test 2:
 
 ---
 
@@ -136,7 +138,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
-#### Ad. 3. Test 3:
+#### Ad. 5. Test 3:
 
 ---
 
@@ -155,7 +157,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
-#### Ad. 3. Test 4:
+#### Ad. 5. Test 4:
 
 ---
 
@@ -174,7 +176,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
-#### Ad. 3. Test 5:
+#### Ad. 5. Test 5:
 
 ---
 
@@ -193,7 +195,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
-#### Ad. 4. Test 1:
+#### Ad. 6. Test 1:
 
 ---
 
@@ -213,7 +215,7 @@ Spodziewany wynik:
 
 -   Rządanie zwróciło wartość pozytywną (true), oznaczającą obecność nowych wiadomości
 
-#### Ad. 4. Test 2:
+#### Ad. 6. Test 2:
 
 ---
 
