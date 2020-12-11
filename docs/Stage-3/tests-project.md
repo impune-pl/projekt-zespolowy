@@ -6,7 +6,220 @@ Poniżej opisane są sposoby przeprowadzania testów wybranych funkcjonalności 
 ----
 
 ## Testy serwera
-----
+---  
+
+### Wybrane przypadki testowe
+
+Testy serwera będą polegały na sprawdzeniu prawidłowości działania następujących elementów:
+
+1. Logowanie użytkownika z poprawnymi w postaci numeru oraz hasła.
+2. Logowanie użytkownika z nieprawidłowymi danymi w postaci numeru oraz hasła.
+3. Rejestracja użytkownika w przypadku gdy już taki użytkownik istnieje.
+4. Rejestracja użytkownika w przypadku gdy taki użytkownik nie istnieje.
+5. Wysłanie wiadomości
+6. Sprawdzenie nowych wiadomości
+
+### Przygotowanie testów serwera
+
+Stan przed rozpoczęciem każdego testu:
+
+-   Serwer korzysta z klasy naśladującej bazę danych z przygotowanymi wcześniej danymi do testów.
+-   Serwer jest uruchamiany.
+
+#### Ad. 1. Test 1:
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania logowania z podanymi danymi, które znajdują się w bazie danych.
+
+Spodziewany wynik:
+
+-   W bazie danych został utworzony token dla użytkownika
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg logowania
+
+#### Ad. 2. Test 1:
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania logowania z podanymi danymi, które nie znajdują się w bazie danych.
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane logowanie do systemu
+
+#### Ad. 3. Test 1:
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania rejestracji z podanymi danymi, które znajdują się w bazie danych.
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudaną rejestrację w systemie
+
+### Ad. 4. Test 1:
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania rejestracji z podanymi danymi, które nie znajdują się w bazie danych.
+
+Spodziewany wynik:
+
+-   W bazie danych pojawił się nowy użytkownik z podanymi przy rejestracji danymi
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg rejestracji
+
+### Ad. 5. Test 1:
+
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania wysłania wiadomości zawierającymi id autora i adresata oraz wiadomość z jej typem
+
+Spodziewany wynik:
+
+-   W bazie danych w tabeli z wiadomościami pojawi się nowy wpis z wiadomością i jej typem
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg wysłania wiadomosci
+
+### Ad. 5. Test 2:
+
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania wysłania wiadomości zawierającymi nieprawidłowe id autora, prawidłowe id adresata oraz wiadomość z jej typem
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+
+### Ad. 5. Test 3:
+
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania wysłania wiadomości zawierającymi id autora, nieprawidłowe id adresata oraz wiadomość z jej typem
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+
+### Ad. 5. Test 4:
+
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania wysłania wiadomości zawierającymi id autora, id adresata oraz wiadomość z nieprawidłowy typem
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+
+### Ad. 5. Test 5:
+
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania wysłania wiadomości zawierającymi id autora, id adresata oraz pustą wiadomość z jej typem
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+
+### Ad. 6. Test 1:
+
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+-   Umieszczenie w bazie 20 wiadomości dla wcześniej wspomnianego kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania sprawdzenie nowych wiadomości, podając id 15 wiadomości
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość pozytywną (true), oznaczającą obecność nowych wiadomości
+
+### Ad. 6. Test 2:
+
+Metoda działania:  
+Automatyczna lub Manualna  
+Przygotowanie testu:
+
+-   Umieszczenie w bazie siedmiu kont użytkowników
+-   Umieszczenie w bazie kontaktu
+-   Umieszczenie w bazie 20 wiadomości dla wcześniej wspomnianego kontaktu
+
+Przeprowadzanie testu:
+
+-   Wywołanie rządania sprawdzenie nowych wiadomości, podając id 20 wiadomości
+
+Spodziewany wynik:
+
+-   Rządanie zwróciło wartość negatywną (false), oznaczającą brak nowych wiadomości
+
 
 ## Testy bazy danych
 ----
