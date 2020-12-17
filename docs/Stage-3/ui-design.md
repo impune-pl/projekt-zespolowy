@@ -8,3 +8,38 @@ Desktop            |  Mobile
 ![](../../images/ui/logowanie-pc.png)  |  ![](../../images/ui/logowanie-tel.png)
 
 
+## Ekran rejestracji
+Desktop            |  Mobile
+:-------------------------:|:-------------------------:
+![](../../images/ui/rejestracja-pc.png)  |  ![](../../images/ui/rejestracja-tel.png)
+
+
+## Ekran wszystkich znajomych
+Desktop            |  Mobile
+:-------------------------:|:-------------------------:
+![](../../images/ui/znajomi-wszyscy-pc.png)  |  ![](../../images/ui/znajomi-wszyscy-tel.png)
+
+
+## Ekran próśb o dodanie do znajomych
+Desktop            |  Mobile
+:-------------------------:|:-------------------------:
+![](../../images/ui/znajomi-prośby-pc.png)  |  ![](../../images/ui/znajomi-prośby-tel.png)
+
+
+## Ekran dodania znajomego
+Desktop            |  Mobile
+:-------------------------:|:-------------------------:
+![](../../images/ui/dodanie-pc.png)  |  ![](../../images/ui/dodanie-tel.png)
+
+
+## Ekran 
+Desktop            |  Mobile
+:-------------------------:|:-------------------------:
+![](../../images/ui/-pc.png)  |  ![](../../images/ui/-tel.png)
+
+
+## Ekran 
+Desktop            |  Mobile
+:-------------------------:|:-------------------------:
+![](../../images/ui/-pc.png)  |  ![](../../images/ui/-tel.png)
+
