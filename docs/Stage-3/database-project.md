@@ -75,7 +75,14 @@ Służy do przechowywania tokenów używanych do zachowania logowania użytkowni
 | isExpired           | bit       | Przechowuje informację o wygaśnięciu tokenu (przedwczesne wygaśnięcie następuje w wyniku wylogowania się użytkownika). Wygaśnięte tokeny muszą być przechowywane na wypadek próby podszycia się. | nie-null, domyślna wartość 0 (fałsz)                                                                                                                                                  |                             |                             |
   ----
 ## Opisy relacji
-
+Relacja w relacyjnej bazie danych to logiczne powiązanie między dwiema tabelami (na potrzeby opisu nazwiemy je A i B). Istnieją cztery zdefiniowane typy relacji:
+ - Jeden-do-Jednego - w tym typie relacji rekord w tabeli A odpowiada jednemu rekordowi w tabeli B, lub nie odpowiada żadnemu rekordowi. Kolumna klucza obcego może znajdować się w dowolnej z dwóch tabel.
+ - Jeden-do-Wielu - w tym typie relacji rekord w tabeli A odpowiada dowolnej liczbie rekordów w tabeli B. Kolumna klucza obcego znajduje się w tabeli B.
+ - Wiele-do-Jednego - odwrotność typu Jeden-do-Wielu.
+ - Wiele-do-Wielu - w tym typie relacji zachodzi konieczność użycia dodatkowej tabeli (tabeli asocjacyjnej) C złożonej z minimum trzech kolumn (kolumna klucza głównego, kolumna klucza obcego tabeli A, kolumna klucza obcego tabeli B) aby rozłożyć niemożliwą do zmapowania za pomocą dwóch tabel relację wiele-do-wielu na dwie relacje jeden-do-wielu. 
+  
+  Poniżej znajdują się opisy relacji występujących w tej bazie danych.
+  
 
 ### Relacja między MessageTypes a Messages
 Jest to relacja typu Jeden-do-Wielu. Charakteryzuje się tym, że pojedynczy element po lewej stronie relacji może być powiązany z wieloma elementami po prawej stronie relacji. Ta relacja pozwoli uniknąć powtażania w każdym rekordzie w tabeli Messages ciągu znaków opisującego rodzaj treści zawarty w wiadomości.
@@ -84,7 +91,7 @@ Jest to relacja typu Jeden-do-Wielu. Charakteryzuje się tym, że pojedynczy ele
 Jest to relacja typu Wiele-do-Jednego. Charakteryzuje się tym, że pojedynczy element po prawej stronie relacji może być powiązany z wieloma elementami po lewej stronie relacji. Celem uwzględnienia tej relacji jest powiązanie wysłanej wiadomości z dwoma użytkownikami - nadawcą i adresatem. Nadawcą wiadomości jest właściciel kontaktu - użytkownik którego klucz główny z tabeli Users znajduje się w polu userId, a adresatem użytkownik którego klucz główny znajduje się w polu contactId.
 
 ### Relacja między Users a Users
-Jest to relacja Wiele-do-Wielu z tabelą asocjacyjną w postaci tabeli Contacts. Charakteryzuje się tym, że pojedynczy element po lewej stronie relacji może być powiązany z wieloma elementami po prawej stronie relacji, i vice versa. Celem powstania tej relacji jest umożliwienie użytkownikom tworzenia kontaktów. W tej relacji tablica asocjacyjna, czyli Contacts, oprócz rozłożenia relacji Wiele-do-Wielu na dwie relacje Jeden-do-Wielu pełni dodatkowo funkcję połączenia między użytkownikami a wysłanymi przez nich wiadomościami, a także przechowuje informacje o preferencjach pozostających w kontakcie użytkowników.
+Jest to nieco nietypowa relacja Wiele-do-Wielu w której związek zachodzi między rekordami znajdującymi się w tej samej tabeli. Funkcję tabeli asocjacyjnej pełni tabela Contacts. Celem powstania tej relacji jest umożliwienie użytkownikom tworzenia kontaktów. W tej relacji tablica asocjacyjna, czyli Contacts, oprócz rozłożenia relacji Wiele-do-Wielu na dwie relacje Jeden-do-Wielu pełni dodatkowo funkcję połączenia między użytkownikami a wysłanymi przez nich wiadomościami, a także przechowuje informacje o preferencjach pozostających w kontakcie użytkowników.
 
 ### Relacja między Token a Users
 Jest to relacja Wiele-do-Jednego, która wiąże użytkowników systemu z wykorzystywanymi przez aplikacje klienckie do zapisywania logowania tokenami. Ze względu na:
@@ -93,7 +100,7 @@ Jest to relacja Wiele-do-Jednego, która wiąże użytkowników systemu z wykorz
 Z jednym kontem użytkownika może być powiązane wiele tokenów.
 
 ## Opis mechanizmów bazy danych
-Relacyjne bazy danych dostarczają różnych mechanizmów zwiększających ich funkcjonalność, niezawodność i użyteczność. Poniżej opisane są niektóre z nich.  
+Relacyjne bazy danych dostarczają różnych mechanizmów poprawiających ich funkcjonalność, niezawodność i użyteczność. Poniżej opisane są niektóre z nich.  
 
 ### Transakcje
 To mechanizm umożliwiający współbierzny dostęp do bazy danych z zachowaniem niepodzielności, spójności, izolacji i trwałości. Ma duże znaczenie przy operacjach modyfikujących zawartość bazy danych.  
@@ -101,7 +108,7 @@ Transakcja to zestaw poleceń dla bazy danych które powinny zostać wykonane ra
 Transakcje mogą zostać odrzucone w wyniku błędów, nagłego przerwania pracy systemu bazodanowego, lub wykonania polecenia odrzucenia w obrębie transakcji.
 
 ### Sprawdzanie i utrzymywanie więzów integralności
-To mechanizm zapobiegający powstawaniu błędów integralności danych. Zapobiega między innymi dodawania kluczy obcych odnoszących się do nieistniejących rekordów, modyfikacji kluczy głównych i obcych w sposób który spowoduje osierocenie rekordów (rekordów które definiują relacje z nieistniejącymi rekordami), usuwaniu rekordów pozostających w relacji z innymi rekordami.
+To mechanizm zapobiegający powstawaniu błędów integralności danych. Zapobiega między innymi dodawania kluczy obcych odnoszących się do nieistniejących rekordów, modyfikacji kluczy głównych i obcych w sposób który spowoduje osierocenie rekordów (rekordów które definiują relacje z nieistniejącymi rekordami), usuwaniu rekordów pozostających w relacji z innymi rekordami. Administrator bazy danych może konfigurować sprawdzanie więzów integralności 
 
 ### Wyzwalacze
 To mechanizm pozwalający wykonać procedury w bazie danych w odpowiedzi na określone zdarzenia, np. modyfikację rekordu. Pozwala to uprościć wykonywanie niektórych zadań dla klienta, np. usuwanie jednego rekordu może uruchomić wyzwalacz sprawdzający czy istnieją rekordy powiązane i usuwający je w celu zachowania więzów integralności.
