@@ -23,7 +23,7 @@ Desktop            |  Mobile
 ## Ekran próśb o dodanie do znajomych
 Desktop            |  Mobile
 :-------------------------:|:-------------------------:
-![](../../images/ui/znajomi-prośby-pc.png)  |  ![](../../images/ui/znajomi-prośby-tel.png)
+![](../../images/ui/znajomi-prosby-pc.png)  |  ![](../../images/ui/znajomi-prosby-tel.png)
 
 
 ## Ekran dodania znajomego
