@@ -32,14 +32,9 @@ Desktop            |  Mobile
 ![](../../images/ui/dodanie-pc.png)  |  ![](../../images/ui/dodanie-tel.png)
 
 
-## Ekran 
+## Ekran konwersacji
 Desktop            |  Mobile
 :-------------------------:|:-------------------------:
-![](../../images/ui/-pc.png)  |  ![](../../images/ui/-tel.png)
+![](../../images/ui/konwersacja-pc.png)  |  ![](../../images/ui/konwersacja-tel.png)
 
-
-## Ekran 
-Desktop            |  Mobile
-:-------------------------:|:-------------------------:
-![](../../images/ui/-pc.png)  |  ![](../../images/ui/-tel.png)
 
