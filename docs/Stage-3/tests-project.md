@@ -3,6 +3,125 @@ Testowanie stanowi ważną część cyklu życia projektu. Nieprawidłowe przepr
 Poniżej opisane są sposoby przeprowadzania testów wybranych funkcjonalności poszczególnych komponentów systemu.
 
 ## Testy aplikacji klienckiej
+---  
+
+### Wybrane przypadki testowe
+Testy aplikacji klienckiej będą polegały na sprawdzeniu prawidłowości działania następujących elementów:
+
+1. Formularz Logowania użytkownika.
+2. Formularz Rejestracji użytkownika.
+3. Wyświetlanie znajomych
+4. Wyszukiwanie znajomego
+5. Wysłanie wiadomości
+6. Sprawdzenie nowych wiadomości
+
+
+### Przygotowanie testów aplikacji klienckiej
+
+Stan przed rozpoczęciem każdego testu:
+
+-   Aplikacja korzysta z usługi naśladującej podstawowe funkcje serwera.
+-   Aplikacja jest uruchamiana lokalnie.
+
+#### Ad. 1. Test 1:
+
+Metoda działania:  
+Manualna  
+Przygotowanie testu:
+
+-   Wypełnienie formularza logowania danymi.
+
+Przeprowadzanie testu:
+
+-   Kliknięcie guzika zaloguj.
+
+Spodziewany wynik:
+
+-   Do usługi naśladującej serwer zostanie wysłane żądanie logowania.
+-   Żądanie zawiera wprowadzone w formularz dane.
+
+#### Ad. 2. Test 1:
+
+Metoda działania:  
+Manualna  
+Przygotowanie testu:
+
+-   Wypełnienie formularza rejestracji danymi.
+
+Przeprowadzanie testu:
+
+-   Kliknięcie guzika zarejestruj.
+
+Spodziewany wynik:
+
+-   Do usługi naśladującej serwer zostanie wysłane żądanie rejestracji.
+-   Żądanie zawiera wprowadzone w formularz dane.
+
+#### Ad. 3. Test 1:
+
+Metoda działania:  
+Manualna  
+Przeprowadzanie testu:
+
+-   Otwarcie listy znajomych.
+
+Spodziewany wynik:
+
+-   Do usługi naśladującej serwer zostanie wysłane żądanie o listę znajomych.
+-   Usługa zwróciła przykładowe dane.
+-   Na liście znajomych zostały wyświetlone przykładowe dane.
+
+#### Ad. 4. Test 1:
+
+Metoda działania:  
+Manualna  
+Przygotowanie testu:
+
+-   Otwarcie listy znajomych.
+-   Kliknięcie guzika dodaj znajomego.
+
+Przeprowadzanie testu:
+
+-   Wpisanie numeru telefonu w pole wyszukiwania.
+
+Spodziewany wynik:
+
+-   Do usługi naśladującej serwer zostanie wysłane żądanie wyszukiwania znajomego.
+-   Żądanie zawiera wprowadzony numer telefonu.
+
+#### Ad. 5. Test 1:
+
+Metoda działania:  
+Manualna  
+Przygotowanie testu:
+
+-   Otwarcie ekranu konwersacji.
+-   Wpisanie treści wiadomości.
+
+Przeprowadzanie testu:
+
+-   Kliknięcie guzika "wyślij"
+
+Spodziewany wynik:
+
+-   Do usługi naśladującej serwer zostanie wysłane żądanie wysłania wiadomości.
+-   Żądanie zawiera wprowadzone treść wiadomości.
+
+#### Ad. 6. Test 1:
+
+Metoda działania:  
+Manualna  
+
+Przeprowadzanie testu:
+
+-   Otwarcie ekranu konwersacji.
+
+Spodziewany wynik:
+
+-   Do usługi naśladującej serwer zostanie wysłane żądanie sprawdzenia nowych wiadomości.
+-   Usługa zwróci przykładowe wiadomości.
+-   Na liście wiadomości zostaną wyświetlone przykładowe wiadomości.
+
 ----
 
 ## Testy serwera
