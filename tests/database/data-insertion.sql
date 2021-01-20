@@ -13,6 +13,8 @@ INSERT INTO public."Users"(
 			('784-905-8489','risus@dolor.org','1',NULL, NULL, NULL),
 			('822-560-9699','tincidunt@auctorMauris.net','1',NULL, NULL, NULL);
 
+COMMIT;
+BEGIN;
 
 -- First disable check on timestamp
 INSERT INTO public."Tokens"(
@@ -32,32 +34,51 @@ INSERT INTO public."Tokens"(
 	(6, '1234567891234567', localtimestamp, localtimestamp+interval '365 days', FALSE),
 	(7, '12345678912345678', localtimestamp, localtimestamp+interval '54 days', FALSE);
 
+COMMIT;
+BEGIN;
 
 INSERT INTO public."MessageTypes"(type)
 	VALUES 	('TEXT'),
 			('IMAGE');
 
+COMMIT;
+BEGIN;
 
 INSERT INTO public."Contacts"(
 	"userId", "contactId", "isLocationShared", "isBlocked", "isAccepted")
 	VALUES 	(1, 2, FALSE, FALSE, FALSE);
 
+COMMIT;
+BEGIN;
+
 UPDATE public."Contacts"
 	SET "isAccepted"=TRUE
 	WHERE id=1;
 
+COMMIT;
+BEGIN;
+
 INSERT INTO public."Contacts"(
 	"userId", "contactId", "isLocationShared", "isBlocked", "isAccepted")
-	VALUES	(2, 3, FALSE, FALSE, FALSE),
-	
+	VALUES	(2, 3, FALSE, FALSE, FALSE);
+
+COMMIT;
+BEGIN;
+
 UPDATE public."Contacts"
 	SET "isAccepted"=TRUE
 	WHERE id=2;
 			
+COMMIT;
+BEGIN;
+
 INSERT INTO public."Contacts"(
 	"userId", "contactId", "isLocationShared", "isBlocked", "isAccepted")
 	VALUES  (3, 4, FALSE, FALSE, FALSE),
 			(4, 1, FALSE, FALSE, FALSE);
+
+COMMIT;
+BEGIN;
 
 INSERT INTO public."Messages"(
 	"contactId", "typeId", content, "time")
