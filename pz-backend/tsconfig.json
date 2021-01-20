@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"outDir": "./built"
+	},
+	// "include": ["src/**/*"],
+	// "files": [
+	//   "index.ts"
+	// ]
+	"exclude": ["node_modules", "built", "package.json", "package-lock.json", "tsconfig.json"]
+}
