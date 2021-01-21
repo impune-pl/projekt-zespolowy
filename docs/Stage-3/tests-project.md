@@ -403,7 +403,7 @@ Kontakty wiążą konta użytkowników w następujący sposób:
 
   
 Przeprowadzanie testu:  
-- Aktualizacja pola isAccepted dwóch losowo wybranych kontaktów do wartości 1 (prawda).
+- Aktualizacja pola isAccepted dwóch wybranych kontaktów do wartości 1 (prawda).
 
 Spodziewany wynik:
 - Powstanie dwóch nowych kontaktów o wartościach w polach userId i contactId zamienionych miejscami w stosunku do wybranych i wartości zawartej w polach isAccepted równej 1 (prawda).
@@ -416,7 +416,7 @@ Spodziewany wynik:
 Sposób przeprowadzenia:  
 Automatyczny lub Manualny  
 Przygotowanie testu:
-- brak
+- Upewnienie się że tabela z użytkownikami jest pusta.
 
 Przeprowadzanie testu:  
 - Próba umieszczenia w bazie siedmiu kont użytkowników:
@@ -425,7 +425,7 @@ Przeprowadzanie testu:
   - konto z pustymi ciągami znaków w polach email i phoneNumer
   - konto z ciągiem losowych znaków (co najmniej jeden znak specjalny inny niż . lub @) w polu email
   - konto z ciągiem losowych znaków (co najmniej jeden znak inny niż cyfra 0-9) w polu phoneNumer
-  - konto z ciągami losowych znaków, (co najmniej jeden znak inny niż cyfra 0-9) w polu phoneNumer, (co najmniej jeden znak specjalny inny niż . lub @) w polu email
+  - konto z ciągami losowych znaków, (co najmniej jeden znak inny niż cyfra 0-9, i znaki -, +) w polu phoneNumer, (co najmniej jeden znak specjalny inny niż . lub @) w polu email
   - konto z prawidłowymi wartościami wszystki pól
 
 Spodziewany wynik:
