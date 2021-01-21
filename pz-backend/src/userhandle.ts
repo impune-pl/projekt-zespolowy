@@ -233,27 +233,54 @@ export default class UserHandle {
 		});
 	}
 
-	sendMessage(contact_id: number, message: string, type: string) {
-		this.db
-			.getContact(contact_id)
-			.then((cont: pg.QueryResult) => {
-				if (cont.rowCount > 0) {
-					let contact = cont.rows[0] as Contact;
-					let can = this.isUserBlocekd(contact.contactId, contact.userId);
-					if (can) {
-						let mess = new Message();
-						mess.contact_id = contact_id;
-						mess.content = message;
-						mess.type = type;
-						// let date_now = new Date();
-						mess.date = new Date(); //String(date_now.getDate()).padStart(2, "0") + "-" + String(date_now.getMonth() + 1).padStart(2, "0") + "-" + date_now.getFullYear();
-						this.db.addMessage(mess);
+	sendMessage(user_id: number, contact_id: number, message: string, type: string) {
+		return new Promise((resolve, reject) => {
+			this.db
+				.getContact(contact_id)
+				.then((cont: pg.QueryResult) => {
+					if (cont.rowCount > 0) {
+						let contact = cont.rows[0] as Contact;
+						if (contact.userId !== user_id) resolve(false);
+						let can = this.isUserBlocekd(contact.contactId, contact.userId);
+						if (can) {
+							this.db.crud.message_types.selectAll().then((types: pg.QueryResult) => {
+								if (types.rowCount > 0) {
+									let flag = false;
+									types.rows.forEach((obj) => {
+										if (obj.id == type || obj.type == type) {
+											flag = true;
+										}
+									});
+									if (flag) {
+										let mess = new Message();
+										mess.contact_id = contact_id;
+										mess.content = message;
+										mess.type = type;
+										// let date_now = new Date();
+										mess.date = new Date(); //String(date_now.getDate()).padStart(2, "0") + "-" + String(date_now.getMonth() + 1).padStart(2, "0") + "-" + date_now.getFullYear();
+										this.db
+											.addMessage(mess)
+											.then(() => resolve(true))
+											.catch((err) => reject(err));
+									} else {
+										reject("Wrong type");
+									}
+								} else {
+									reject("Types check error");
+								}
+							});
+						} else {
+							reject("User is blocked");
+						}
+					} else {
+						reject("Contact does not exists");
 					}
-				}
-			})
-			.catch((err) => {
-				console.error({ sendMessage: err });
-			});
+				})
+				.catch((err) => {
+					reject(err);
+					console.error({ sendMessage: err });
+				});
+		});
 	}
 
 	checkForNewMessages(contact_id: number, last_message_id: number) {

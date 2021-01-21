@@ -134,9 +134,9 @@ export default class DataBaseController extends DataBaseConnection {
 			this.crud.message
 				.checkForNew(contact_id, last_message_id)
 				// .find(where)
-				.then((messages) => {
+				.then((messages: pg.QueryResult) => {
 					console.log(messages);
-					resolve(true);
+					resolve(messages.rowCount > 0);
 				})
 				.catch((err) => {
 					reject(err);

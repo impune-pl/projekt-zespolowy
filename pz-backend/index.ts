@@ -5,6 +5,7 @@ import DataBaseController from "./src/database/databasecontroller";
 import UserHandle from "./src/userhandle";
 import { Passport } from "passport";
 import User from "./src/objects/user";
+import { test } from "./tests/tests";
 
 var CustomStrategy = customPassport.Strategy;
 
@@ -224,8 +225,14 @@ app.get("/message/types", (request: express.Request, response: express.Response)
 app.post("/message/send", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id && body.content && body.type) {
-		uh.sendMessage(body.contact_id, body.content, body.type);
-		response.send({ message_send: true });
+		uh.sendMessage((request.user as User).id, body.contact_id, body.content, body.type)
+			.then((send) => {
+				response.send({ message_send: send });
+			})
+			.catch((err) => {
+				console.error({ message_send: err });
+				response.send({ message_send: false });
+			});
 	} else {
 		response.send({ message_send: false });
 	}
@@ -297,3 +304,9 @@ app.get("/location", passport.authenticate("custom", { failureRedirect: "/" }), 
 app.listen(4000, () => {
 	console.log("Running at port 4000\n http://localhost:4000");
 });
+
+if (process.argv.length > 2) {
+	if (process.argv.indexOf("test") > -1) {
+		test(app);
+	}
+}
