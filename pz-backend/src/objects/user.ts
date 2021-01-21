@@ -1,10 +1,10 @@
 // Data class
 export default class User {
 	public id: number;
-	public number: number;
+	public phoneNumber: number;
 	public email: string;
-	public location: string;
-	public last_location_update: string;
-	public last_login: string;
-	public password_hash: string;
+	public lastLocation: string;
+	public lastLocationTimestamp: Date;
+	public lastLoginTimestamp: Date;
+	public passwordHash: string;
 }

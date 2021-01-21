@@ -4,5 +4,5 @@ export default class Message {
 	public content: string;
 	public type: string;
 	public contact_id: number;
-	public date: string;
+	public date: Date;
 }

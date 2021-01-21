@@ -3,32 +3,39 @@ import Contact from "./objects/contect";
 import Message from "./objects/message";
 import Token from "./objects/token";
 import User from "./objects/user";
+import crypto = require("crypto");
+import * as pg from "pg";
 
 export default class UserHandle {
 	db: DataBaseController;
 
 	constructor(db: DataBaseController) {
 		this.db = db;
+		this.db.connect();
 	}
 
 	login(number: number, password: string) {
 		return this.db.checkLoginData(number, this.generateHash(password));
 	}
 
-	loginWithToken(id: number, token: Token): boolean {
-		return this.db.checkLoginDataWithToken(id, token);
+	loginGetUser(number: number, password: string) {
+		return this.db.checkLoginData(number, this.generateHash(password));
+	}
+
+	loginWithToken(token: string) {
+		return this.db.checkLoginDataWithToken(token);
 	}
 
 	register(number: number, email: string, password: string) {
 		return new Promise((resolve, reject) => {
-			this.db.getUserByNumber(number).then((user) => {
-				if (user) {
+			this.db.getUserByNumber(number).then((user: pg.QueryResult) => {
+				if (user.rowCount > 0) {
 					reject("User exists");
 				} else {
 					let user = new User();
-					user.number = number;
+					user.phoneNumber = number;
 					user.email = email;
-					user.password_hash = this.generateHash(password);
+					user.passwordHash = this.generateHash(password);
 					this.db.addUser(user);
 					resolve(user);
 				}
@@ -39,13 +46,18 @@ export default class UserHandle {
 	addContact(id: number, number: number) {
 		return new Promise((resolve, reject) => {
 			let contact = new Contact();
-			contact.user = new User();
-			contact.user.id = id;
+			contact.userId = id;
 			this.db
 				.getUserByNumber(number)
-				.then((user) => {
-					contact.contact = new User();
-					contact.contact.id = (user as User).id;
+				.then((users: pg.QueryResult) => {
+					if (users.rowCount < 1) {
+						resolve(false);
+					}
+					contact.contactId = users.rows[0].id;
+					contact.userId = id;
+					contact.isLocationShared = false;
+					contact.isAccepted = false;
+					contact.isBlocked = false;
 					this.db
 						.addContact(contact)
 						.then(() => {
@@ -67,26 +79,33 @@ export default class UserHandle {
 	// 	return [];
 	// }
 
-	acceptInvitation(contact_id: number): boolean {
-		this.db
-			.getContact(contact_id)
-			.then((contact) => {
-				(contact as Contact).accepted = true;
-				this.db.updateContact(contact as Contact);
-			})
-			.catch((err) => {
-				console.error({ acceptInvitation: err });
-			});
-		return true;
+	acceptInvitation(contact_id: number) {
+		return new Promise((resolve, reject) => {
+			this.db.crud.contacts
+				.accept(contact_id)
+				.then(() => {
+					resolve(true);
+				})
+				.catch((err) => {
+					console.error({ acceptInvitation: err });
+					reject(err);
+				});
+		});
 	}
 
 	getFriendsList(id: number) {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
-				.find("userId=" + id + " ")
-				.then((contacts) => {
+				.selectUserId(id)
+				// .find("userId=" + id + " ")
+				.then((contacts: pg.QueryResult) => {
 					console.log({ contacts });
-					resolve(contacts);
+
+					// this.db.crud.contacts.selectContactId(id).then((another_contacts: pg.QueryResult) => {
+					// 	console.log({ another_contacts });
+
+					// });
+					resolve(contacts.rows);
 				})
 				.catch((err) => {
 					console.error({ getFriendsList: err });
@@ -98,32 +117,53 @@ export default class UserHandle {
 	updateLocation(id: number, location: string) {
 		this.db
 			.getUser(id)
-			.then((user) => {
-				(user as User).location = location;
+			.then((user: pg.QueryResult) => {
+				if (user.rowCount > 0) {
+					let usr = user.rows[0] as User;
+					usr.lastLocation = location;
+					usr.lastLocationTimestamp = new Date();
+					this.db.updateUserData(usr);
+				} else {
+					console.error({ location_update: "User does not exists" });
+				}
 			})
 			.catch((err) => {
 				console.error({ location_update: err });
 			});
 	}
 
-	getLocation(id: number, target_id: number) {
+	getLocation(id: number, contact_id: number) {
 		return new Promise((resolve, reject) => {
-			this.canGetLocation(id, target_id)
-				.then((can) => {
-					console.log({ can });
-					if (can) {
-						this.db
-							.getLocation(target_id)
-							.then((location) => {
-								console.log({ location });
-								resolve(location);
+			this.db
+				.getContact(contact_id)
+				.then((contact_res: pg.QueryResult) => {
+					if (contact_res.rowCount > 0) {
+						let contact = contact_res.rows[0] as Contact;
+						this.canGetLocation(id, contact.contactId)
+							.then((can) => {
+								console.log({ can });
+								if (can) {
+									this.db
+										.getLocation(contact.contactId)
+										.then((location: string) => {
+											console.log({ location });
+											resolve(location);
+										})
+										.catch((err) => {
+											console.error({ get_location_error: err });
+											reject(err);
+										});
+								} else {
+									resolve(null);
+								}
 							})
 							.catch((err) => {
 								console.error({ get_location_error: err });
 								reject(err);
 							});
 					} else {
-						resolve(null);
+						console.error({ get_location_error: "Invalid contact" });
+						reject("Invalid contact");
 					}
 				})
 				.catch((err) => {
@@ -134,12 +174,15 @@ export default class UserHandle {
 	}
 
 	canGetLocation(id: number, target_id: number) {
-		let where = "userId=" + target_id + " and contactId=" + id + " ";
+		// let where = "userId=" + target_id + " and contactId=" + id + " ";
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
-				.find(where)
-				.then((contact) => {
-					resolve((contact as Contact).share_location);
+				.selectContactUserId(target_id, id)
+				// .find(where)
+				.then((contact: pg.QueryResult) => {
+					console.log(contact.rows);
+					if (contact.rowCount > 0) resolve((contact.rows[0] as Contact).isLocationShared);
+					else resolve(false);
 				})
 				.catch((err) => {
 					reject(err);
@@ -147,18 +190,12 @@ export default class UserHandle {
 		});
 	}
 
-	disableLocation(user_id: number, target_id: number) {
-		let where = "userId=" + user_id + " and contactId=" + target_id + " ";
+	disableLocation(contact_id: number) {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
-				.find(where)
+				.blockLocation(contact_id)
 				.then((contact) => {
-					console.log({ contact });
-					if (contact instanceof Contact) {
-						contact.share_location = false;
-						this.db.updateContact(contact);
-						resolve(true);
-					}
+					resolve(true);
 				})
 				.catch((err) => {
 					reject(err);
@@ -166,18 +203,12 @@ export default class UserHandle {
 		});
 	}
 
-	enableLocation(user_id: number, target_id: number) {
-		let where = "userId=" + user_id + " and contactId=" + target_id + " ";
+	enableLocation(contact_id: number) {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
-				.find(where)
+				.unlockLocation(contact_id)
 				.then((contact) => {
-					console.log({ contact });
-					if (contact instanceof Contact) {
-						contact.share_location = true;
-						this.db.updateContact(contact);
-						resolve(true);
-					}
+					resolve(true);
 				})
 				.catch((err) => {
 					reject(err);
@@ -186,13 +217,15 @@ export default class UserHandle {
 	}
 
 	isUserBlocekd(user_id: number, target_id: number) {
-		let where = "userId=" + user_id + " and contactId=" + target_id + " ";
+		// let where = "userId=" + user_id + " and contactId=" + target_id + " ";
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
-				.find(where)
-				.then((contact) => {
+				.selectContactUserId(target_id, user_id)
+				// .find(where)
+				.then((contact: pg.QueryResult) => {
 					console.log({ contact });
-					resolve((contact as Contact).blocked);
+					if (contact.rowCount > 0) resolve((contact.rows[0] as Contact).isBlocked);
+					else resolve(true);
 				})
 				.catch((err) => {
 					reject(err);
@@ -201,13 +234,26 @@ export default class UserHandle {
 	}
 
 	sendMessage(contact_id: number, message: string, type: string) {
-		let mess = new Message();
-		mess.contact_id = contact_id;
-		mess.content = message;
-		mess.type = type;
-		let date_now = new Date();
-		mess.date = String(date_now.getDate()).padStart(2, "0") + "-" + String(date_now.getMonth() + 1).padStart(2, "0") + "-" + date_now.getFullYear();
-		this.db.addMessage(mess);
+		this.db
+			.getContact(contact_id)
+			.then((cont: pg.QueryResult) => {
+				if (cont.rowCount > 0) {
+					let contact = cont.rows[0] as Contact;
+					let can = this.isUserBlocekd(contact.contactId, contact.userId);
+					if (can) {
+						let mess = new Message();
+						mess.contact_id = contact_id;
+						mess.content = message;
+						mess.type = type;
+						// let date_now = new Date();
+						mess.date = new Date(); //String(date_now.getDate()).padStart(2, "0") + "-" + String(date_now.getMonth() + 1).padStart(2, "0") + "-" + date_now.getFullYear();
+						this.db.addMessage(mess);
+					}
+				}
+			})
+			.catch((err) => {
+				console.error({ sendMessage: err });
+			});
 	}
 
 	checkForNewMessages(contact_id: number, last_message_id: number) {
@@ -219,21 +265,40 @@ export default class UserHandle {
 	}
 
 	getAllMessages(contact_id: number) {
-		return this.db.getAllMessages(contact_id);
+		return new Promise((resolve, reject) => {
+			this.db
+				.getAllMessages(contact_id)
+				.then((messages: pg.QueryResult) => {
+					console.log({ messages, rows: messages.rows });
+					resolve(messages.rows);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
 	}
 
-	blockUser(user_id: number, target_id: number) {
-		let where = "userId=" + user_id + " and contactId=" + target_id + " ";
+	getMessageTypes() {
+		return new Promise((resolve, reject) => {
+			this.db.crud.message_types
+				.selectAll()
+				.then((types: pg.QueryResult) => {
+					console.log({ types, rows: types.rows });
+					resolve(types.rows);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
+	}
+
+	blockUser(contact_id: number) {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
-				.find(where)
-				.then((contact) => {
+				.blockUser(contact_id)
+				.then((contact: pg.QueryResult) => {
 					console.log({ contact });
-					if (contact instanceof Contact) {
-						contact.blocked = true;
-						this.db.updateContact(contact);
-						resolve(true);
-					}
+					resolve(true);
 				})
 				.catch((err) => {
 					reject(err);
@@ -244,10 +309,11 @@ export default class UserHandle {
 	findContact(number: number) {
 		return new Promise((resolve, reject) => {
 			this.db.crud.user
-				.find("phoneNumber=" + number + " ")
-				.then((user) => {
+				.selectNumber(number.toString())
+				// .find("phoneNumber=" + number + " ")
+				.then((user: pg.QueryResult) => {
 					console.log({ user });
-					resolve(true);
+					resolve(user.rowCount > 0);
 				})
 				.catch((err) => {
 					console.error({ find_contact: err });
@@ -262,5 +328,6 @@ export default class UserHandle {
 
 	generateHash(variable: string): string {
 		return variable;
+		return crypto.createHash("sha256").update(variable).digest("hex");
 	}
 }

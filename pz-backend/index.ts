@@ -1,11 +1,10 @@
 import express = require("express");
-// import session = require("express-session");
 import customPassport = require("passport-custom");
 import path = require("path");
 import DataBaseController from "./src/database/databasecontroller";
 import UserHandle from "./src/userhandle";
 import { Passport } from "passport";
-// import fs = require("fs");
+import User from "./src/objects/user";
 
 var CustomStrategy = customPassport.Strategy;
 
@@ -15,26 +14,56 @@ var dbc = new DataBaseController();
 var uh = new UserHandle(dbc);
 var app = express();
 var passport = new Passport();
+passport.serializeUser(function (user, done) {
+	done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+	done(null, user);
+});
 passport.use(
 	"custom",
-	new CustomStrategy(function (req, cb) {
-		return cb(null, true);
+	new CustomStrategy(function (req: express.Request, cb: CallableFunction) {
+		if (req.body.token) {
+			// check for token
+			uh.loginWithToken(req.body.token)
+				.then((res) => {
+					console.log(res);
+					if (res instanceof User) {
+						cb(null, res);
+					} else {
+						cb("Wrong instance of object", false);
+					}
+				})
+				.catch((err) => {
+					cb(err, false);
+				});
+		} else if (req.body.number && req.body.password) {
+			uh.login(req.body.number, req.body.password)
+				.then((user) => {
+					console.log(user);
+					// if (user instanceof User) {
+					cb(null, user);
+					// } else {
+					// cb("Wrong instance of object", false);
+					// }
+				})
+				.catch((err) => {
+					console.error({ login_failed: err });
+					cb(err, false);
+				});
+		} else {
+			cb(null, false);
+		}
 	})
 );
+
+app.use(express.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/static", express.static(path.join(__dirname, "../public")));
-
-function authorizer(token: string, cb: CallableFunction) {
-	// check token
-}
-
-function unauthorizedResponse(req: express.Request) {
-	console.warn("Token login failed");
-	return { login_successful: false };
-}
 
 // TEST
 
@@ -86,37 +115,38 @@ app.post("/register", (request: express.Request, response: express.Response) => 
 
 // CONTACTS
 
-app.get("/contacts", (request: express.Request, response: express.Response) => {
+app.get("/contacts", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	// uh.getFriendsList(request.user.id);
-	let body = request.body;
-	if (body.user_id) {
-		uh.getFriendsList(body.user_id)
-			.then((list) => {
-				response.send({ friends_list: list });
-			})
-			.catch((err) => {
-				console.error({ getFriendsList: err });
-				response.send({ friends_list: null });
-			});
-	} else {
-		response.send({ friends_list: null });
-	}
+	uh.getFriendsList((request.user as User).id)
+		.then((list) => {
+			response.send({ friends_list: list });
+		})
+		.catch((err) => {
+			console.error({ getFriendsList: err });
+			response.send({ friends_list: null });
+		});
 });
 
-app.post("/contact/accept", (request: express.Request, response: express.Response) => {
+app.post("/contact/accept", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id) {
-		uh.acceptInvitation(body.contact_id);
-		response.send({ contact_accept: true });
+		uh.acceptInvitation(body.contact_id)
+			.then(() => {
+				response.send({ contact_accept: true });
+			})
+			.catch((err) => {
+				console.error({ acceptInvitation: err });
+				response.send({ contact_accept: false });
+			});
 	} else {
 		response.send({ contact_accept: false });
 	}
 });
 
-app.post("/contact/new", (request: express.Request, response: express.Response) => {
+app.post("/contact/new", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
-	if (body.user_id && body.number) {
-		uh.addContact(body.user_id, body.number)
+	if (body.number) {
+		uh.addContact((request.user as User).id, body.number)
 			.then(() => {
 				response.send({ new_contact: true });
 			})
@@ -129,7 +159,7 @@ app.post("/contact/new", (request: express.Request, response: express.Response) 
 	}
 });
 
-app.get("/contact/find", (request: express.Request, response: express.Response) => {
+app.get("/contact/find", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.number) {
 		uh.findContact(body.number)
@@ -147,7 +177,7 @@ app.get("/contact/find", (request: express.Request, response: express.Response) 
 
 // MESSAGE
 
-app.get("/message/new", (request: express.Request, response: express.Response) => {
+app.post("/message/new", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id && body.last_message_id) {
 		uh.checkForNewMessages(body.contact_id, body.last_message_id)
@@ -163,12 +193,35 @@ app.get("/message/new", (request: express.Request, response: express.Response) =
 	}
 });
 
-app.get("/message", (request: express.Request, response: express.Response) => {
+app.post("/message", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	// uh.getMessages();
-	response.send("sa");
+	let body = request.body;
+	if (body.contact_id) {
+		uh.getAllMessages(body.contact_id)
+			.then((messages) => {
+				response.send({ messages });
+			})
+			.catch((err) => {
+				console.error({ messages: err });
+				response.send({ messages: null });
+			});
+	} else {
+		response.send({ messages: null });
+	}
 });
 
-app.post("/message", (request: express.Request, response: express.Response) => {
+app.get("/message/types", (request: express.Request, response: express.Response) => {
+	uh.getMessageTypes()
+		.then((types) => {
+			response.send({ message_types: types });
+		})
+		.catch((err) => {
+			console.error({ message_types: err });
+			response.send({ message_types: null });
+		});
+});
+
+app.post("/message/send", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id && body.content && body.type) {
 		uh.sendMessage(body.contact_id, body.content, body.type);
@@ -180,10 +233,10 @@ app.post("/message", (request: express.Request, response: express.Response) => {
 
 // BLOCK USER
 
-app.post("/block/user", (request: express.Request, response: express.Response) => {
+app.post("/block/user", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
-	if (body.user_id && body.target_id) {
-		uh.blockUser(body.user_id, body.target_id);
+	if (body.contact_id) {
+		uh.blockUser(body.contact_id);
 		response.send({ block_user: true });
 	} else {
 		response.send({ block_user: false });
@@ -192,10 +245,20 @@ app.post("/block/user", (request: express.Request, response: express.Response) =
 
 // BLOCK LOCATION
 
-app.post("/block/location", (request: express.Request, response: express.Response) => {
+app.post("/location/block", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
-	if (body.user_id && body.target_id) {
-		uh.disableLocation(body.user_id, body.target_id);
+	if (body.contact_id) {
+		uh.disableLocation(body.contact_id);
+		response.send({ disable_location: true });
+	} else {
+		response.send({ disable_location: false });
+	}
+});
+
+app.post("/location/unlock", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+	let body = request.body;
+	if (body.contact_id) {
+		uh.enableLocation(body.contact_id);
 		response.send({ disable_location: true });
 	} else {
 		response.send({ disable_location: false });
@@ -204,20 +267,21 @@ app.post("/block/location", (request: express.Request, response: express.Respons
 
 // LOCATION
 
-app.post("/location", (request: express.Request, response: express.Response) => {
+app.post("/location", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
-	if (body.user_id && body.location) {
-		uh.updateLocation(body.user_id, body.location);
+	console.log({ request });
+	if (body.location) {
+		uh.updateLocation((request.user as User).id, body.location);
 		response.send({ update_location: true });
 	} else {
 		response.send({ update_location: false });
 	}
 });
 
-app.get("/location", (request: express.Request, response: express.Response) => {
+app.get("/location", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
 	let body = request.body;
-	if (body.user_id && body.target_id) {
-		uh.getLocation(body.user_id, body.target_id)
+	if (body.contact_id) {
+		uh.getLocation((request.user as User).id, body.contact_id)
 			.then((location) => {
 				response.send({ location });
 			})

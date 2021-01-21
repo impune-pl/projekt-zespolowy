@@ -13,8 +13,10 @@
   "license": "ISC",
   "dependencies": {
     "@types/passport": "^1.0.5",
+    "@types/passport-strategy": "^0.2.35",
     "@types/pg": "^7.14.7",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "express-session": "^1.17.1",
