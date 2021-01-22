@@ -15,4 +15,5 @@ Testy zostały wykonane dla poszczególnych przypadków:
 - sprawdzenie nowych wiadomości z danymi nie zakładającymi isnienia nowszych wiadomości
 
 Wyniki zostały przeprowadzone automatycznie z pomocą biblioteki [supertest](https://github.com/visionmedia/supertest). Testy przeszły prawidłowo, na co wskazuje informacja po ich ukończeniu
+
 ![](../images/test_success.png)  
