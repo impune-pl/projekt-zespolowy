@@ -1,0 +1,7 @@
+{
+  "name": "CIAT",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
