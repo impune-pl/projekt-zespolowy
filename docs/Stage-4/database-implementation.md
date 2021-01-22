@@ -1,6 +1,19 @@
 # Wybrane fragmenty implementacji bazy danych
 Ten dokument opisuje wybrane fragmenty implementacji bazy danych.
 
+## Tworzenie tabeli Contacts
+Tabela Contacts jest drugą co do ważności tabelą w bazie danych. Przechowuje informacje o kontaktach nawiązanych między użytkownikami. Na niej opierają się funkcjonalności takie jak: wybór komu udostępniać lokalizację, prośby o nawiązanie kontaktu, potwierdzenie nawiązania kontaktu i blokowanie użytkownika.
+```sql
+CREATE TABLE public."Contacts" (
+    id bigint NOT NULL,
+    "userId" bigint NOT NULL,
+    "contactId" bigint NOT NULL,
+    "isLocationShared" boolean DEFAULT false NOT NULL,
+    "isBlocked" boolean DEFAULT false NOT NULL,
+    "isAccepted" boolean DEFAULT false NOT NULL
+);
+```
+
 ## Tworzenie i przypisywanie wyzwalacza do tabeli Contacts
 Wyzwalacz ten ma za zadanie dodać wiersz o zamienionych wartościach w polach userId i contactId do tabeli Contacts po zaakceptowaniu jednostronnej prośby o kontakt, w ten sposób tworząc pełny, obustronny, kontakt.
 ```sql
@@ -22,7 +35,21 @@ $$;
 CREATE TRIGGER "OnContactUpdate" AFTER UPDATE OF "isAccepted" ON test."Contacts" FOR EACH ROW EXECUTE FUNCTION test."OnContactUpdate"();
 ```
 
-## Tworzenie i przypisywanie wyzwalacza do tabeli Contacts
+## Tworzenie tabeli Users
+Tabela Users to najważniejsza tabela w bazie danych - przechowuje informacje o kontach użytkowników wraz z danymi umożliwiającymi im wzajemne odnajdywanie się, logowanie do systemu oraz udostępnianie lokalizacji. Jest powiązana z tabelami Contacts i Tokens - pierwsza z nich umożliwia użytkownikom dodawanie się do kontaktów, a druga pozwala na zapamiętanie logowania przez frontend, dzięki czemu użytkownik nie musi logować się za każdym razem gdy chce skorzystać z aplikacji.
+```sql
+CREATE TABLE public."Users" (
+    id bigint NOT NULL,
+    "phoneNumber" character varying(15) NOT NULL,
+    email character varying(255) NOT NULL,
+    "passwordHash" character varying(128) NOT NULL,
+    "lastLocation" character varying(255),
+    "lastLocationTimestamp" timestamp without time zone,
+    "lastLoginTimestamp" timestamp without time zone
+);
+```
+
+## Tworzenie i przypisywanie wyzwalacza do tabeli Users
 Wyzwalacz ten ma za zadanie zaktualizowanie pola lastLocationTimestamp po zaktualizowaniu lokalizacji użytkownika.
 ```sql
 -- defnicja funkcji dla wyzwalacza
