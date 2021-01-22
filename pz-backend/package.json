@@ -8,7 +8,8 @@
     "start": "node ./built/tsc.js",
     "build": "npx tsc --build tsconfig.json",
     "run": "npx tsc --build tsconfig.json && node ./built/index.js",
-    "test-run": "npx tsc --build tsconfig.json && node ./built/index.js test"
+    "test-run": "npx tsc --build tsconfig.json && node ./built/index.js test",
+    "stress": "k6 run --vus 1000 --iterations 10000 ./tests/stresstest.js"
   },
   "author": "therobby",
   "license": "ISC",
