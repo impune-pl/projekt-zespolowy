@@ -11,7 +11,28 @@ var CustomStrategy = customPassport.Strategy;
 
 console.log("Hello!");
 
-var dbc = new DataBaseController();
+var tests: boolean = false;
+var host: string = undefined;
+var port: number = undefined;
+
+if (process.argv.length > 2) {
+	for (let i = 0; i < process.argv.length; i++) {
+		if (process.argv[i] == "test") {
+			tests = true;
+		} else if (process.argv[i].startsWith("host=")) {
+			host = process.argv[i].replace("host=", "");
+		} else if (process.argv[i].startsWith("port=")) {
+			let some_number = process.argv[i].replace("port=", "");
+			try {
+				port = Number.parseInt(some_number);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+	}
+}
+
+var dbc = new DataBaseController(host, port);
 var uh = new UserHandle(dbc);
 var app = express();
 var passport = new Passport();
@@ -305,8 +326,4 @@ app.listen(4000, () => {
 	console.log("Running at port 4000\n http://localhost:4000");
 });
 
-if (process.argv.length > 2) {
-	if (process.argv.indexOf("test") > -1) {
-		test(app);
-	}
-}
+if (tests) test(app);

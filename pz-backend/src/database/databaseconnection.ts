@@ -12,13 +12,13 @@ export default class DataBaseConnection {
 	client: Client;
 	crud: CRUDS;
 
-	constructor() {
+	constructor(host: string = "127.0.0.1", port: number = 5432) {
 		this.client = new Client({
 			user: "postgres",
-			host: "127.0.0.1",
+			host,
 			database: "ciat",
 			password: "example",
-			port: 5432,
+			port,
 		});
 	}
 
