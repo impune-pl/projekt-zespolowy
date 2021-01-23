@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons slot="start" @click="home()">
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
         <ion-title>Logowanie</ion-title>
@@ -65,7 +65,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle,
 IonContent, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton} from '@ionic/vue';
 
 export default  {
-  name: 'Tab1',
+  name: 'Login',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton }
 }
 </script>

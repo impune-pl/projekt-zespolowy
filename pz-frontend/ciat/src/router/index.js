@@ -1,35 +1,40 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
-import Tabs from '../views/Tabs.vue'
+import Splash from '../views/Splash.vue'
 
 const routes = [
   {
     path: '/',
-    redirect: '/tabs/tab1'
+    redirect: '/friends'
   },
   {
-    path: '/tabs/',
-    component: Tabs,
+    path: '/messages',
+    redirect: '/friends'
+  },
+  {
+    path: '/messages/:user',
+    component: () => import('@/views/Messages.vue')
+  },
+  {
+    path: '/friends',
+    component: () => import('@/views/Friends.vue')
+  },
+  {
+    path: '/unauth/',
+    component: Splash,
     children: [
       {
         path: '',
-        redirect: '/tabs/tab1'
+        redirect: '/unauth/login'
       },
       {
-        path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        path: 'login',
+        component: () => import('@/views/Login.vue')
       },
       {
-        path: 'tab2',
-        component: () => import('@/views/Tab2.vue')
+        path: 'register',
+        component: () => import('@/views/Register.vue')
       },
-      {
-        path: 'tab3',
-        component: () => import('@/views/Tab3.vue')
-      },
-      {
-        path: 'tab4',
-        component: () => import('@/views/Tab4.vue')
-      }
+      
     ]
   }
 ]

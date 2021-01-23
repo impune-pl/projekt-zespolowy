@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons slot="start" @click="home()">
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
         <ion-title>Znajomi</ion-title>
@@ -116,7 +116,7 @@ addIcons({
 });
 
 export default  {
-  name: 'Tab3',
+  name: 'Friends',
   methods:{
     async showFriendAdder(){
       const modal = await modalController
@@ -135,7 +135,12 @@ export default  {
       modal: null
     }
   },
-  components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonItem, IonButtons, IonList, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon, IonFab, IonFabButton, IonListHeader }
+  components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonItem, IonButtons, IonList, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon, IonFab, IonFabButton, IonListHeader },
+  
+  mounted(){
+    this.secured()
+  }
+
 }
 </script>
 

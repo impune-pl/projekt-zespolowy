@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons slot="start" @click="home()">
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
       <ion-buttons slot="end">
@@ -70,7 +70,7 @@ addIcons({
 });
 
 export default  {
-  name: 'Tab4',
+  name: 'Messages',
   methods:{
     
   },
@@ -78,7 +78,10 @@ export default  {
     return {
     }
   },
-  components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent }
+  components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent },
+  mounted(){
+    this.secured()
+  }
 }
 </script>
 
