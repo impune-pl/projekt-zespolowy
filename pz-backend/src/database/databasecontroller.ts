@@ -7,6 +7,10 @@ import * as pg from "pg";
 import { use } from "passport";
 
 export default class DataBaseController extends DataBaseConnection {
+	constructor(host: string = undefined, port: number = undefined) {
+		super(host, port);
+	}
+
 	checkLoginData(number: number, password: string) {
 		return new Promise((resolve, reject) => {
 			this.getUserByNumber(number)
