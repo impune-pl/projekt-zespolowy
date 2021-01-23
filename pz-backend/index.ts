@@ -6,6 +6,7 @@ import UserHandle from "./src/userhandle";
 import { Passport } from "passport";
 import User from "./src/objects/user";
 import { test } from "./tests/tests";
+import * as cors from "cors";
 
 var CustomStrategy = customPassport.Strategy;
 
@@ -84,6 +85,8 @@ passport.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
 
 app.use(passport.initialize());
 app.use(passport.session());
