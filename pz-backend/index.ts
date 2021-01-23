@@ -21,8 +21,10 @@ if (process.argv.length > 2) {
 			tests = true;
 		} else if (process.argv[i].startsWith("host=")) {
 			host = process.argv[i].replace("host=", "");
+			console.log("host=" + host);
 		} else if (process.argv[i].startsWith("port=")) {
 			let some_number = process.argv[i].replace("port=", "");
+			console.log("post=" + some_number);
 			try {
 				port = Number.parseInt(some_number);
 			} catch (err) {
@@ -63,7 +65,7 @@ passport.use(
 		} else if (req.body.number && req.body.password) {
 			uh.login(req.body.number, req.body.password)
 				.then((user) => {
-					console.log(user);
+					// console.log(user);
 					// if (user instanceof User) {
 					cb(null, user);
 					// } else {
@@ -122,15 +124,20 @@ app.post("/login", (request: express.Request, response: express.Response) => {
 
 app.post("/register", (request: express.Request, response: express.Response) => {
 	let body = request.body;
+	console.log(body);
 	if (body.password && body.number && body.email) {
-		uh.register(body.number, body.email, body.password)
-			.then((res) => {
-				response.send({ register_successful: true });
-			})
-			.catch((err) => {
-				console.error({ register_failed: err });
-				response.send({ register_successful: false });
-			});
+		if (!isNaN(body.number.trim())) {
+			uh.register(body.number.trim(), body.email.trim(), body.password.trim())
+				.then((res) => {
+					response.send({ register_successful: true });
+				})
+				.catch((err) => {
+					console.error({ register_failed: err });
+					response.send({ register_successful: false });
+				});
+		} else {
+			response.send({ register_successful: false });
+		}
 	} else {
 		response.send({ register_successful: false });
 	}
