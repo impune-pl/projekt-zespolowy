@@ -14,6 +14,7 @@
   "author": "therobby",
   "license": "ISC",
   "dependencies": {
+    "@types/cors": "^2.8.9",
     "@types/passport": "^1.0.5",
     "@types/passport-strategy": "^0.2.35",
     "@types/pg": "^7.14.7",
