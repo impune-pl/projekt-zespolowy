@@ -28,18 +28,31 @@ export default class UserHandle {
 
 	register(number: number, email: string, password: string) {
 		return new Promise((resolve, reject) => {
-			this.db.getUserByNumber(number).then((user: pg.QueryResult) => {
-				if (user.rowCount > 0) {
-					reject("User exists");
-				} else {
-					let user = new User();
-					user.phoneNumber = number;
-					user.email = email;
-					user.passwordHash = this.generateHash(password);
-					this.db.addUser(user);
-					resolve(user);
-				}
-			});
+			this.db
+				.getUserByNumber(number)
+				.then((user: pg.QueryResult) => {
+					if (user.rowCount > 0) {
+						reject("User exists");
+					} else {
+						let user = new User();
+						user.phoneNumber = number;
+						user.email = email;
+						user.passwordHash = this.generateHash(password);
+						this.db
+							.addUser(user)
+							.then(() => {
+								resolve(user);
+							})
+							.catch((err) => {
+								console.error(err);
+								reject(err);
+							});
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+					reject(err);
+				});
 		});
 	}
 
