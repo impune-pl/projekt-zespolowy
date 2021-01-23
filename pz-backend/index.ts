@@ -15,6 +15,7 @@ console.log("Hello!");
 var tests: boolean = false;
 var host: string = undefined;
 var port: number = undefined;
+var appport: number = 4000;
 
 if (process.argv.length > 2) {
 	for (let i = 0; i < process.argv.length; i++) {
@@ -28,6 +29,14 @@ if (process.argv.length > 2) {
 			console.log("post=" + some_number);
 			try {
 				port = Number.parseInt(some_number);
+			} catch (err) {
+				console.error(err);
+			}
+		} else if (process.argv[i].startsWith("appport=")) {
+			let some_number = process.argv[i].replace("appport=", "");
+			console.log("apppost=" + some_number);
+			try {
+				appport = Number.parseInt(some_number);
 			} catch (err) {
 				console.error(err);
 			}
@@ -148,7 +157,7 @@ app.post("/register", (request: express.Request, response: express.Response) => 
 
 // CONTACTS
 
-app.get("/contacts", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.get("/contacts", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	// uh.getFriendsList(request.user.id);
 	uh.getFriendsList((request.user as User).id)
 		.then((list) => {
@@ -160,7 +169,7 @@ app.get("/contacts", passport.authenticate("custom", { failureRedirect: "/" }), 
 		});
 });
 
-app.post("/contact/accept", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/contact/accept", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id) {
 		uh.acceptInvitation(body.contact_id)
@@ -176,7 +185,7 @@ app.post("/contact/accept", passport.authenticate("custom", { failureRedirect: "
 	}
 });
 
-app.post("/contact/new", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/contact/new", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.number) {
 		uh.addContact((request.user as User).id, body.number)
@@ -192,7 +201,7 @@ app.post("/contact/new", passport.authenticate("custom", { failureRedirect: "/" 
 	}
 });
 
-app.get("/contact/find", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.get("/contact/find", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.number) {
 		uh.findContact(body.number)
@@ -210,7 +219,7 @@ app.get("/contact/find", passport.authenticate("custom", { failureRedirect: "/" 
 
 // MESSAGE
 
-app.post("/message/new", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/message/new", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id && body.last_message_id) {
 		uh.checkForNewMessages(body.contact_id, body.last_message_id)
@@ -226,7 +235,7 @@ app.post("/message/new", passport.authenticate("custom", { failureRedirect: "/" 
 	}
 });
 
-app.post("/message", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/message", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	// uh.getMessages();
 	let body = request.body;
 	if (body.contact_id) {
@@ -254,7 +263,7 @@ app.get("/message/types", (request: express.Request, response: express.Response)
 		});
 });
 
-app.post("/message/send", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/message/send", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id && body.content && body.type) {
 		uh.sendMessage((request.user as User).id, body.contact_id, body.content, body.type)
@@ -272,7 +281,7 @@ app.post("/message/send", passport.authenticate("custom", { failureRedirect: "/"
 
 // BLOCK USER
 
-app.post("/block/user", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/block/user", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id) {
 		uh.blockUser(body.contact_id);
@@ -284,7 +293,7 @@ app.post("/block/user", passport.authenticate("custom", { failureRedirect: "/" }
 
 // BLOCK LOCATION
 
-app.post("/location/block", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/location/block", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id) {
 		uh.disableLocation(body.contact_id);
@@ -294,7 +303,7 @@ app.post("/location/block", passport.authenticate("custom", { failureRedirect: "
 	}
 });
 
-app.post("/location/unlock", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/location/unlock", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id) {
 		uh.enableLocation(body.contact_id);
@@ -306,7 +315,7 @@ app.post("/location/unlock", passport.authenticate("custom", { failureRedirect: 
 
 // LOCATION
 
-app.post("/location", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.post("/location", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	console.log({ request });
 	if (body.location) {
@@ -317,7 +326,7 @@ app.post("/location", passport.authenticate("custom", { failureRedirect: "/" }),
 	}
 });
 
-app.get("/location", passport.authenticate("custom", { failureRedirect: "/" }), (request: express.Request, response: express.Response) => {
+app.get("/location", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let body = request.body;
 	if (body.contact_id) {
 		uh.getLocation((request.user as User).id, body.contact_id)
@@ -333,7 +342,7 @@ app.get("/location", passport.authenticate("custom", { failureRedirect: "/" }), 
 	}
 });
 
-app.listen(4000, () => {
+app.listen(appport, () => {
 	console.log("Running at port 4000\n http://localhost:4000");
 });
 
