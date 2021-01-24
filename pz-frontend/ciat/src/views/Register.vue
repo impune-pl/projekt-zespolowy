@@ -85,7 +85,7 @@
 
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton } from '@ionic/vue';
-
+import router from '../router'
 export default  {
   name: 'Register',
   components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton },
@@ -111,7 +111,9 @@ export default  {
         password: this.password 
       },
       (res)=>{
-        console.log(res)
+        if(res.data.register_successful === true){
+          router.push({ path: '/unauth/login' })
+        }
       },
       (err)=>{
         console.log(err)
