@@ -2,7 +2,6 @@
   <ion-page>
     <ion-tabs>
       <ion-tab-bar slot="bottom">
-        
         <ion-tab-button tab="login" href="/unauth/login">
           <ion-icon :icon="logInOutline" />
           <ion-label>Login</ion-label>

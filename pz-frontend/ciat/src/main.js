@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
 
-import { IonicVue } from '@ionic/vue';
+import { IonicVue, menuController } from '@ionic/vue';
 
 var axios = require('axios')
 
@@ -31,7 +31,7 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-var apiUrl = 'http://localhost:4000'
+    var apiUrl = 'http://localhost:4000'
 
   app.mixin({
     methods:{
@@ -77,9 +77,17 @@ var apiUrl = 'http://localhost:4000'
       },
       logout(){
         localStorage.removeItem('token')
-        router.push({ path: '/' })
+        menuController.close('main-menu')
+        router.push({ path: '/unauth/login' })
       },
-
+      openMenu(){
+        if(this.isLoggedIn)
+          menuController.open('main-menu')
+      },
+      pushTo(location){
+        menuController.close('main-menu')
+        router.push({ path: location })
+      }
     },
 
     computed:{

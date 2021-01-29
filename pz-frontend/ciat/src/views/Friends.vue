@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start" @click="home()">
+        <ion-buttons slot="start" @click="openMenu()">
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
         <ion-title>Znajomi</ion-title>
@@ -23,10 +23,11 @@
   <ion-list-header>
     <ion-label>Wszyscy Znajomi</ion-label>
   </ion-list-header>
-    <ion-item-sliding>
+    <ion-item-sliding ref="test">
       <ion-item @click="showConversation(item)">
         <ion-label>jkowalki@exmaple.com</ion-label>
         <ion-label>+48 123 456 789</ion-label>
+        <ion-label position="fixed"><ion-icon :icon="chevronBackOutline" @click='open("test")' /></ion-label>
       </ion-item>
       <ion-item-options side="end">
         <ion-item-option color="danger" @click="unread(item)">Zablokuj</ion-item-option>
@@ -98,7 +99,7 @@
 
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
         <ion-fab-button @click="showFriendAdder" color="primary">
-          <ion-icon name="add"></ion-icon>
+          <ion-icon :icon="addOutline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-content>
@@ -107,16 +108,18 @@
 
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonItem, IonList, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon, IonFab, IonFabButton, IonListHeader, modalController } from '@ionic/vue';
-import { add } from "ionicons/icons";
-import { addIcons } from "ionicons";
-import AddFriend from "../components/AddFriend"
+import { chevronBackOutline, addOutline } from "ionicons/icons";
 
-addIcons({
-  "add": add
-});
+import AddFriend from "../components/AddFriend"
 
 export default  {
   name: 'Friends',
+  setup() {
+    return {
+      addOutline,
+      chevronBackOutline
+    }
+  },
   methods:{
     async showFriendAdder(){
       const modal = await modalController
@@ -128,6 +131,12 @@ export default  {
     },
     dismissModal(){
       this.modal.dismiss()
+    },
+    open(item){
+      console.log(this.$refs[item].$el)
+      this.$refs[item].$el.open()
+     // console.log(this.$refs.test)
+      
     }
   },
   data() {

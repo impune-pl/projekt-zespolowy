@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start" @click="home()">
+        <ion-buttons slot="start" @click="openMenu()">
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
       <ion-buttons slot="end">
