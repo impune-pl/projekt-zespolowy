@@ -15,12 +15,17 @@ export default class DataBaseController extends DataBaseConnection {
 		return new Promise((resolve, reject) => {
 			this.getUserByNumber(number)
 				.then((users: pg.QueryResult) => {
-					console.log({ users, rows: users.rows });
+					// console.log({ users, rows: users.rows });
 					if (users.rowCount === 1) {
 						let u = users.rows[0] as User;
-						u.lastLoginTimestamp = new Date();
-						this.crud.user.update(u);
-						resolve(u);
+
+						if (u.passwordHash === password) {
+							u.lastLoginTimestamp = new Date();
+							this.crud.user.update(u);
+							resolve(true);
+						} else {
+							reject("Invalid password");
+						}
 					} else {
 						reject("User does not exists");
 					}
@@ -39,12 +44,35 @@ export default class DataBaseController extends DataBaseConnection {
 				.then((token: pg.QueryResult) => {
 					if (token.rowCount > 0) {
 						let t = token.rows[0] as Token;
-						this.crud.token.check();
-						if (t.isExpired) {
-							resolve(false);
-						} else {
-							resolve(this.crud.user.select(t.userId));
-						}
+						this.crud.token
+							.check()
+							.then(() => {
+								if (t.isExpired) {
+									resolve(false);
+								} else {
+									this.crud.user
+										.select(t.userId)
+										.then((res: pg.QueryResult) => {
+											if (res.rowCount > 0) {
+												let user = res.rows[0] as User;
+												user.lastLoginTimestamp = new Date();
+												this.crud.user.update(user);
+												user.passwordHash = "";
+												resolve(user);
+											} else {
+												reject("User does not exist");
+											}
+										})
+										.catch((err) => {
+											reject(err);
+										});
+								}
+							})
+							.catch((err) => {
+								reject(err);
+							});
+					} else {
+						reject("Token Does not exist");
 					}
 				})
 				.catch((err) => {
@@ -139,7 +167,7 @@ export default class DataBaseController extends DataBaseConnection {
 				.checkForNew(contact_id, last_message_id)
 				// .find(where)
 				.then((messages: pg.QueryResult) => {
-					console.log(messages);
+					// console.log(messages);
 					resolve(messages.rowCount > 0);
 				})
 				.catch((err) => {
