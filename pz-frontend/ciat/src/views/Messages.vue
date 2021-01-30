@@ -2,13 +2,14 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start" @click="openMenu()">
+        <ion-buttons slot="start" @click='pushTo("/")'>
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-button @click="location()" color="secondary">
           <ion-icon name="locate-outline"></ion-icon>
         </ion-button>
+        <i @click="openMenu()" class="fa fa-bars fa-3x primary-color" style="margin-right: .5em;margin-left: .5em;"></i>
       </ion-buttons>
         <ion-title>Konwersacja z mnowak@exmaple.com</ion-title>
       </ion-toolbar>
@@ -72,14 +73,13 @@ addIcons({
 export default  {
   name: 'Messages',
   methods:{
-    
   },
   data() {
     return {
     }
   },
   components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent },
-  mounted(){
+  ionViewWillEnter(){
     this.secured()
   }
 }

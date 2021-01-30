@@ -30,8 +30,8 @@ export default {
       logInOutline
     }
   },
-  mounted(){
-    if(this.isLoggedIn){
+  ionViewWillEnter(){
+    if(this.isLoggedIn()){
         router.push({ path: '/friends' })
     }
   }

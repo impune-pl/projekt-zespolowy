@@ -31,12 +31,12 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-    var apiUrl = 'http://localhost:4000'
+    var apiUrl = 'http://192.168.1.64:4000'
 
   app.mixin({
     methods:{
       secured(){
-        if(!this.isLoggedIn){
+        if(!this.isLoggedIn()){
           router.push({ path: '/unauth' })
         }
       },
@@ -61,7 +61,7 @@ const app = createApp(App)
       },
       postRequest(path, args, success, failure){
         var cfg = {}
-        if(this.isLoggedIn){
+        if(this.isLoggedIn()){
           cfg.params = {token: localStorage.token}
         }
         axios.post(apiUrl+path, args, cfg)
@@ -81,29 +81,37 @@ const app = createApp(App)
         router.push({ path: '/unauth/login' })
       },
       openMenu(){
-        if(this.isLoggedIn)
+        this.secured()
+        if(this.isLoggedIn())
           menuController.open('main-menu')
       },
       pushTo(location){
         menuController.close('main-menu')
         router.push({ path: location })
+      },
+      isLoggedIn(){
+        if (localStorage.token){
+        return true
+        }
+      else{
+        return false
       }
+    }
+
     },
 
     computed:{
-      isLoggedIn: ()=>{
-        if (localStorage.token) {
-        return true
-      }else
-        return false
-      },
       token: ()=>{
         if (localStorage.token) {
         return localStorage.token
       }else
         return ''
       }
-    }
+    },
+    data() {
+      return {
+      }
+    },
     })
 
 router.isReady().then(() => {

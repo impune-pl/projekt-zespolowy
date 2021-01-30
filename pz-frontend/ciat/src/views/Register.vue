@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons slot="start" @click="openMenu()">
+        <ion-buttons slot="start">
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
         <ion-title>Rejestracja</ion-title>
