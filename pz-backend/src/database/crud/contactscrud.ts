@@ -100,6 +100,21 @@ export default class ContactsCRUD extends CRUD {
 		// return this.connection.execRawQuery(query);
 	}
 
+	selectUserIdDetiled(user_id: number) {
+		/**
+		 * SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts";
+		 */
+
+		let qd = new QueryData();
+		qd.text = 'SELECT * FROM "Contacts" JOIN "Users" ON "Contacts"."contactId"="Users".id WHERE public."Contacts"."userId"=$1';
+		qd.values = [user_id];
+
+		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
+
+		// let query = 'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=' + id + ";";
+		// return this.connection.execRawQuery(query);
+	}
+
 	selectContactId(user_id: number) {
 		/**
 		 * SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts";
@@ -126,10 +141,32 @@ export default class ContactsCRUD extends CRUD {
 			'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE public."Contacts"."contactId"=$1 AND  public."Contacts"."userId"=$2';
 		qd.values = [contact_id, user_id];
 
+		// console.log(qd.text.replace("$1", qd.values[0]).replace("$2", qd.values[1]));
+
 		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
 
 		// let query = 'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=' + id + ";";
 		// return this.connection.execRawQuery(query);
+	}
+
+	selectContactUserIDContactNumber(user_id: number, contact_number: number) {
+		let qd = new QueryData();
+		qd.text = 'SELECT * FROM "Users" JOIN "Contacts" ON "Users".id="Contacts"."contactId" WHERE "Contacts"."userId" = $2 AND "Users"."phoneNumber"= $1 ';
+		qd.values = [contact_number, user_id];
+
+		// console.log(qd.text.replace("$1", qd.values[0]).replace("$2", qd.values[1]));
+
+		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
+	}
+
+	selectContactUserNumberContactID(user_number: number, contact_id: number) {
+		let qd = new QueryData();
+		qd.text = 'SELECT * FROM "Users" JOIN "Contacts" ON "Users".id="Contacts"."userId" WHERE "Contacts"."contactId" = $2 AND "Users"."phoneNumber"= $1 ';
+		qd.values = [user_number, contact_id];
+
+		// console.log(qd.text.replace("$1", qd.values[0]).replace("$2", qd.values[1]));
+
+		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
 	}
 
 	selectAll() {

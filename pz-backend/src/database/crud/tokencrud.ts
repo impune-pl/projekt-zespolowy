@@ -31,7 +31,7 @@ export default class TokenCRUD extends CRUD {
 		 * UPDATE public."Tokens" SET id=?, "userId"=?, token=?, "generatedTimestamp"=?, "expirationTimestamp"=?, "isExpired"=? WHERE <condition>;
 		 */
 		let qd = new QueryData();
-		qd.text = 'UPDATE public."Tokens" SET "userId"=$1, token=$2, "generatedTimestamp"=$3, "expirationTimestamp"=$4, "isExpired"=$5 WHERE id=$6';
+		qd.text = 'UPDATE public."Tokens" SET "userId"=$1, "token"=$2, "generatedTimestamp"=$3, "expirationTimestamp"=$4, "isExpired"=$5 WHERE id=$6';
 		qd.values = [token.userId, token.token, token.generatedTimestamp, token.expirationTimestamp, token.isExpired, token.id];
 		return this.connection.execQuery(qd);
 		// let query =
@@ -58,7 +58,7 @@ export default class TokenCRUD extends CRUD {
 	}
 
 	find(where: string) {
-		let query = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE ' + where + ";";
+		let query = 'SELECT id, "userId", "token", "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE ' + where + ";";
 		return this.connection.execRawQuery(query);
 	}
 
@@ -72,7 +72,7 @@ export default class TokenCRUD extends CRUD {
 		 * SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens";
 		 */
 		let qd = new QueryData();
-		qd.text = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE id=$1';
+		qd.text = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE "Tokens".id=$1';
 		qd.values = [id];
 		return this.connection.execQuery(qd);
 		// return this.find('id="' + id + '"');
@@ -85,7 +85,7 @@ export default class TokenCRUD extends CRUD {
 		 * SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens";
 		 */
 		let qd = new QueryData();
-		qd.text = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE userId=$1';
+		qd.text = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE "Tokens"."userId"=$1';
 		qd.values = [id];
 		return this.connection.execQuery(qd);
 		// return this.find('id="' + id + '"');
@@ -98,7 +98,7 @@ export default class TokenCRUD extends CRUD {
 		 * SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens";
 		 */
 		let qd = new QueryData();
-		qd.text = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE token=$1';
+		qd.text = 'SELECT id, "userId", token, "generatedTimestamp", "expirationTimestamp", "isExpired" FROM public."Tokens" WHERE "Tokens"."token"=$1';
 		qd.values = [token];
 		return this.connection.execQuery(qd);
 		// return this.find('id="' + id + '"');
