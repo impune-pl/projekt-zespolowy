@@ -71,7 +71,7 @@ passport.use(
 					// }
 				})
 				.catch((err) => {
-					cb(err, false);
+					cb(null, false, { message: err });
 				});
 		} else if (req.body.number && req.body.password) {
 			uh.loginGetUser(req.body.number, req.body.password)
@@ -84,7 +84,7 @@ passport.use(
 				})
 				.catch((err) => {
 					console.error({ login_failed: err });
-					cb(err, false);
+					cb(null, false, { message: err });
 				});
 		} else {
 			cb(null, false);
