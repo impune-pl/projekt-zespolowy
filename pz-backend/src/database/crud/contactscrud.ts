@@ -106,7 +106,8 @@ export default class ContactsCRUD extends CRUD {
 		 */
 
 		let qd = new QueryData();
-		qd.text = 'SELECT * FROM "Contacts" JOIN "Users" ON "Contacts"."contactId"="Users".id WHERE public."Contacts"."userId"=$1';
+		qd.text =
+			'SELECT "Contacts".id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted", "email", "lastLocation", "lastLocationTimestamp", "lastLoginTimestamp", "phoneNumber" FROM "Contacts" JOIN "Users" ON "Contacts"."contactId"="Users".id WHERE public."Contacts"."userId"=$1';
 		qd.values = [user_id];
 
 		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
