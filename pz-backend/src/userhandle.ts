@@ -192,7 +192,9 @@ export default class UserHandle {
 					let cts: DetiledContact[] = [];
 					contacts.rows.forEach((row) => {
 						let dc = new DetiledContact();
+						// console.log(row);
 						dc.id = row.id;
+						dc.userId = id;
 						dc.contact = new User();
 						dc.isAccepted = row.isAccepted;
 						dc.isBlocked = row.isBlocked;
