@@ -318,6 +318,15 @@ ALTER TABLE ONLY public."Users" ALTER COLUMN id SET DEFAULT nextval('public."Use
 
 
 --
+-- TOC entry 2874 (class 2606 OID 25556)
+-- Name: Contacts AvoidDuplicateContacts; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public."Contacts"
+    ADD CONSTRAINT "AvoidDuplicateContacts" UNIQUE ("userId", "contactId");
+    
+
+--
 -- TOC entry 2874 (class 2606 OID 16425)
 -- Name: Contacts Contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
 --
