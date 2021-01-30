@@ -181,7 +181,7 @@ app.get("/contacts", passport.authenticate("custom"), (request: express.Request,
 		});
 });
 
-app.post("/contact/:id/accept", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/contact/:id/accept", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let c_id = request.params.id;
 	if (c_id && !isNaN(Number.parseInt(c_id))) {
 		uh.acceptInvitation(Number.parseInt(c_id))
