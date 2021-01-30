@@ -46,7 +46,7 @@ const app = createApp(App)
       getRequest(path, success, failure){
         axios.get(apiUrl+path,
         {
-          params: {token: localStorage.token}
+          headers: {"token": localStorage.token}
         }
         )
         .then((response) =>{
@@ -60,11 +60,11 @@ const app = createApp(App)
         });
       },
       postRequest(path, args, success, failure){
-        var cfg = {}
+        var headers = {}
         if(this.isLoggedIn()){
-          cfg.params = {token: localStorage.token}
+          headers.token = localStorage.token
         }
-        axios.post(apiUrl+path, args, cfg)
+        axios.post(apiUrl+path, args, headers)
         .then((response) =>{
           success(response)
         })

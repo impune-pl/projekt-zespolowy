@@ -82,7 +82,7 @@ export default  {
       },
       (res)=>{
         if(res.data.login_successful === true){
-          localStorage.token = 'abc123'
+          localStorage.token = res.data.token
           router.push({ path: '/' })
         }
       },
