@@ -6,14 +6,15 @@
         <ion-label position="fixed" @click='flipSlider(id)'><ion-icon :icon='icon' /></ion-label>
       </ion-item>
       <ion-item-options side="end" >
-        <ion-item-option color="danger" @click='$emit("block",id)'>Zablokuj</ion-item-option>
-        <ion-item-option color="secondary" @click='$emit("locationShare",id)'>Udostępnij GPS</ion-item-option>
-        <ion-item-option color="success" @click='$emit("locationShow",id)'>GPS</ion-item-option>
+        <ion-item-option color="danger" @click='block()'>{{ isBlocked ? 'Odblokuj': 'Zablokuj'}}</ion-item-option>
+        <ion-item-option color="secondary" @click='shareLocation()'>{{isLocationShared ? 'Udostępnij GPS': 'Zablokuj GPS'}}</ion-item-option>
+        <ion-item-option color="success" @click='showLocation()'>GPS</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
 </template>
 
 <script>
+import router from '../router'
 import { IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon } from '@ionic/vue';
 import { chevronBackOutline, chevronForwardOutline } from "ionicons/icons";
 export default {
@@ -22,12 +23,11 @@ export default {
     id: String,
     email: String,
     phone: String,
+    isBlocked: Boolean,
+    isLocationShared: Boolean
   },
   emits:{
-    showConversation: null,
-    block: null,
-    locationShare: null,
-    locationShow: null,
+    refresh: null
   },
   setup() {
     return {
@@ -42,9 +42,60 @@ export default {
   },
   components: { IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon },
   methods:{
+    block(){
+      if(this.isBlocked === true){
+        // unblock
+        
+      }
+      else{
+        // block
+        this.postRequest('/block/user/'+this.id,
+      {},
+      (res)=>{
+        if(res.body.block_user === true){
+          this.$emit("refresh")
+          this.showToast('Zablokowano '+this.email)
+        }
+        else{
+          this.showEror('Blokowanie nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Blokowanie nie powiodło się!')
+      })
+      }
+    },
+    shareLocation(){
+      if(this.isLocationShared === true){
+        // location block
+        this.postRequest('/block/location/'+this.id,
+      {},
+      (res)=>{
+        if(res.body.disable_location === true){
+          this.$emit("refresh")
+          this.showToast('Wyłączono udostępnianie lokalizacji dla '+this.email)
+        }
+        else{
+          this.showEror('Wyłączenie lokalizacji nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Wyłączenie lokalizacji  nie powiodło się!')
+      })
+      }
+      else{
+        // share location
+        this.$emit("refresh")
+      }
+    },
+    showLocation(){
+      // show location on gmaps
+    },
     async showConversation(){
       if(! await this.isOpen(this.id))
-        this.$emit("showConversation",this.id)
+        router.push({ path: '/messages/'+this.id })
     },
     async isOpen(id){
     let amount = await this.$refs[id].$el.getOpenAmount()

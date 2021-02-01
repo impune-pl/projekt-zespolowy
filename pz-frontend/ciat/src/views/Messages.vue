@@ -73,15 +73,24 @@ addIcons({
 export default  {
   name: 'Messages',
   methods:{
+    loadInitalMessages(){
+
+    },
+    loadMoreMessages(){
+
+    }
   },
   data() {
     return {
+      contactId: -1,
+      messages: [],
     }
   },
   components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent },
   ionViewWillEnter(){
     this.secured()
-  }
+    this.loadInitalMessages()
+  },
 }
 </script>
 

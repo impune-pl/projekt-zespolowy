@@ -26,6 +26,7 @@
   <ion-list-header>
     <ion-label>Twoi Znajomi</ion-label>
   </ion-list-header>
+    <friend v-for="friend in friends_list" :key="friend.id" :id="friend.id" :email="friend.contact.email" :phone="friend.contact.email" :isBlocked="friend.isBlocked" :isLocationShared="friend.isLocationShared"  @showConversation="showConversation"/>
     <friend id="1" email="fsfsdf@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
     <friend id="2" email="sdfsgdrhgr@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
     <friend id="3" email="fh@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
@@ -87,12 +88,36 @@ export default  {
     
     showConversation(item){
         router.push({ path: '/messages/'+item })
+    },
+    loadFriendsList(){
+      this.getRequest('/contacts',
+      {},
+      (res)=>{
+        this.friends_list = []
+        this.requests_list = []
+        if(res.data.friends_list !== null){
+          res.data.friends_list.forEach((friend)=>{
+            if(friend.isAccepted === true){
+              this.friends_list.push(friend)
+            }
+            if(friend.isAccepted !== true){
+              this.requests_list.push(friend)
+            }
+          })
+        }
+      },
+      (err)=>{
+        console.log(err)
+      })
     }
+    
   },
   data() {
     return {
       iconTest: chevronBackOutline,
-      modal: null
+      modal: null,
+      friends_list: [],
+      requests_list: []
     }
   },
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonList, IonLabel, IonIcon, IonFab, IonFabButton, IonListHeader, Friend, FriendRequestRecieved },

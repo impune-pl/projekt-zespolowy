@@ -6,8 +6,8 @@
         <ion-label position="fixed" @click='flipSlider(id)'><ion-icon :icon='icon' /></ion-label>
       </ion-item>
       <ion-item-options side="end" >
-        <ion-item-option color="success" @click='$emit("refresh")'>Zaakceptuj</ion-item-option>
-        <ion-item-option color="warning" @click='$emit("refresh")'>Usuń</ion-item-option>
+        <ion-item-option color="success" @click='accept()'>Zaakceptuj</ion-item-option>
+        <ion-item-option color="warning" @click='reject()'>Usuń</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
 </template>
@@ -38,6 +38,26 @@ export default {
   },
   components: { IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon },
   methods:{
+    accept(){
+      this.getRequest('/contact/'+this.id+'/accept',
+      {},
+      (res)=>{
+        if(res.body.contact_accept === true){
+          this.$emit("refresh")
+          this.showToast('Zaakcetpowano '+this.email)
+        }
+        else{
+          this.showEror('Akceptowanie nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Akceptowanie nie powiodło się!')
+      })
+    },
+    reject(){
+      this.$emit("refresh")
+    },
     async isOpen(id){
     let amount = await this.$refs[id].$el.getOpenAmount()
      if(amount > 0)

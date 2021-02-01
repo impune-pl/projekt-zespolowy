@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
 
-import { IonicVue, menuController } from '@ionic/vue';
+import { IonicVue, menuController, alertController } from '@ionic/vue';
 
 var axios = require('axios')
 
@@ -96,8 +96,25 @@ const app = createApp(App)
       else{
         return false
       }
+    },
+    async showEror(message){
+      const alert = await alertController
+        .create({
+          header: 'Alert',
+          subHeader: 'Subtitle',
+          message: message,
+          buttons: ['OK'],
+        });
+      return alert.present();
+    },
+    async showToast(message){
+      const toast = await toastController
+        .create({
+          message: message,
+          duration: 1500
+        })
+      return toast.present();
     }
-
     },
 
     computed:{
