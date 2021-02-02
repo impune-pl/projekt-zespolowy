@@ -43,6 +43,8 @@
       Siema 😃
     </ion-card-content>
   </ion-card>
+
+  <message v-for="message in messages" :key="message.id" :content="message.content" :type="message.type" :id="message.id" :email="remoteInfo.email" :own="message.sender === this.ownInfo.id ? true : false"/>
   
   </ion-list>
 
@@ -64,6 +66,7 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,  IonList,  IonIcon,  IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue';
 import { sendOutline, locateOutline } from "ionicons/icons";
 import { addIcons } from "ionicons";
+import Message from '../components/Message.vue';
 
 addIcons({
   "send-outline": sendOutline,
@@ -74,35 +77,109 @@ export default  {
   name: 'Messages',
   methods:{
     loadInitalMessages(){
-
+      this.getRequest('/messages/'+this.contactId,
+      {},
+      (res)=>{
+        if(res.body.messages !== null){
+          this.messages = res.body.messages
+          this.loaded = true
+        }
+        else{
+          this.showEror('Ładowanie danych nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Ładowanie danych nie powiodło się!')
+      })
     },
-    loadMoreMessages(){
-
+    loadMessageTypes(){
+      this.getRequest('/message/types',
+      {},
+      (res)=>{
+        if(res.body.message_types !== null){
+          this.messageTypes = res.body.message_types
+        }
+        else{
+          this.showEror('Ładowanie danych nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Ładowanie danych nie powiodło się!')
+      })
+    },
+    loadMoreMessages(since){
+      this.getRequest('/messages/'+this.contactId+'/'+since+'/new',
+      {},
+      (res)=>{
+        if(res.body.messages !== null){
+          this.messages.push(res.body.messages)
+        }
+        else{
+          this.showEror('Ładowanie danych nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Ładowanie danych nie powiodło się!')
+      })
+    },
+    checkNewMessages(){
+      if(this.messages.length > 0 && this.loaded === true){
+        let lastMessage = this.messages[this.messages.length-1].id
+        this.getRequest('/messages/'+this.contactId+'/'+lastMessage, //todo: fix api path
+      {},
+      (res)=>{
+        if(res.body.new_messages === true){
+          this.loadMoreMessages(lastMessage)
+        }
+        else{
+          this.showEror('Ładowanie danych nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Ładowanie danych nie powiodło się!')
+      })
+      }
+    },
+    loadData(event){
+      event.target.complete()
     }
   },
   data() {
     return {
       contactId: -1,
+      messageTypes: ['TEXT', 'IMAGE'],
       messages: [],
+      ownInfo: {},
+      remoteInfo: {},
+      messageLoader: null,
+      loaded: false
     }
   },
-  components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent },
+  components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContentMessage },
   ionViewWillEnter(){
     this.secured()
-    this.loadInitalMessages()
+    this.messageLoader =  setInterval(
+        ()=>{
+          this.loadMoreMessages()
+        }, 500)
   },
+  ionViewWillLeave(){
+    clearInterval( this.messageLoader )
+  },
+  ngOnInit(){
+    this.secured()
+    this.contactId = this.$route.params.userId
+    this.ownInfo = await this.getmMyUserInfo()
+    this.remoteInfo = await this.getUserById(this.contactId)
+    this.loadInitalMessages()
+  }
 }
 </script>
 
 <style scoped>
-ion-card {
-  width: fit-content;
-}
-
-.message-own{
-float: right;
-}
-
-
 
 </style>

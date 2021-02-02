@@ -114,6 +114,38 @@ const app = createApp(App)
           duration: 1500
         })
       return toast.present();
+    },
+    async getmMyUserInfo(){
+      this.getRequest('/user',
+      {},
+      (res)=>{
+        if(res.body.current_user !== null){
+          return res.body.current_user
+        }
+        else{
+          this.showEror('Ładowanie danych nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Ładowanie danych nie powiodło się!')
+      })
+    },
+    async getUserById(id){
+      this.getRequest('/user/'+id,
+      {},
+      (res)=>{
+        if(res.body.user !== null){
+          return res.body.user
+        }
+        else{
+          this.showEror('Ładowanie danych nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Ładowanie danych nie powiodło się!')
+      })
     }
     },
 
