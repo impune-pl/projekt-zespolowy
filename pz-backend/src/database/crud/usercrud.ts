@@ -1,3 +1,4 @@
+import e = require("express");
 import User from "../../objects/user";
 import QueryData from "../querydata";
 import CRUD from "./crud";
@@ -94,6 +95,20 @@ export default class UserCRUD extends CRUD {
 		qd.text =
 			'SELECT id, "phoneNumber", email, "passwordHash", "lastLocation", "lastLocationTimestamp", "lastLoginTimestamp" FROM public."Users" WHERE "phoneNumber"=$1';
 		qd.values = [number];
+		return this.connection.execQuery(qd);
+		// return this.find('id="' + id + '"');
+		// let query = 'SELECT id, "phoneNumber", email, "passwordHash", "lastLocation", "lastLocationTimestamp", "lastLoginTimestamp" FROM public."Users";';
+		// return this.connection.execRawQuery(query);
+	}
+
+	selectEmailLike(email: string) {
+		/**
+		 * SELECT id, "phoneNumber", email, "passwordHash", "lastLocation", "lastLocationTimestamp", "lastLoginTimestamp" FROM public."Users";
+		 */
+		let qd = new QueryData();
+		qd.text =
+			'SELECT id, "phoneNumber", "email", "passwordHash", "lastLocation", "lastLocationTimestamp", "lastLoginTimestamp" FROM public."Users" WHERE "Users"."email" LIKE \'%\' || $1 || \'%\'';
+		qd.values = [email];
 		return this.connection.execQuery(qd);
 		// return this.find('id="' + id + '"');
 		// let query = 'SELECT id, "phoneNumber", email, "passwordHash", "lastLocation", "lastLocationTimestamp", "lastLoginTimestamp" FROM public."Users";';
