@@ -257,7 +257,7 @@ app.get("/message/:contact_id/:last_message_id/new", passport.authenticate("cust
 	}
 });
 
-app.get("/message/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/messages/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	// uh.getMessages();
 	let contact_id = request.params.contact_id;
 	if (contact_id && !isNaN(Number.parseInt(contact_id))) {
@@ -289,7 +289,7 @@ app.post("/message/:contact_id/send", passport.authenticate("custom"), (request:
 	let body = request.body,
 		contact_id = request.params.contact_id;
 	if (contact_id && body.content && body.type && !isNaN(Number.parseInt(contact_id))) {
-		uh.sendMessage((request.user as User).id, body.contact_id, body.content, body.type)
+		uh.sendMessage((request.user as User).id, Number.parseInt(contact_id), body.content, body.type)
 			.then((send) => {
 				response.send({ message_send: send });
 			})
