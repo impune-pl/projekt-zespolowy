@@ -79,6 +79,8 @@ export default class ContactsCRUD extends CRUD {
 		qd.text = 'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=$1';
 		qd.values = [id];
 
+		// console.log('SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=' + id);
+
 		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
 
 		// let query = 'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=' + id + ";";
