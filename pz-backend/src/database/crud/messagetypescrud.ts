@@ -39,8 +39,23 @@ export default class MessageTypesCRUD extends CRUD {
 		 */
 
 		let qd = new QueryData();
-		qd.text = 'SELECT id, type FROM public."MessageTypes" WHERE id=$2';
+		qd.text = 'SELECT id, type FROM public."MessageTypes" WHERE id=$1';
 		qd.values = [id];
+		return this.connection.execQuery(qd);
+
+		// return this.find('id="' + id + '"');
+		// let query = 'SELECT id, type FROM public."MessageTypes" WHERE id="' + id + '";';
+		// return this.connection.execRawQuery(query);
+	}
+
+	selectType(type: string) {
+		/**
+		 * SELECT id, type FROM public."MessageTypes";
+		 */
+
+		let qd = new QueryData();
+		qd.text = 'SELECT id, type FROM public."MessageTypes" WHERE type=$1';
+		qd.values = [type];
 		return this.connection.execQuery(qd);
 
 		// return this.find('id="' + id + '"');

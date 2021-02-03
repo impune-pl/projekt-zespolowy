@@ -9,9 +9,7 @@ export default class MessagesCRUD extends CRUD {
 		/**
 		 * INSERT INTO public."Messages"( id, "contactId", "typeId", content, "time") VALUES (?, ?, ?, ?, ?);
 		 */
-		let qd = new QueryData();
-		qd.text = 'INSERT INTO public."Messages"("contactId", "typeId", "content", "time") VALUES ($1, $2, $3, $4)';
-		qd.values = [message.contact_id, message.type, message.content, message.date];
+
 		// let query =
 		// 	'INSERT INTO public."Messages"("contactId", "typeId", "content", "time") VALUES (' +
 		// 	message.contact_id +
@@ -23,7 +21,23 @@ export default class MessagesCRUD extends CRUD {
 		// 	message.date +
 		// 	");";
 		// return this.connection.execRawQuery(query);
-		return this.connection.execQuery(qd);
+		return new Promise((resolve, reject) => {
+			this.connection.crud.message_types
+				.selectType(message.type)
+				.then((res: pg.QueryResult) => {
+					if (res.rowCount > 0) {
+						let qd = new QueryData();
+						qd.text = 'INSERT INTO public."Messages"("contactId", "typeId", "content", "time") VALUES ($1, $2, $3, $4)';
+						qd.values = [message.contact_id, res.rows[0].id, message.content, message.date];
+						resolve(this.connection.execQuery(qd));
+					} else {
+						reject("Wrong type");
+					}
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
 	}
 
 	update(message: Message) {

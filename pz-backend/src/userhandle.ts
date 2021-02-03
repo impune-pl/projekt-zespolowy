@@ -192,8 +192,8 @@ export default class UserHandle {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
 				.accept(contact_id)
-				.then(() => {
-					resolve(true);
+				.then((res: pg.QueryResult) => {
+					resolve(res.rowCount == 1);
 				})
 				.catch((err) => {
 					console.error({ accept_invitation: err });
@@ -206,8 +206,8 @@ export default class UserHandle {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
 				.dismiss(contact_id)
-				.then(() => {
-					resolve(true);
+				.then((res: pg.QueryResult) => {
+					resolve(res.rowCount == 1);
 				})
 				.catch((err) => {
 					console.error({ dismiss_invitation: err });
@@ -390,7 +390,7 @@ export default class UserHandle {
 								if (types.rowCount > 0) {
 									let flag = false;
 									types.rows.forEach((obj) => {
-										if (obj.id == type || obj.type == type) {
+										if (obj.type == type) {
 											flag = true;
 										}
 									});
