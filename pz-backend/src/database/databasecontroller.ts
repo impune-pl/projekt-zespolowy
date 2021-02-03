@@ -151,8 +151,8 @@ export default class DataBaseController extends DataBaseConnection {
 	addContact(contact: Contact) {
 		return this.crud.contacts.insert(contact);
 	}
-	getMessages(contact_id: number, from_id: number, how_many: number): Message[] {
-		return [];
+	getMessages(contact_id: number, from_id: number) {
+		return this.crud.message.selectAllForContactFromMessageId(contact_id, from_id);
 	}
 	getAllMessages(contact_id: number) {
 		return this.crud.message.selectAllForContact(contact_id);

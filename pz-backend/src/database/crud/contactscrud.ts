@@ -188,9 +188,23 @@ export default class ContactsCRUD extends CRUD {
 		return this.connection.execQuery(qd);
 	}
 
+	dismiss(id: number) {
+		let qd = new QueryData();
+		qd.text = 'DELETE FROM public."Contacts" WHERE "Contacts".id=$1 AND "Contacts"."isAccepted"=FALSE;';
+		qd.values = [id];
+		return this.connection.execQuery(qd);
+	}
+
 	blockUser(id: number) {
 		let qd = new QueryData();
 		qd.text = 'UPDATE public."Contacts" SET "isBlocked"=TRUE WHERE id=$1;';
+		qd.values = [id];
+		return this.connection.execQuery(qd);
+	}
+
+	unlockUser(id: number) {
+		let qd = new QueryData();
+		qd.text = 'UPDATE public."Contacts" SET "isBlocked"=FALSE WHERE id=$1;';
 		qd.values = [id];
 		return this.connection.execQuery(qd);
 	}
