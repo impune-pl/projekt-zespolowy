@@ -64,7 +64,7 @@ export default class MessagesCRUD extends CRUD {
 		 */
 
 		let qd = new QueryData();
-		qd.text = 'SELECT id, "contactId", "typeId", content, "time" FROM public."Messages" WHERE id=$1';
+		qd.text = 'SELECT * FROM public."Messages" WHERE "Messages".id=$1';
 		qd.values = [id];
 
 		return this.connection.execQuery(qd);
@@ -80,7 +80,7 @@ export default class MessagesCRUD extends CRUD {
 		 */
 
 		let qd = new QueryData();
-		qd.text = 'SELECT id, "contactId", "typeId", content, "time" FROM public."Messages" WHERE contactId=$1';
+		qd.text = 'SELECT id, "contactId", "typeId", content, "time" FROM public."Messages" WHERE "Messages"."contactId"=$1';
 		qd.values = [id];
 
 		return this.connection.execQuery(qd);
@@ -93,7 +93,7 @@ export default class MessagesCRUD extends CRUD {
 	selectAllForUsers(user_id: number, contact_id: number) {
 		let qd = new QueryData();
 		qd.text =
-			'SELECT "Messages".content as "content", "Messages".time as "sentAt", "Contacts"."userId" as "sender", "MessageTypes"."type"' +
+			'SELECT "Messages".id as id, "Messages".content as "content", "Messages".time as "sentAt", "Contacts"."userId" as "sender", "MessageTypes"."type"' +
 			'FROM "Messages", "Contacts", "MessageTypes" ' +
 			'WHERE  "Messages"."contactId" = "Contacts"."id" ' +
 			'AND "MessageTypes".id = "Messages"."typeId" ' +
@@ -131,10 +131,45 @@ export default class MessagesCRUD extends CRUD {
 	}
 
 	checkForNew(contact_id: number, last_id: number) {
+		// console.log(contact_id);
+		// return new Promise((resolve, reject) => {
+		// this.connection.crud.contacts
+		// .selectId(contact_id)
+		// .then((res: pg.QueryResult) => {
+		// console.log(res);
+		// if (res.rowCount > 0) {
+		// resolve(res.rows[0]);
 		let qd = new QueryData();
+		// qd.text =
+		// 'SELECT id, "contactId", "typeId", content, "time" FROM public."Messages" WHERE public."Messages".id>$1 AND public."Messages"."contactId"=$2;';
+
 		qd.text =
-			'SELECT id, "contactId", "typeId", content, "time" FROM public."Messages" WHERE public."Messages".id>$1 AND public."Messages"."contactId"=$2;';
+			'WITH new_messages AS ( SELECT "Messages".time FROM "Messages" WHERE "Messages".id=$1 ) ' +
+			"SELECT * " +
+			'FROM "Contacts" AS c1 ' +
+			'JOIN "Contacts" AS c2 ON c1."userId"=c2."contactId" AND c1."contactId" = c2."userId" ' +
+			'JOIN "Messages" AS m1 ON c1.id = m1."contactId" OR c2.id=m1."contactId" ' +
+			"WHERE m1.time > (SELECT new_messages.time FROM new_messages) AND (c1.id = $2 OR c2.id=$2)";
 		qd.values = [last_id, contact_id];
+
+		// qd.text =
+		// 	'SELECT "Messages".id ' +
+		// 	'FROM "Messages", "Contacts" ' +
+		// 	'WHERE  "Messages"."contactId" = "Contacts"."id" ' +
+		// 	'AND "Messages".id>$1 ' +
+		// 	'AND (("Contacts"."userId" = $2 AND "Contacts"."contactId"=$3) ' +
+		// 	'OR ("Contacts"."userId" = $3 AND "Contacts"."contactId"=$2)) ' +
+		// 	'ORDER BY "Messages".time';
+		// qd.values = [last_id, res.rows[0].userId, res.rows[0].contactId];
+		// resolve(this.connection.execQuery(qd));
+		// } else {
+		// reject("Contact does not exists");
+		// }
+		// })
+		// .catch((err) => {
+		// reject(err);
+		// });
+		// });
 		return this.connection.execQuery(qd);
 	}
 }
