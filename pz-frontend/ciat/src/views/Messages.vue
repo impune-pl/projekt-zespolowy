@@ -6,7 +6,7 @@
         <i class="far fa-comments fa-5x primary-color"></i>
       </ion-buttons>
       <ion-buttons slot="end">
-        <ion-button @click="location()" color="secondary">
+        <ion-button v-if="isLocationShared === true" @click="location()" color="secondary">
           <ion-icon name="locate-outline"></ion-icon>
         </ion-button>
         <i @click="openMenu()" class="fa fa-bars fa-3x primary-color" style="margin-right: .5em;margin-left: .5em;"></i>
@@ -38,7 +38,7 @@
 
      <ion-footer>
     <ion-toolbar>
-    <ion-textarea placeholder="Wpisz wiadomość" :value="messageContent"></ion-textarea>
+    <ion-textarea placeholder="Wpisz wiadomość" v-model="messageContent"></ion-textarea>
       <ion-button slot="end" @click="send()" color="primary">
           <ion-icon name="send-outline"></ion-icon>
         </ion-button>
@@ -130,11 +130,13 @@ export default  {
       event.target.complete()
     },
     send(){
-      console.log(this.messageContent)
-      /*
+        
       if(this.messageContent.length > 0){
         this.postRequest('/message/'+this.id+'/send',
-        {},
+        {
+          content: this.messageContent,
+          type: 'TEXT'
+        },
       (res)=>{
         if(res.data.message_send !== false && res.data.message_send !== null){
           this.checkNewMessages()
@@ -147,7 +149,22 @@ export default  {
         console.log(err)
         this.showEror('Wysyłanie nie powiodło się!')
       })
-      }*/
+      }
+    },
+    checkLocationShare(){
+      this.getRequest('/contacts',
+      (res)=>{
+        if(res.data.friends_list !== null){
+          res.data.friends_list.forEach((friend)=>{
+            if(friend.isAccepted === true && friend.contact.id == this.contactId){
+              this.isLocationShared = friend.isLocationShared
+            }
+          })
+        }
+      },
+      (err)=>{
+        console.log(err)
+      })
     }
   },
   data() {
@@ -160,19 +177,22 @@ export default  {
       remoteInfo: {},
       messageLoader: null,
       loaded: false,
-      messageContent: ''
+      messageContent: '',
+      isLocationShared: false,
     }
   },
   components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonInfiniteScroll, IonInfiniteScrollContent, Message },
   async ionViewWillEnter(){
     this.secured()
-    //this.messageContent = ''
+    this.messageContent = ''
     this.loaded = false
     this.id = this.$route.params.id
     this.contactId = this.$route.params.userId
     this.ownInfo = await this.getmMyUserInfo()
     this.remoteInfo = await this.getUserById(this.contactId)
+    this.loadMessageTypes()
     this.loadInitalMessages()
+    this.checkLocationShare()
     this.messageLoader =  setInterval(
         ()=>{
           this.checkNewMessages()

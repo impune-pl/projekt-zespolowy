@@ -15,6 +15,10 @@ const routes = [
     component: () => import('@/views/Messages.vue')
   },
   {
+    path: '/position/:id/:userId',
+    component: () => import('@/views/Position.vue')
+  },
+  {
     path: '/friends',
     component: () => import('@/views/Friends.vue')
   },
