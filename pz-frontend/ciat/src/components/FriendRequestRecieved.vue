@@ -7,7 +7,7 @@
       </ion-item>
       <ion-item-options side="end" >
         <ion-item-option color="success" @click='accept()'>Zaakceptuj</ion-item-option>
-        <ion-item-option color="warning" @click='reject()'>Usuń</ion-item-option>
+        <ion-item-option color="warning" @click='reject()'>Odrzuć</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
 </template>
@@ -19,6 +19,7 @@ export default {
   name: 'FriendRequestRecieved',
   props:{
     id: String,
+    contactId: String,
     email: String,
     phone: String,
   },
@@ -40,9 +41,8 @@ export default {
   methods:{
     accept(){
       this.getRequest('/contact/'+this.id+'/accept',
-      {},
       (res)=>{
-        if(res.body.contact_accept === true){
+        if(res.data.contact_accept === true){
           this.$emit("refresh")
           this.showToast('Zaakcetpowano '+this.email)
         }
@@ -56,7 +56,20 @@ export default {
       })
     },
     reject(){
-      this.$emit("refresh")
+      this.getRequest('/contact/dismiss/'+this.id,
+      (res)=>{
+        if(res.data.dismiss_invitation === true){
+          this.$emit("refresh")
+          this.showToast('Odrzucono '+this.email)
+        }
+        else{
+          this.showEror('Odrzucanie nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Odrzucanie nie powiodło się!')
+      })
     },
     async isOpen(id){
     let amount = await this.$refs[id].$el.getOpenAmount()

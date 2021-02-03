@@ -1,6 +1,6 @@
 <template>
   <ion-app>
-    <ion-menu side="end" type="overlay" menu-id="main-menu" content-id="main">
+    <ion-menu side="end" type="overlay" @ionWillOpen="loadUser()" menu-id="main-menu" content-id="main">
     <ion-header>
       <ion-toolbar color="primary">
         
@@ -8,6 +8,8 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <h3>Telefon: {{phone}}</h3>
+      <h4>Email: {{email}}</h4>
       <ion-list>
         <ion-item @click='pushTo("/friends")'>
         <ion-icon :icon="peopleOutline" />
@@ -58,6 +60,28 @@ export default defineComponent({
       peopleOutline,
     }
   },
+  data() {
+    return {
+      email: '',
+      phone: '',
+      user: null
+    }
+  },
+  methods:{
+    async loadUser(){
+      if(this.user !== null)
+        return
+      let user = await this.getmMyUserInfo()
+      if(user !== null){
+        this.user = user
+        this.email = user.email
+        this.phone = user.phoneNumber
+      }
+    }
+  },
+  async mounted(){
+    
+  }
 });
 </script>
 
@@ -76,4 +100,8 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
 }
+
+h3, h4 {
+  margin-left: .5em;
+} 
 </style>

@@ -7,8 +7,8 @@
       </ion-item>
       <ion-item-options side="end" >
         <ion-item-option color="danger" @click='block()'>{{ isBlocked ? 'Odblokuj': 'Zablokuj'}}</ion-item-option>
-        <ion-item-option color="secondary" @click='shareLocation()'>{{isLocationShared ? 'Udostępnij GPS': 'Zablokuj GPS'}}</ion-item-option>
-        <ion-item-option color="success" @click='showLocation()'>GPS</ion-item-option>
+        <ion-item-option color="secondary" @click='shareLocation()'>{{isLocationShared ? 'Zablokuj GPS': 'Udostępnij GPS'}}</ion-item-option>
+        <ion-item-option v-if="isLocationShared === true" color="success" @click='showLocation()'>GPS</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
 </template>
@@ -21,6 +21,7 @@ export default {
   name: 'Friend',
   props:{
     id: String,
+    contactId: String,
     email: String,
     phone: String,
     isBlocked: Boolean,
@@ -45,14 +46,26 @@ export default {
     block(){
       if(this.isBlocked === true){
         // unblock
-        
+        this.getRequest('/unlock/user/'+this.id,
+      (res)=>{
+        if(res.data.unlock_user === true){
+          this.$emit("refresh")
+          this.showToast('Odblokowano '+this.email)
+        }
+        else{
+          this.showEror('Odblokowanie nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Odblokowanie nie powiodło się!')
+      })
       }
       else{
         // block
-        this.postRequest('/block/user/'+this.id,
-      {},
+        this.getRequest('/block/user/'+this.id,
       (res)=>{
-        if(res.body.block_user === true){
+        if(res.data.block_user === true){
           this.$emit("refresh")
           this.showToast('Zablokowano '+this.email)
         }
@@ -69,10 +82,9 @@ export default {
     shareLocation(){
       if(this.isLocationShared === true){
         // location block
-        this.postRequest('/block/location/'+this.id,
-      {},
+        this.getRequest('/block/location/'+this.id,
       (res)=>{
-        if(res.body.disable_location === true){
+        if(res.data.disable_location === true){
           this.$emit("refresh")
           this.showToast('Wyłączono udostępnianie lokalizacji dla '+this.email)
         }
@@ -87,7 +99,20 @@ export default {
       }
       else{
         // share location
-        this.$emit("refresh")
+        this.getRequest('/unlock/location/'+this.id,
+      (res)=>{
+        if(res.data.enable_location === true){
+          this.$emit("refresh")
+          this.showToast('Włączono udostępnianie lokalizacji dla '+this.email)
+        }
+        else{
+          this.showEror('Włączenie lokalizacji nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Wyłączenie lokalizacji  nie powiodło się!')
+      })
       }
     },
     showLocation(){
@@ -95,7 +120,7 @@ export default {
     },
     async showConversation(){
       if(! await this.isOpen(this.id))
-        router.push({ path: '/messages/'+this.id })
+        router.push({ path: '/messages/'+this.id+'/'+this.contactId })
     },
     async isOpen(id){
     let amount = await this.$refs[id].$el.getOpenAmount()

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
 
-import { IonicVue, menuController, alertController } from '@ionic/vue';
+import { IonicVue, menuController, alertController, toastController } from '@ionic/vue';
 
 var axios = require('axios')
 
@@ -31,7 +31,7 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-    var apiUrl = 'http://192.168.1.64:4000'
+    var apiUrl = 'http://127.0.0.1:4000'
 
   app.mixin({
     methods:{
@@ -44,6 +44,8 @@ const app = createApp(App)
         router.push({ path: '/' })
       },
       getRequest(path, success, failure){
+        if(!this.isLoggedIn())
+        return
         axios.get(apiUrl+path,
         {
           headers: {"token": localStorage.token}
@@ -60,11 +62,11 @@ const app = createApp(App)
         });
       },
       postRequest(path, args, success, failure){
-        var headers = {}
+        var options = { headers: {}}
         if(this.isLoggedIn()){
-          headers.token = localStorage.token
+          options.headers.token = localStorage.token
         }
-        axios.post(apiUrl+path, args, headers)
+        axios.post(apiUrl+path, args, options)
         .then((response) =>{
           success(response)
         })
@@ -79,6 +81,7 @@ const app = createApp(App)
         localStorage.removeItem('token')
         menuController.close('main-menu')
         router.push({ path: '/unauth/login' })
+        window.location.reload()
       },
       openMenu(){
         this.secured()
@@ -101,7 +104,6 @@ const app = createApp(App)
       const alert = await alertController
         .create({
           header: 'Alert',
-          subHeader: 'Subtitle',
           message: message,
           buttons: ['OK'],
         });
@@ -116,36 +118,46 @@ const app = createApp(App)
       return toast.present();
     },
     async getmMyUserInfo(){
-      this.getRequest('/user',
-      {},
-      (res)=>{
-        if(res.body.current_user !== null){
-          return res.body.current_user
+      return new Promise(
+        (resolve, reject) => {
+          this.getRequest('/user',
+          (res)=>{
+            if(res.data.current_user !== null){
+              resolve(res.data.current_user)
+            }
+            else{
+              reject(null)
+              this.showEror('Ładowanie danych nie powiodło się!')
+            }
+          },
+          (err)=>{
+            console.log(err)
+            reject(null)
+            this.showEror('Ładowanie danych nie powiodło się!')
+          })
         }
-        else{
-          this.showEror('Ładowanie danych nie powiodło się!')
-        }
-      },
-      (err)=>{
-        console.log(err)
-        this.showEror('Ładowanie danych nie powiodło się!')
-      })
+      )
     },
     async getUserById(id){
-      this.getRequest('/user/'+id,
-      {},
-      (res)=>{
-        if(res.body.user_details !== null){
-          return res.body.user_details
+      return new Promise(
+        (resolve, reject) => {
+          this.getRequest('/user/'+id,
+          (res)=>{
+            if(res.data.user_details !== null){
+              resolve(res.data.user_details)
+            }
+            else{
+              reject(null)
+              this.showEror('Ładowanie danych nie powiodło się!')
+            }
+          },
+          (err)=>{
+            console.log(err)
+            reject(null)
+            this.showEror('Ładowanie danych nie powiodło się!')
+          })
         }
-        else{
-          this.showEror('Ładowanie danych nie powiodło się!')
-        }
-      },
-      (err)=>{
-        console.log(err)
-        this.showEror('Ładowanie danych nie powiodło się!')
-      })
+      )
     }
     },
 

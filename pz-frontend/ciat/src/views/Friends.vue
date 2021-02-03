@@ -26,12 +26,7 @@
   <ion-list-header>
     <ion-label>Twoi Znajomi</ion-label>
   </ion-list-header>
-    <friend v-for="friend in friends_list" :key="friend.id" :id="friend.id" :email="friend.contact.email" :phone="friend.contact.email" :isBlocked="friend.isBlocked" :isLocationShared="friend.isLocationShared"  @showConversation="showConversation"/>
-    <friend id="1" email="fsfsdf@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
-    <friend id="2" email="sdfsgdrhgr@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
-    <friend id="3" email="fh@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
-    <friend id="4" email="fhjjtyjtyju@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
-    <friend id="5" email="ghjddfth@exmaple.com" phone="+48 123 456 789" @showConversation="showConversation"/>
+    <friend v-for="friend in friends_list" :key="friend.id" :id="friend.id" :contactId="friend.contact.id" :email="friend.contact.email" :phone="friend.contact.phoneNumber" :isBlocked="friend.isBlocked" :isLocationShared="friend.isLocationShared"  @refresh="loadFriendsList()"/>
     
   </ion-list>
 
@@ -39,8 +34,7 @@
   <ion-list-header>
     <ion-label>Otrzymane zaproszenia</ion-label>
   </ion-list-header>
-    <friend-request-recieved id="6" email="fghfghfgh@exmaple.com" phone="+48 123 456 789"/>
-    <friend-request-recieved id="7" email="jghjfgsasdsdf@exmaple.com" phone="+48 123 456 789"/>
+    <friend-request-recieved v-for="request in requests_list" :key="request.id" :id="request.id" :contactId="request.contact.id" :email="request.contact.email" :phone="request.contact.phoneNumber" @refresh="loadFriendsList()" />
   </ion-list>
 
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
@@ -91,7 +85,6 @@ export default  {
     },
     loadFriendsList(){
       this.getRequest('/contacts',
-      {},
       (res)=>{
         this.friends_list = []
         this.requests_list = []
@@ -124,6 +117,7 @@ export default  {
  
   ionViewWillEnter(){
     this.secured()
+    this.loadFriendsList()
   },
   mounted(){
     this.secured()

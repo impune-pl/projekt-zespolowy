@@ -112,11 +112,13 @@ export default  {
       },
       (res)=>{
         if(res.data.register_successful === true){
+          this.showToast('Rejestracja udana!')
           router.push({ path: '/unauth/login' })
         }
       },
       (err)=>{
         console.log(err)
+        this.showToast('Błąd rejestracji!')
       }
       )
     },

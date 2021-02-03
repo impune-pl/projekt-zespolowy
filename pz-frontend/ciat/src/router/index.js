@@ -11,7 +11,7 @@ const routes = [
     redirect: '/friends'
   },
   {
-    path: '/messages/:userId',
+    path: '/messages/:id/:userId',
     component: () => import('@/views/Messages.vue')
   },
   {

@@ -6,7 +6,7 @@
         <ion-label position="fixed" @click='flipSlider(id)'><ion-icon :icon='icon' /></ion-label>
       </ion-item>
       <ion-item-options side="end" >
-        <ion-item-option color="success" @click='$emit("refresh")'>Zaproś</ion-item-option>
+        <ion-item-option color="success" @click='addFriend()'>Zaproś</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
 </template>
@@ -37,6 +37,23 @@ export default {
   },
   components: { IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon },
   methods:{
+    addFriend(){
+      this.postRequest('/contact/'+this.phone+'/new', 
+      {},
+      (res)=>{
+        if(res.data.new_contact === true){
+          this.$emit("refresh")
+          this.showToast('Dodano '+this.email)
+        }
+        else{
+          this.showEror('Dodawanie kontaktu nie powiodło się!')
+        }
+      },
+      (err)=>{
+        console.log(err)
+        this.showEror('Dodawanie kontaktu nie powiodło się!')
+      })
+    },
     async isOpen(id){
     let amount = await this.$refs[id].$el.getOpenAmount()
      if(amount > 0)
