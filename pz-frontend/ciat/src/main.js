@@ -135,8 +135,8 @@ const app = createApp(App)
       this.getRequest('/user/'+id,
       {},
       (res)=>{
-        if(res.body.user !== null){
-          return res.body.user
+        if(res.body.user_details !== null){
+          return res.body.user_details
         }
         else{
           this.showEror('Ładowanie danych nie powiodło się!')
