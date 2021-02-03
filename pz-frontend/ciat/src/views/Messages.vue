@@ -22,14 +22,14 @@
       </ion-header>
       
      
-<ion-infinite-scroll disabled="true" position="top" @ionInfinite="loadData($event)"  threshold="100px" id="infinite-scroll">
-        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Ładowanie wiadomości...">
+<ion-infinite-scroll disabled="true" position="top" @ionInfinite="loadData($event)"  threshold="100px" id="infinite-scroll" ref="infinite-scroll">
+        <ion-infinite-scroll-content ref="infinite-scroll-content" loading-spinner="bubbles" loading-text="Ładowanie wiadomości...">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
 <ion-list>
   
 
-  <message v-for="message in messages" :key="message.id" :content="message.content" :type="message.type" :id="message.id" :email="remoteInfo.email" :own="message.sender === this.ownInfo.id ? true : false"/>
+  <message v-for="message in messages" :ref="message.id" :key="message.id" :content="message.content" :type="message.type" :id="message.id" :email="remoteInfo.email" :own="message.sender === ownInfo.id ? true : false"/>
   
   </ion-list>
 
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+//:own="message.sender === this.ownInfo.id ? true : false"
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,  IonList,  IonIcon,  IonFooter, IonButton, IonTextarea,  IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue';
 import { sendOutline, locateOutline } from "ionicons/icons";
 import { addIcons } from "ionicons";
@@ -66,7 +67,10 @@ export default  {
       this.getRequest('/messages/'+this.id,
       (res)=>{
         if(res.data.messages !== null){
-          this.messages = res.data.messages
+          res.data.messages.forEach((mess)=>{
+              this.messages.unshift(mess)
+          })
+          this.scrollToLast()      
           this.loaded = true
         }
         else{
@@ -77,6 +81,11 @@ export default  {
         console.log(err)
         this.showEror('Ładowanie danych nie powiodło się!')
       })
+    },
+    scrollToLast(){
+      setTimeout(()=>{
+        this.$refs[this.messages[this.messages.length-1].id].$el.scrollIntoView()
+      },200)
     },
     loadMessageTypes(){
       this.getRequest('/message/types',
@@ -97,7 +106,11 @@ export default  {
       this.getRequest('/messages/'+this.id+'/'+since,
       (res)=>{
         if(res.data.messages !== null && res.data.messages !== false){
-          this.messages.push(res.data.messages)
+          res.data.messages.forEach((mess)=>{
+            if(this.messages[this.messages.length-1].id !== mess.id)
+              this.messages.push(mess)
+          })
+          this.scrollToLast()
         }
         else{
           this.showEror('Ładowanie danych nie powiodło się!')
@@ -111,18 +124,16 @@ export default  {
     checkNewMessages(){
       if(this.messages.length > 0 && this.loaded === true){
         let lastMessage = this.messages[this.messages.length-1].id
-        this.getRequest('/messages/'+this.id+'/'+lastMessage+'/new',
+        this.getRequest('/message/'+this.id+'/'+lastMessage+'/new',
       (res)=>{
         if(res.data.new_messages === true){
           this.loadMoreMessages(lastMessage)
-        }
-        else{
-          this.showEror('Ładowanie danych nie powiodło się!')
         }
       },
       (err)=>{
         console.log(err)
         this.showEror('Ładowanie danych nie powiodło się!')
+        this.stopMessageCheck()
       })
       }
     },
@@ -130,8 +141,8 @@ export default  {
       event.target.complete()
     },
     send(){
-        
       if(this.messageContent.length > 0){
+        this.isSending = true
         this.postRequest('/message/'+this.id+'/send',
         {
           content: this.messageContent,
@@ -139,15 +150,19 @@ export default  {
         },
       (res)=>{
         if(res.data.message_send !== false && res.data.message_send !== null){
+          this.messageContent = ''
           this.checkNewMessages()
+          this.isSending = false
         }
         else{
           this.showEror('Wysyłanie nie powiodło się!')
+          this.isSending = false
         }
       },
       (err)=>{
         console.log(err)
         this.showEror('Wysyłanie nie powiodło się!')
+        this.isSending = false
       })
       }
     },
@@ -165,6 +180,9 @@ export default  {
       (err)=>{
         console.log(err)
       })
+    },
+    stopMessageCheck(){
+      clearInterval( this.messageLoader )
     }
   },
   data() {
@@ -179,6 +197,7 @@ export default  {
       loaded: false,
       messageContent: '',
       isLocationShared: false,
+      isSending: false
     }
   },
   components: {  IonHeader, IonToolbar, IonTitle, IonContent, IonPage,  IonButtons, IonList,  IonIcon, IonFooter, IonButton, IonTextarea, IonInfiniteScroll, IonInfiniteScrollContent, Message },
@@ -190,16 +209,18 @@ export default  {
     this.contactId = this.$route.params.userId
     this.ownInfo = await this.getmMyUserInfo()
     this.remoteInfo = await this.getUserById(this.contactId)
-    this.loadMessageTypes()
+    //this.loadMessageTypes()
     this.loadInitalMessages()
     this.checkLocationShare()
     this.messageLoader =  setInterval(
         ()=>{
-          this.checkNewMessages()
-        }, 500)
+          if(!this.isSending){
+            this.checkNewMessages()
+          }
+        }, 2000)
   },
   ionViewWillLeave(){
-    clearInterval( this.messageLoader )
+    this.stopMessageCheck()
   }
 }
 

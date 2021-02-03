@@ -36,7 +36,7 @@ export default {
   components: { IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonImg},
   methods:{
   }
-}
+}//float: right;
 </script>
 
 <style scoped>
@@ -44,8 +44,13 @@ export default {
 ion-card {
   width: fit-content;
 }
-
+.message-remote{
+  min-width: 50%;
+}
 .message-own{
+background-color: var(--ion-color-secondary-shade);
+color: white;
+min-width: 50%;
 float: right;
 }
 
