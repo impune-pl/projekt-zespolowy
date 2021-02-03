@@ -104,6 +104,21 @@ export default class MessagesCRUD extends CRUD {
 		return this.connection.execQuery(qd);
 	}
 
+	selectAllForUsersFromMessageId(user_id: number, contact_id: number, message_id: number) {
+		let qd = new QueryData();
+		qd.text =
+			'SELECT "Messages".id as id, "Messages".content as "content", "Messages".time as "sentAt", "Contacts"."userId" as "sender", "MessageTypes"."type"' +
+			'FROM "Messages", "Contacts", "MessageTypes" ' +
+			'WHERE  "Messages"."contactId" = "Contacts"."id" ' +
+			'AND "MessageTypes".id = "Messages"."typeId" ' +
+			'AND "Messages".id > $3 ' +
+			'AND (("Contacts"."userId" = $1 AND "Contacts"."contactId"=$2) ' +
+			'OR ("Contacts"."userId" = $2 AND "Contacts"."contactId"=$1)) ' +
+			'ORDER BY "Messages".time DESC';
+		qd.values = [user_id, contact_id, message_id];
+		return this.connection.execQuery(qd);
+	}
+
 	selectAllForContact(id: number) {
 		return new Promise((resolve, reject) => {
 			this.connection.crud.contacts
@@ -112,6 +127,24 @@ export default class MessagesCRUD extends CRUD {
 					if (contact.rowCount === 1) {
 						let con = contact.rows[0] as Contact;
 						resolve(this.selectAllForUsers(con.userId, con.contactId));
+					} else {
+						reject("Wrong contact id");
+					}
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
+	}
+
+	selectAllForContactFromMessageId(contact_id: number, message_id: number) {
+		return new Promise((resolve, reject) => {
+			this.connection.crud.contacts
+				.selectId(contact_id)
+				.then((contact: pg.QueryResult) => {
+					if (contact.rowCount === 1) {
+						let con = contact.rows[0] as Contact;
+						resolve(this.selectAllForUsersFromMessageId(con.userId, con.contactId, message_id));
 					} else {
 						reject("Wrong contact id");
 					}

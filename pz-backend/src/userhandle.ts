@@ -111,6 +111,31 @@ export default class UserHandle {
 		});
 	}
 
+	getUserData(user_id: number) {
+		return new Promise((resolve, reject) => {
+			// if(this.findContact())
+			this.db.crud.user
+				.select(user_id)
+				// .selectContactUserIDContactNumber(id, number)
+				.then((res: pg.QueryResult) => {
+					// console.log(res);
+					if (res.rowCount > 0) {
+						let user = new User();
+						user.email = res.rows[0].email;
+						user.phoneNumber = res.rows[0].phoneNumber;
+						user.id = res.rows[0].id;
+						resolve(user);
+					} else {
+						resolve(false);
+					}
+				})
+				.catch((err) => {
+					console.error({ add_contact: err });
+					reject(err);
+				});
+		});
+	}
+
 	addContact(id: number, number: number) {
 		return new Promise((resolve, reject) => {
 			// if(this.findContact())
@@ -171,7 +196,21 @@ export default class UserHandle {
 					resolve(true);
 				})
 				.catch((err) => {
-					console.error({ acceptInvitation: err });
+					console.error({ accept_invitation: err });
+					reject(err);
+				});
+		});
+	}
+
+	dismissInvitation(contact_id: number) {
+		return new Promise((resolve, reject) => {
+			this.db.crud.contacts
+				.dismiss(contact_id)
+				.then(() => {
+					resolve(true);
+				})
+				.catch((err) => {
+					console.error({ dismiss_invitation: err });
 					reject(err);
 				});
 		});
@@ -212,7 +251,7 @@ export default class UserHandle {
 					resolve(cts);
 				})
 				.catch((err) => {
-					console.error({ getFriendsList: err });
+					console.error({ get_friends_list: err });
 					reject(err);
 				});
 		});
@@ -391,8 +430,18 @@ export default class UserHandle {
 		return this.db.checkForNewMessages(contact_id, last_message_id);
 	}
 
-	getMessages(contact_id: number, from_id: number, how_many: number): Message[] {
-		return this.db.getMessages(contact_id, from_id, how_many);
+	getMessages(contact_id: number, from_id: number) {
+		return new Promise((resolve, reject) => {
+			this.db
+				.getMessages(contact_id, from_id)
+				.then((messages: pg.QueryResult) => {
+					// console.log({ messages, rows: messages.rows });
+					resolve(messages.rows);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
 	}
 
 	getAllMessages(contact_id: number) {
@@ -423,6 +472,21 @@ export default class UserHandle {
 		});
 	}
 
+	unlockUser(contact_id: number) {
+		return new Promise((resolve, reject) => {
+			this.db.crud.contacts
+				.unlockUser(contact_id)
+				.then((contact: pg.QueryResult) => {
+					// console.log({ contact });
+
+					resolve(true);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
+	}
+
 	blockUser(contact_id: number) {
 		return new Promise((resolve, reject) => {
 			this.db.crud.contacts
@@ -444,7 +508,43 @@ export default class UserHandle {
 				// .find("phoneNumber=" + number + " ")
 				.then((user: pg.QueryResult) => {
 					// console.log({ user });
-					resolve(user.rowCount > 0);
+					if (user.rowCount > 0) {
+						let usr = new User();
+						usr.id = user.rows[0].id;
+						usr.phoneNumber = user.rows[0].phoneNumber;
+						usr.email = user.rows[0].email;
+						resolve(usr);
+					} else {
+						resolve(false);
+					}
+				})
+				.catch((err) => {
+					console.error({ find_contact: err });
+					reject(err);
+				});
+		});
+	}
+
+	findContactcViaEmail(email: string) {
+		return new Promise((resolve, reject) => {
+			this.db.crud.user
+				.selectEmailLike(email)
+				// .find("phoneNumber=" + number + " ")
+				.then((users: pg.QueryResult) => {
+					if (users.rowCount > 0) {
+						let users_array: User[] = [];
+						users.rows.forEach((usr: User) => {
+							let user = new User();
+							user.id = usr.id;
+							user.phoneNumber = usr.phoneNumber;
+							user.email = usr.email;
+							users_array.push(user);
+						});
+						resolve(users_array);
+					} else {
+						resolve(false);
+					}
+					// console.log({ user });
 				})
 				.catch((err) => {
 					console.error({ find_contact: err });

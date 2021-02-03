@@ -168,6 +168,22 @@ app.get("/user", passport.authenticate("custom"), (request: express.Request, res
 	}
 });
 
+app.get("/user/:id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	// uh.getFriendsList(request.user.id);
+	let user_id = request.params.id;
+	if (user_id && !isNaN(Number.parseInt(user_id))) {
+		uh.getUserData(Number.parseInt(user_id))
+			.then((user) => {
+				response.send({ user_details: user });
+			})
+			.catch((err) => {
+				response.send({ user_details: err });
+			});
+	} else {
+		response.send({ user_details: null });
+	}
+});
+
 // CONTACTS
 
 app.get("/contacts", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
@@ -218,7 +234,7 @@ app.post("/contact/:number/new", passport.authenticate("custom"), (request: expr
 	}
 });
 
-app.get("/contact/:number/find", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/contact/find/number/:number", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let number = request.params.number;
 	if (number && !isNaN(Number.parseInt(number))) {
 		if ((request.user as User).phoneNumber === Number.parseInt(number)) {
@@ -235,6 +251,42 @@ app.get("/contact/:number/find", passport.authenticate("custom"), (request: expr
 		}
 	} else {
 		response.send({ find_contact: false });
+	}
+});
+
+app.get("/contact/find/email/:email", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	let email = request.params.email;
+	if (email) {
+		if ((request.user as User).email === email) {
+			response.send({ find_contact: false });
+		} else {
+			uh.findContactcViaEmail(email)
+				.then((exists) => {
+					response.send({ find_contact: exists });
+				})
+				.catch((err) => {
+					console.error({ find_contact: err });
+					response.send({ find_contact: false });
+				});
+		}
+	} else {
+		response.send({ find_contact: false });
+	}
+});
+
+app.get("/contact/dismiss/:id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	let id = request.params.id;
+	if (id && !isNaN(Number.parseInt(id))) {
+		uh.dismissInvitation(Number.parseInt(id))
+			.then(() => {
+				response.send({ dismiss_invitation: true });
+			})
+			.catch((err) => {
+				console.error({ dismiss_invitation: err });
+				response.send({ dismiss_invitation: false });
+			});
+	} else {
+		response.send({ dismiss_invitation: false });
 	}
 });
 
@@ -262,6 +314,24 @@ app.get("/messages/:contact_id", passport.authenticate("custom"), (request: expr
 	let contact_id = request.params.contact_id;
 	if (contact_id && !isNaN(Number.parseInt(contact_id))) {
 		uh.getAllMessages(Number.parseInt(contact_id))
+			.then((messages) => {
+				response.send({ messages });
+			})
+			.catch((err) => {
+				console.error({ messages: err });
+				response.send({ messages: null });
+			});
+	} else {
+		response.send({ messages: null });
+	}
+});
+
+app.get("/messages/:contact_id/:last_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	// uh.getMessages();
+	let contact_id = request.params.contact_id,
+		last_id = request.params.last_id;
+	if (contact_id && !isNaN(Number.parseInt(contact_id)) && last_id && !isNaN(Number.parseInt(last_id))) {
+		uh.getMessages(Number.parseInt(contact_id), Number.parseInt(last_id))
 			.then((messages) => {
 				response.send({ messages });
 			})
@@ -304,7 +374,7 @@ app.post("/message/:contact_id/send", passport.authenticate("custom"), (request:
 
 // BLOCK USER
 
-app.post("/block/user/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/block/user/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let contact_id = request.params.contact_id;
 	if (contact_id && !isNaN(Number.parseInt(contact_id))) {
 		uh.blockUser(Number.parseInt(contact_id));
@@ -314,9 +384,19 @@ app.post("/block/user/:contact_id", passport.authenticate("custom"), (request: e
 	}
 });
 
+app.get("/unlock/user/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	let contact_id = request.params.contact_id;
+	if (contact_id && !isNaN(Number.parseInt(contact_id))) {
+		uh.unlockUser(Number.parseInt(contact_id));
+		response.send({ unlock_user: true });
+	} else {
+		response.send({ unlock_user: false });
+	}
+});
+
 // BLOCK LOCATION
 
-app.post("/block/location/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/block/location/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let contact_id = request.params.contact_id;
 	if (contact_id && !isNaN(Number.parseInt(contact_id))) {
 		uh.disableLocation(Number.parseInt(contact_id));
@@ -326,19 +406,19 @@ app.post("/block/location/:contact_id", passport.authenticate("custom"), (reques
 	}
 });
 
-app.post("/unlock/location/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/unlock/location/:contact_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let contact_id = request.params.contact_id;
 	if (contact_id && !isNaN(Number.parseInt(contact_id))) {
 		uh.enableLocation(Number.parseInt(contact_id));
-		response.send({ disable_location: true });
+		response.send({ enable_location: true });
 	} else {
-		response.send({ disable_location: false });
+		response.send({ enable_location: false });
 	}
 });
 
 // LOCATION
 
-app.post("/location/:location", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.get("/location/:location", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let location = request.params.location;
 	// console.log({ request });
 	if (location) {
