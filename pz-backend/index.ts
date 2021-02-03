@@ -217,7 +217,7 @@ app.get("/contact/:id/accept", passport.authenticate("custom"), (request: expres
 app.post("/contact/:number/new", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	let number = request.params.number;
 	if (number && !isNaN(Number.parseInt(number))) {
-		if ((request.user as User).phoneNumber === Number.parseInt(number)) {
+		if ((request.user as User).phoneNumber == Number.parseInt(number)) {
 			response.send({ new_contact: false });
 		} else {
 			uh.addContact((request.user as User).id, Number.parseInt(number))
