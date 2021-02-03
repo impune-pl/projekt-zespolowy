@@ -390,7 +390,7 @@ export default class UserHandle {
 								if (types.rowCount > 0) {
 									let flag = false;
 									types.rows.forEach((obj) => {
-										if (obj.id == type || obj.type == type) {
+										if (obj.type == type) {
 											flag = true;
 										}
 									});
