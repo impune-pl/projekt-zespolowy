@@ -167,13 +167,12 @@ export default  {
       }
     },
     checkLocationShare(){
-      this.getRequest('/contacts',
+      this.getRequest('/contact/details/'+this.contactId,
       (res)=>{
-        if(res.data.friends_list !== null){
-          res.data.friends_list.forEach((friend)=>{
-            if(friend.isAccepted === true && friend.contact.id == this.contactId){
-              this.isLocationShared = friend.isLocationShared
-            }
+        if(res.data.contact_pair !== null && res.data.contact_pair !== false){
+          res.data.contact_pair.forEach((contact)=>{
+            if(contact.userId === this.contactId)
+              this.isLocationShared = contact.isLocationShared
           })
         }
       },

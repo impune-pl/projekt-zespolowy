@@ -64,7 +64,9 @@ export default defineComponent({
     return {
       email: '',
       phone: '',
-      user: null
+      user: null,
+      locationUpdater: null,
+      permissionGranted: false
     }
   },
   methods:{
@@ -81,6 +83,16 @@ export default defineComponent({
   },
   async mounted(){
     
+  },
+  ionViewWillEnter(){
+    this.locationUpdater = setInterval(
+        ()=>{
+            this.updateLocation()
+        }, 10000)
+  },
+  ionViewWillLeave(){
+    if(this.locationUpdater !== null)
+      clearInterval( this.locationUpdater )
   }
 });
 </script>

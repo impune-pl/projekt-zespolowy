@@ -8,7 +8,7 @@
       <ion-item-options side="end" >
         <ion-item-option color="danger" @click='block()'>{{ isBlocked ? 'Odblokuj': 'Zablokuj'}}</ion-item-option>
         <ion-item-option color="secondary" @click='shareLocation()'>{{isLocationShared ? 'Zablokuj GPS': 'Udostępnij GPS'}}</ion-item-option>
-        <ion-item-option v-if="isLocationShared === true" color="success" @click='showLocation()'>GPS</ion-item-option>
+        <ion-item-option v-if="isSharingLocation === true" color="success" @click='showLocation()'>GPS</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
 </template>
@@ -38,10 +38,17 @@ export default {
   },
   data() {
     return {
-      icon: chevronBackOutline
+      icon: chevronBackOutline,
+      isSharingLocation: false
     }
   },
   components: { IonItem, IonItemSliding, IonItemOptions, IonItemOption, IonLabel, IonIcon },
+  mounted(){
+    this.checkLocationShare()
+  },
+  updated(){
+this.checkLocationShare()
+  },
   methods:{
     block(){
       if(this.isBlocked === true){
@@ -114,6 +121,20 @@ export default {
         this.showEror('Wyłączenie lokalizacji  nie powiodło się!')
       })
       }
+    },
+    checkLocationShare(){
+      this.getRequest('/contact/details/'+this.contactId,
+      (res)=>{
+        if(res.data.contact_pair !== null && res.data.contact_pair !== false){
+          res.data.contact_pair.forEach((contact)=>{
+            if(contact.userId === this.contactId)
+              this.isSharingLocation = contact.isLocationShared
+          })
+        }
+      },
+      (err)=>{
+        console.log(err)
+      })
     },
     showLocation(){
       // show location on gmaps
