@@ -294,43 +294,56 @@ export default class UserHandle {
 					if (cont.rowCount > 0) {
 						let contact = cont.rows[0] as Contact;
 						if (contact.userId !== user_id) resolve(false);
-						let can = this.isUserBlocekd(contact.contactId, contact.userId);
-						if (can) {
-							this.db.getMessageTypes().then((types: MessageTypes[]) => {
-								if (types.length > 0) {
-									let flag = false;
-									types.forEach((obj) => {
-										if (obj.type == type) {
-											flag = true;
+						this.isUserBlocekd(contact.contactId, contact.userId)
+							.then((blocked1: boolean) => {
+								this.isUserBlocekd(contact.userId, contact.contactId)
+									.then((blocked2: boolean) => {
+										if (!blocked1 && !blocked2) {
+											this.db.getMessageTypes().then((types: MessageTypes[]) => {
+												if (types.length > 0) {
+													let flag = false;
+													types.forEach((obj) => {
+														if (obj.type == type) {
+															flag = true;
+														}
+													});
+													if (flag) {
+														let mess = new Message();
+														mess.contact_id = contact_id;
+														mess.content = message;
+														mess.type = type;
+														mess.date = new Date();
+														this.db
+															.addMessage(mess)
+															.then(() => resolve(true))
+															.catch((err) => reject(err));
+													} else {
+														reject("Wrong type");
+													}
+												} else {
+													reject("Types check error");
+												}
+											});
+										} else {
+											reject("User is blocked");
 										}
+									})
+									.catch((err) => {
+										console.error({ sendMessage: err });
+										reject(err);
 									});
-									if (flag) {
-										let mess = new Message();
-										mess.contact_id = contact_id;
-										mess.content = message;
-										mess.type = type;
-										mess.date = new Date();
-										this.db
-											.addMessage(mess)
-											.then(() => resolve(true))
-											.catch((err) => reject(err));
-									} else {
-										reject("Wrong type");
-									}
-								} else {
-									reject("Types check error");
-								}
+							})
+							.catch((err) => {
+								console.error({ sendMessage: err });
+								reject(err);
 							});
-						} else {
-							reject("User is blocked");
-						}
 					} else {
 						reject("Contact does not exists");
 					}
 				})
 				.catch((err) => {
-					reject(err);
 					console.error({ sendMessage: err });
+					reject(err);
 				});
 		});
 	}
