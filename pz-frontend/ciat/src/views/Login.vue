@@ -25,8 +25,8 @@
       </ion-col>
       <ion-col size="6" size-lg>
         <ion-item>
-    <ion-label position="floating">E-mail</ion-label>
-    <ion-input type="email"></ion-input>
+    <ion-label  position="floating">Nr. Telefonu</ion-label>
+    <ion-input v-model="phone" type="tel"></ion-input>
   </ion-item>
       </ion-col>
       <ion-col size="3" size-lg>
@@ -39,7 +39,7 @@
 <ion-col  size="6" size-lg>
   <ion-item>
     <ion-label position="floating">Hasło</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input v-model="password" type="password"></ion-input>
   </ion-item>
   </ion-col>
   <ion-col size="3" size-lg>
@@ -49,7 +49,7 @@
   <ion-col size="3" size-lg>
       </ion-col>
 <ion-col  size="6" size-lg>
-        <ion-button expand="block">Login</ion-button>
+        <ion-button @click="login()" expand="block">Login</ion-button>
   </ion-col>
   <ion-col size="3" size-lg>
       </ion-col>
@@ -61,12 +61,36 @@
 </template>
 
 <script>
+import router from '../router'
 import { IonPage, IonHeader, IonToolbar, IonTitle, 
 IonContent, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton} from '@ionic/vue';
 
 export default  {
-  name: 'Tab1',
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton }
+  
+  name: 'Login',
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonItem, IonLabel, IonInput, IonGrid, IonRow, IonCol, IonButtons, IonButton },
+  data:() =>({
+    phone: '',
+    password: '',
+  }),
+  methods:{
+    login(){
+      this.postRequest('/login',
+      {
+        number: this.phone,
+        password: this.password 
+      },
+      (res)=>{
+        if(res.data.login_successful === true){
+          localStorage.token = res.data.token
+          router.push({ path: '/' })
+        }
+      },
+      (err)=>{
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 
