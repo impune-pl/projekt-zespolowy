@@ -553,6 +553,22 @@ export default class UserHandle {
 		});
 	}
 
+	getContactPair(user_id: number, contact_id: number) {
+		console.log({ user_id, contact_id });
+		return new Promise((resolve, reject) => {
+			this.db.crud.contacts
+				.selectPairByUsersId(user_id, contact_id)
+				// .find("phoneNumber=" + number + " ")
+				.then((pair: pg.QueryResult) => {
+					resolve(pair.rows);
+				})
+				.catch((err) => {
+					console.error({ contact_pair: err });
+					reject(err);
+				});
+		});
+	}
+
 	createToken(user: User): Token {
 		let token = new Token();
 		token.expirationTimestamp = new Date();

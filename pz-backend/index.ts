@@ -290,6 +290,22 @@ app.get("/contact/dismiss/:id", passport.authenticate("custom"), (request: expre
 	}
 });
 
+app.get("/contact/details/:contact_user_id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	let id = request.params.contact_user_id;
+	if (id && !isNaN(Number.parseInt(id)) && (request.user as User).id != Number.parseInt(id)) {
+		uh.getContactPair((request.user as User).id, Number.parseInt(id))
+			.then((res) => {
+				response.send({ contact_pair: res });
+			})
+			.catch((err) => {
+				console.error({ contact_pair: err });
+				response.send({ contact_pair: false });
+			});
+	} else {
+		response.send({ contact_pair: false });
+	}
+});
+
 // MESSAGE
 
 app.get("/message/:contact_id/:last_message_id/new", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {

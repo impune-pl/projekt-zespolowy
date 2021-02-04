@@ -87,6 +87,24 @@ export default class ContactsCRUD extends CRUD {
 		// return this.connection.execRawQuery(query);
 	}
 
+	selectPairByUsersId(user_id: number, contact_id: number) {
+		/**
+		 * SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts";
+		 */
+
+		let qd = new QueryData();
+		qd.text =
+			'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE ("Contacts"."userId"=$1 AND "Contacts"."contactId"=$2) OR ("Contacts"."userId"=$2 AND "Contacts"."contactId"=$1)';
+		qd.values = [user_id, contact_id];
+
+		// console.log('SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=' + id);
+
+		return this.connection.execQuery(qd); //this.find('id="' + id + '"');
+
+		// let query = 'SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts" WHERE id=' + id + ";";
+		// return this.connection.execRawQuery(query);
+	}
+
 	selectUserId(user_id: number) {
 		/**
 		 * SELECT id, "userId", "contactId", "isLocationShared", "isBlocked", "isAccepted" FROM public."Contacts";
