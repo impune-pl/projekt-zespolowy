@@ -5,8 +5,7 @@ import Token from "./objects/token";
 import User from "./objects/user";
 import crypto = require("crypto");
 import * as pg from "pg";
-import DetiledContact from "./objects/detiledcontact";
-import e = require("express");
+import MessageTypes from "./objects/messagetypes";
 
 export default class UserHandle {
 	db: DataBaseController;
@@ -16,23 +15,31 @@ export default class UserHandle {
 		this.db.connect();
 	}
 
+	// LOGIN
+
 	login(number: number, password: string) {
 		return new Promise((resolve, reject) => {
 			this.db
 				.checkLoginData(number, this.generateHash(password))
 				.then((loggedin) => {
 					if (loggedin) {
-						this.db.crud.user
-							.selectNumber(number.toString())
+						this.db
+							.getUserByNumber(number)
 							.then((result: pg.QueryResult) => {
 								if (result.rowCount > 0) {
 									let user = result.rows[0];
 									let token = this.createToken(user);
-									this.db.crud.token.insert(token);
-									this.db.crud.token
-										.check()
+									this.db
+										.insertToken(token)
 										.then(() => {
-											resolve(token.token);
+											this.db
+												.checkTokens()
+												.then(() => {
+													resolve(token.token);
+												})
+												.catch((err) => {
+													reject(err);
+												});
 										})
 										.catch((err) => {
 											reject(err);
@@ -53,14 +60,13 @@ export default class UserHandle {
 				});
 		});
 	}
-
 	loginGetUser(number: number, password: string) {
 		return new Promise((resolve, reject) => {
 			this.db
 				.checkLoginData(number, this.generateHash(password))
 				.then((loggedin) => {
 					if (loggedin) {
-						this.db.crud.user.selectNumber(number.toString()).then((result: pg.QueryResult) => {
+						this.db.getUserByNumber(number).then((result: pg.QueryResult) => {
 							if (result.rowCount > 0) {
 								resolve(result.rows[0]);
 							} else {
@@ -76,10 +82,11 @@ export default class UserHandle {
 				});
 		});
 	}
-
 	loginWithToken(token: string) {
 		return this.db.checkLoginDataWithToken(token);
 	}
+
+	// REGISTER
 
 	register(number: number, email: string, password: string) {
 		return new Promise((resolve, reject) => {
@@ -111,40 +118,50 @@ export default class UserHandle {
 		});
 	}
 
+	// LOGOUT
+
+	logout(old_token: string) {
+		this.db.removeToken(old_token);
+	}
+
+	// USER
+
 	getUserData(user_id: number) {
-		return new Promise((resolve, reject) => {
-			// if(this.findContact())
-			this.db.crud.user
-				.select(user_id)
-				// .selectContactUserIDContactNumber(id, number)
-				.then((res: pg.QueryResult) => {
-					// console.log(res);
-					if (res.rowCount > 0) {
-						let user = new User();
-						user.email = res.rows[0].email;
-						user.phoneNumber = res.rows[0].phoneNumber;
-						user.id = res.rows[0].id;
-						resolve(user);
-					} else {
-						resolve(false);
-					}
-				})
-				.catch((err) => {
-					console.error({ add_contact: err });
-					reject(err);
-				});
-		});
+		return this.db.getUserData(user_id);
+	}
+
+	getFriendsList(id: number) {
+		return this.db.getFriendsList(id);
+	}
+
+	// CONTACT
+
+	unlockUser(contact_id: number) {
+		return this.db.unlockUser(contact_id);
+	}
+
+	blockUser(contact_id: number) {
+		return this.db.blockUser(contact_id);
+	}
+
+	findContact(number: number) {
+		return this.db.findContactByNumber(number);
+	}
+
+	findContactcViaEmail(email: string) {
+		return this.db.findContactByMail(email);
+	}
+
+	getContactPair(user_id: number, contact_id: number) {
+		return this.db.getContactPair(user_id, contact_id);
 	}
 
 	addContact(id: number, number: number) {
 		return new Promise((resolve, reject) => {
-			// if(this.findContact())
-			this.db.crud.contacts
-				.selectContactUserNumberContactID(number, id)
-				// .selectContactUserIDContactNumber(id, number)
-				.then((res: pg.QueryResult) => {
-					// console.log(res);
-					if (res.rowCount > 0) {
+			this.db
+				.checkIfInvitationExists(number, id)
+				.then((res: boolean) => {
+					if (res) {
 						resolve(false);
 					} else {
 						let contact = new Contact();
@@ -184,77 +201,12 @@ export default class UserHandle {
 		});
 	}
 
-	// getInvitationsList(id: number): Contact[] {
-	// 	return [];
-	// }
-
 	acceptInvitation(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.accept(contact_id)
-				.then((res: pg.QueryResult) => {
-					resolve(res.rowCount == 1);
-				})
-				.catch((err) => {
-					console.error({ accept_invitation: err });
-					reject(err);
-				});
-		});
+		return this.db.acceptInvitation(contact_id);
 	}
 
 	dismissInvitation(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.dismiss(contact_id)
-				.then((res: pg.QueryResult) => {
-					resolve(res.rowCount == 1);
-				})
-				.catch((err) => {
-					console.error({ dismiss_invitation: err });
-					reject(err);
-				});
-		});
-	}
-
-	getFriendsList(id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.selectUserIdDetiled(id)
-				// .find("userId=" + id + " ")
-				.then((contacts: pg.QueryResult) => {
-					// console.log({ contacts });
-
-					// this.db.crud.contacts.selectContactId(id).then((another_contacts: pg.QueryResult) => {
-					// 	console.log({ another_contacts });
-
-					// });
-					let cts: DetiledContact[] = [];
-					contacts.rows.forEach((row) => {
-						let dc = new DetiledContact();
-						// console.log(row);
-						dc.id = row.id;
-						dc.userId = id;
-						dc.contact = new User();
-						dc.isAccepted = row.isAccepted;
-						dc.isBlocked = row.isBlocked;
-						dc.isLocationShared = row.isLocationShared;
-						dc.contact.id = row.contactId;
-						dc.contact.email = row.email;
-						dc.contact.lastLocation = row.lastLocation;
-						dc.contact.lastLocationTimestamp = row.lastLocationTimestamp;
-						dc.contact.lastLoginTimestamp = row.lastLoginTimestamp;
-						dc.contact.phoneNumber = row.phoneNumber;
-						dc.contact.passwordHash = "";
-
-						cts.push(dc);
-					});
-					resolve(cts);
-				})
-				.catch((err) => {
-					console.error({ get_friends_list: err });
-					reject(err);
-				});
-		});
+		return this.db.dismissInvitation(contact_id);
 	}
 
 	updateLocation(id: number, location: string) {
@@ -317,64 +269,22 @@ export default class UserHandle {
 	}
 
 	canGetLocation(id: number, target_id: number) {
-		// let where = "userId=" + target_id + " and contactId=" + id + " ";
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.selectContactUserId(target_id, id)
-				// .find(where)
-				.then((contact: pg.QueryResult) => {
-					// console.log(contact.rows);
-					if (contact.rowCount > 0) resolve((contact.rows[0] as Contact).isLocationShared);
-					else resolve(false);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.canGetLocation(id, target_id);
 	}
 
 	disableLocation(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.blockLocation(contact_id)
-				.then((contact) => {
-					resolve(true);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.disableLocation(contact_id);
 	}
 
 	enableLocation(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.unlockLocation(contact_id)
-				.then((contact) => {
-					resolve(true);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.enableLocation(contact_id);
 	}
 
 	isUserBlocekd(user_id: number, target_id: number) {
-		// let where = "userId=" + user_id + " and contactId=" + target_id + " ";
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.selectContactUserId(target_id, user_id)
-				// .find(where)
-				.then((contact: pg.QueryResult) => {
-					// console.log({ contact });
-					if (contact.rowCount > 0) resolve((contact.rows[0] as Contact).isBlocked);
-					else resolve(true);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.isUserBlocekd(user_id, target_id);
 	}
+
+	// MESSAGE
 
 	sendMessage(user_id: number, contact_id: number, message: string, type: string) {
 		return new Promise((resolve, reject) => {
@@ -386,10 +296,10 @@ export default class UserHandle {
 						if (contact.userId !== user_id) resolve(false);
 						let can = this.isUserBlocekd(contact.contactId, contact.userId);
 						if (can) {
-							this.db.crud.message_types.selectAll().then((types: pg.QueryResult) => {
-								if (types.rowCount > 0) {
+							this.db.getMessageTypes().then((types: MessageTypes[]) => {
+								if (types.length > 0) {
 									let flag = false;
-									types.rows.forEach((obj) => {
+									types.forEach((obj) => {
 										if (obj.type == type) {
 											flag = true;
 										}
@@ -399,8 +309,7 @@ export default class UserHandle {
 										mess.contact_id = contact_id;
 										mess.content = message;
 										mess.type = type;
-										// let date_now = new Date();
-										mess.date = new Date(); //String(date_now.getDate()).padStart(2, "0") + "-" + String(date_now.getMonth() + 1).padStart(2, "0") + "-" + date_now.getFullYear();
+										mess.date = new Date();
 										this.db
 											.addMessage(mess)
 											.then(() => resolve(true))
@@ -431,145 +340,20 @@ export default class UserHandle {
 	}
 
 	getMessages(contact_id: number, from_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db
-				.getMessages(contact_id, from_id)
-				.then((messages: pg.QueryResult) => {
-					// console.log({ messages, rows: messages.rows });
-					resolve(messages.rows);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.getMessages(contact_id, from_id);
 	}
 
 	getAllMessages(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db
-				.getAllMessages(contact_id)
-				.then((messages: pg.QueryResult) => {
-					// console.log({ messages, rows: messages.rows });
-					resolve(messages.rows);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.getAllMessages(contact_id);
 	}
 
 	getMessageTypes() {
-		return new Promise((resolve, reject) => {
-			this.db.crud.message_types
-				.selectAll()
-				.then((types: pg.QueryResult) => {
-					// console.log({ types, rows: types.rows });
-					resolve(types.rows);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
+		return this.db.getMessageTypes();
 	}
 
-	unlockUser(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.unlockUser(contact_id)
-				.then((contact: pg.QueryResult) => {
-					// console.log({ contact });
+	// OTHER METHODS
 
-					resolve(true);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
-	}
-
-	blockUser(contact_id: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.blockUser(contact_id)
-				.then((contact: pg.QueryResult) => {
-					// console.log({ contact });
-					resolve(true);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
-	}
-
-	findContact(number: number) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.user
-				.selectNumber(number.toString())
-				// .find("phoneNumber=" + number + " ")
-				.then((user: pg.QueryResult) => {
-					// console.log({ user });
-					if (user.rowCount > 0) {
-						let usr = new User();
-						usr.id = user.rows[0].id;
-						usr.phoneNumber = user.rows[0].phoneNumber;
-						usr.email = user.rows[0].email;
-						resolve(usr);
-					} else {
-						resolve(false);
-					}
-				})
-				.catch((err) => {
-					console.error({ find_contact: err });
-					reject(err);
-				});
-		});
-	}
-
-	findContactcViaEmail(email: string) {
-		return new Promise((resolve, reject) => {
-			this.db.crud.user
-				.selectEmailLike(email)
-				// .find("phoneNumber=" + number + " ")
-				.then((users: pg.QueryResult) => {
-					if (users.rowCount > 0) {
-						let users_array: User[] = [];
-						users.rows.forEach((usr: User) => {
-							let user = new User();
-							user.id = usr.id;
-							user.phoneNumber = usr.phoneNumber;
-							user.email = usr.email;
-							users_array.push(user);
-						});
-						resolve(users_array);
-					} else {
-						resolve(false);
-					}
-					// console.log({ user });
-				})
-				.catch((err) => {
-					console.error({ find_contact: err });
-					reject(err);
-				});
-		});
-	}
-
-	getContactPair(user_id: number, contact_id: number) {
-		console.log({ user_id, contact_id });
-		return new Promise((resolve, reject) => {
-			this.db.crud.contacts
-				.selectPairByUsersId(user_id, contact_id)
-				// .find("phoneNumber=" + number + " ")
-				.then((pair: pg.QueryResult) => {
-					resolve(pair.rows);
-				})
-				.catch((err) => {
-					console.error({ contact_pair: err });
-					reject(err);
-				});
-		});
-	}
-
-	createToken(user: User): Token {
+	protected createToken(user: User): Token {
 		let token = new Token();
 		token.expirationTimestamp = new Date();
 		token.generatedTimestamp = token.expirationTimestamp;
@@ -580,19 +364,8 @@ export default class UserHandle {
 		return token;
 	}
 
-	logout(old_token: string) {
-		this.db.crud.token.selectToken(old_token).then((res: pg.QueryResult) => {
-			if (res.rowCount > 0) {
-				let t = res.rows[0] as Token;
-				t.isExpired = true;
-
-				this.db.crud.token.update(t);
-			}
-		});
-	}
-
 	protected generateHash(variable: string): string {
 		// return variable;
-		return crypto.createHash("sha256").update(variable).digest("hex");
+		return crypto.createHash("sha256").update(variable.toString()).digest("hex");
 	}
 }
