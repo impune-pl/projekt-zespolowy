@@ -473,6 +473,7 @@ app.post("/logout", passport.authenticate("custom"), (request: express.Request, 
 	if (request.headers.token) {
 		uh.logout(request.headers.token.toString());
 	}
+	response.send({ logout: true });
 });
 
 app.listen(appport, () => {
