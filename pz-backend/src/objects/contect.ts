@@ -1,5 +1,3 @@
-import User from "./user";
-
 // Data class
 export default class Contact {
 	public id: number;
@@ -8,8 +6,4 @@ export default class Contact {
 	public isBlocked: boolean;
 	public isLocationShared: boolean;
 	public isAccepted: boolean;
-
-	// constructor() {
-	// 	//this.id = 0;
-	// }
 }
