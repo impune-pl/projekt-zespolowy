@@ -1,6 +1,5 @@
 import { Client } from "pg";
 import ContactsCRUD from "./crud/contactscrud";
-import CRUD from "./crud/crud";
 import CRUDS from "./crud/cruds";
 import MessagesCRUD from "./crud/messagescrud";
 import MessageTypesCRUD from "./crud/messagetypescrud";
@@ -9,15 +8,15 @@ import UserCRUD from "./crud/usercrud";
 import QueryData from "./querydata";
 
 export default class DataBaseConnection {
-	client: Client;
-	crud: CRUDS;
+	protected client: Client;
+	protected crud: CRUDS;
 
-	constructor(host: string = "127.0.0.1", port: number = 5432) {
+	constructor(host: string = "127.0.0.1", port: number = 5432, database: string = "ciat", user: string = "postgres", password: string = "example") {
 		this.client = new Client({
-			user: "postgres",
+			user,
 			host,
-			database: "ciat",
-			password: "example",
+			database,
+			password,
 			port,
 		});
 	}
@@ -36,8 +35,8 @@ export default class DataBaseConnection {
 	setupCRUDs() {
 		this.crud = new CRUDS();
 		this.crud.contacts = new ContactsCRUD(this);
-		this.crud.message = new MessagesCRUD(this);
 		this.crud.message_types = new MessageTypesCRUD(this);
+		this.crud.message = new MessagesCRUD(this, this.crud.message_types, this.crud.contacts);
 		this.crud.token = new TokenCRUD(this);
 		this.crud.user = new UserCRUD(this);
 	}

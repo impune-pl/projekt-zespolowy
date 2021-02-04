@@ -8,8 +8,4 @@ export default class DetiledContact {
 	public isBlocked: boolean;
 	public isLocationShared: boolean;
 	public isAccepted: boolean;
-
-	// constructor() {
-	// 	//this.id = 0;
-	// }
 }

@@ -10,11 +10,14 @@ import * as cors from "cors";
 
 var CustomStrategy = customPassport.Strategy;
 
-console.log("Hello!");
+console.log("Starting Ciat Backend...");
 
 var tests: boolean = false;
 var host: string = undefined;
 var port: number = undefined;
+var database: string = undefined;
+var dbuser: string = undefined;
+var dbpassword: string = undefined;
 var appport: number = 4000;
 
 if (process.argv.length > 2) {
@@ -40,11 +43,35 @@ if (process.argv.length > 2) {
 			} catch (err) {
 				console.error(err);
 			}
+		} else if (process.argv[i].startsWith("database=")) {
+			let value = process.argv[i].replace("database=", "");
+			console.log("database=" + value);
+			try {
+				database = value;
+			} catch (err) {
+				console.error(err);
+			}
+		} else if (process.argv[i].startsWith("dbuser=")) {
+			let value = process.argv[i].replace("dbuser=", "");
+			console.log("dbuser=" + value);
+			try {
+				dbuser = value;
+			} catch (err) {
+				console.error(err);
+			}
+		} else if (process.argv[i].startsWith("dbpassword=")) {
+			let value = process.argv[i].replace("dbpassword=", "");
+			console.log("dbpassword=" + value);
+			try {
+				dbpassword = value;
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	}
 }
 
-var dbc = new DataBaseController(host, port);
+var dbc = new DataBaseController(host, port, database, dbuser, dbpassword);
 var uh = new UserHandle(dbc);
 var app = express();
 var passport = new Passport();
@@ -58,17 +85,11 @@ passport.deserializeUser(function (user, done) {
 passport.use(
 	"custom",
 	new CustomStrategy(function (req: express.Request, cb: CallableFunction) {
-		// console.log(req.headers);
 		if (req.headers.token) {
 			// check for token
 			uh.loginWithToken(req.headers.token.toString())
 				.then((res) => {
-					// console.log(res);
-					// if (res instanceof User) {
 					cb(null, res);
-					// } else {
-					// cb("Wrong instance of object", false);
-					// }
 				})
 				.catch((err) => {
 					console.error({ login_failed: err });
@@ -77,11 +98,7 @@ passport.use(
 		} else if (req.body.number && req.body.password) {
 			uh.loginGetUser(req.body.number, req.body.password)
 				.then((user) => {
-					// if (user instanceof User) {
 					cb(null, user);
-					// } else {
-					// cb("Wrong instance of object", false);
-					// }
 				})
 				.catch((err) => {
 					console.error({ login_failed: err });
@@ -103,15 +120,9 @@ app.use(passport.session());
 
 app.use("/static", express.static(path.join(__dirname, "../public")));
 
-// TEST
-
-// app.get("/ping", (request: express.Request, response: express.Response) => {
-// 	response.send({ "PONG!": request.user });
-// });
-
 // HOME PAGE
 
-app.get("/", (request: express.Request, response: express.Response) => {
+app.get("/", (_: express.Request, response: express.Response) => {
 	response.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
@@ -137,10 +148,9 @@ app.post("/login", (request: express.Request, response: express.Response) => {
 
 app.post("/register", (request: express.Request, response: express.Response) => {
 	let body = request.body;
-	// console.log(body);
 	if (body.password && body.number && body.email) {
-		if (!isNaN(body.number.trim())) {
-			uh.register(body.number.trim(), body.email.trim(), body.password.trim())
+		if (!isNaN(body.number)) {
+			uh.register(body.number.toString().trim(), body.email.toString().trim(), body.password.toString().trim())
 				.then((res) => {
 					response.send({ register_successful: true });
 				})
@@ -159,7 +169,6 @@ app.post("/register", (request: express.Request, response: express.Response) => 
 // USER DATA
 
 app.get("/user", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
-	// uh.getFriendsList(request.user.id);
 	if (request.user) {
 		let user = request.user as User;
 		response.send({ current_user: user });
@@ -169,7 +178,6 @@ app.get("/user", passport.authenticate("custom"), (request: express.Request, res
 });
 
 app.get("/user/:id", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
-	// uh.getFriendsList(request.user.id);
 	let user_id = request.params.id;
 	if (user_id && !isNaN(Number.parseInt(user_id))) {
 		uh.getUserData(Number.parseInt(user_id))
@@ -360,7 +368,7 @@ app.get("/messages/:contact_id/:last_id", passport.authenticate("custom"), (requ
 	}
 });
 
-app.get("/message/types", (request: express.Request, response: express.Response) => {
+app.get("/message/types", (_: express.Request, response: express.Response) => {
 	uh.getMessageTypes()
 		.then((types) => {
 			response.send({ message_types: types });
@@ -434,8 +442,8 @@ app.get("/unlock/location/:contact_id", passport.authenticate("custom"), (reques
 
 // LOCATION
 
-app.get("/location/:location", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
-	let location = request.params.location;
+app.post("/location", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+	let location = request.body.location;
 	// console.log({ request });
 	if (location) {
 		uh.updateLocation((request.user as User).id, location);
@@ -461,7 +469,7 @@ app.get("/location/:contact_id", passport.authenticate("custom"), (request: expr
 	}
 });
 
-app.post("/logout", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
+app.post("/logout", passport.authenticate("custom"), (request: express.Request, _: express.Response) => {
 	if (request.headers.token) {
 		uh.logout(request.headers.token.toString());
 	}
