@@ -492,3 +492,6 @@ ALTER TABLE ONLY public."Tokens"
 -- PostgreSQL database dump complete
 --
 
+INSERT INTO test."MessageTypes"(type)
+	VALUES 	('TEXT'),
+			('IMAGE');
