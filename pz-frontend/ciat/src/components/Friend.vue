@@ -137,7 +137,7 @@ this.checkLocationShare()
       })
     },
     showLocation(){
-      // show location on gmaps
+      router.push({ path: '/position/'+this.id+'/'+this.contactId })
     },
     async showConversation(){
       if(! await this.isOpen(this.id))

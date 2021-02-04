@@ -31,7 +31,7 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-    var apiUrl = 'http://127.0.0.1:4000'
+    var apiUrl = 'http://ciat.local:4000'
 
   app.mixin({
     methods:{
@@ -56,9 +56,9 @@ const app = createApp(App)
         })
         .catch((err) =>{
           failure(err)
-         // if((err.response.status === 401 || err.response.status === 403) && err.response.data.loginFailure == null){
-         //   this.logout()
-         // }
+          if(err.response.status === 401 || err.response.status === 403){
+            this.logout()
+          }
         });
       },
       postRequest(path, args, success, failure){
@@ -72,12 +72,20 @@ const app = createApp(App)
         })
         .catch((err) =>{
           failure(err)
-          //if((err.response.status === 401 || err.response.status === 403) && err.response.data.loginFailure == null){
-         //   this.logout()
-         // }
+          if(err.response.status === 401 || err.response.status === 403){
+            this.logout()
+          }
         });
       },
       logout(){
+        this.postRequest('/logout',
+        {},
+      ()=>{
+        console.log('Logout')
+      },
+      (err)=>{
+        console.log(err)
+      })
         localStorage.removeItem('token')
         menuController.close('main-menu')
         router.push({ path: '/unauth/login' })

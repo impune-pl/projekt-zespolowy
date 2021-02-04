@@ -79,21 +79,51 @@ export default defineComponent({
         this.email = user.email
         this.phone = user.phoneNumber
       }
+    },
+    updateLocation(){
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) =>{
+          this.postRequest('/location',
+          {
+            location: position.coords.latitude+','+position.coords.longitude
+          },
+      (res)=>{
+        if(res.data.update_location !== true){
+          this.showToast("Aktualizacja lokalizacji nie powiodła się! :(")
+        }
+      },
+      (err)=>{
+        console.log(err)
+      })
+        }, (error)=>{
+            switch(error.code) {
+    case error.PERMISSION_DENIED:
+      this.showToast("Nie przyznano uprawnień do lokalizacji!")
+      break;
+    case error.POSITION_UNAVAILABLE:
+      this.showToast("Dane lokalizacyjne niedostępne!")
+      break;
+    case error.TIMEOUT:
+      this.showToast("Czas oczekiwania na uprawnienia został przekroczony.")
+      break;
+    case error.UNKNOWN_ERROR:
+      this.showToast("Wystąpił nieznany błąd pobierania lokalizacji.")
+      break;
+      }})
+      } else { 
+        this.showToast("Lokalizacja nie jest wspierana przez twoją przeglądarkę :(")
+      }
     }
   },
-  async mounted(){
+  mounted(){
     
-  },
-  ionViewWillEnter(){
     this.locationUpdater = setInterval(
         ()=>{
-            this.updateLocation()
+            if(this.isLoggedIn())
+              this.updateLocation()
         }, 10000)
+    
   },
-  ionViewWillLeave(){
-    if(this.locationUpdater !== null)
-      clearInterval( this.locationUpdater )
-  }
 });
 </script>
 

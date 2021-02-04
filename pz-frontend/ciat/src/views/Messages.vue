@@ -49,6 +49,7 @@
 
 <script>
 //:own="message.sender === this.ownInfo.id ? true : false"
+import router from '../router'
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,  IonList,  IonIcon,  IonFooter, IonButton, IonTextarea,  IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue';
 import { sendOutline, locateOutline } from "ionicons/icons";
 import { addIcons } from "ionicons";
@@ -182,6 +183,10 @@ export default  {
     },
     stopMessageCheck(){
       clearInterval( this.messageLoader )
+    },
+    location(){
+      console.log('lokawoanso')
+      router.push({ path: '/position/'+this.id+'/'+this.contactId })
     }
   },
   data() {
