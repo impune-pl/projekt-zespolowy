@@ -134,6 +134,11 @@ export default  {
         if(res.data.new_messages === true){
           this.loadMoreMessages(lastMessage)
         }
+        else if(res.data.new_messages.length > 0){
+          res.data.new_messages.forEach((mess)=>{
+              this.messages.push(mess)
+          })
+        }
       },
       (err)=>{
         console.log(err)
