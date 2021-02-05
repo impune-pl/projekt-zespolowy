@@ -469,7 +469,7 @@ app.get("/location/:contact_id", passport.authenticate("custom"), (request: expr
 	}
 });
 
-app.post("/logout", passport.authenticate("custom"), (request: express.Request, _: express.Response) => {
+app.post("/logout", passport.authenticate("custom"), (request: express.Request, response: express.Response) => {
 	if (request.headers.token) {
 		uh.logout(request.headers.token.toString());
 	}

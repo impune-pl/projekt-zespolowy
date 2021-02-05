@@ -349,7 +349,11 @@ export default class UserHandle {
 	}
 
 	checkForNewMessages(contact_id: number, last_message_id: number) {
-		return this.db.checkForNewMessages(contact_id, last_message_id);
+		if (last_message_id < 0) {
+			return this.getAllMessages(contact_id);
+		} else {
+			return this.db.checkForNewMessages(contact_id, last_message_id);
+		}
 	}
 
 	getMessages(contact_id: number, from_id: number) {
