@@ -85,7 +85,8 @@ export default  {
     },
     scrollToLast(){
       setTimeout(()=>{
-        this.$refs[this.messages[this.messages.length-1].id].$el.scrollIntoView()
+        if(this.messages.length > 0)
+          this.$refs[this.messages[this.messages.length-1].id].$el.scrollIntoView()
       },200)
     },
     loadMessageTypes(){
@@ -123,12 +124,20 @@ export default  {
       })
     },
     checkNewMessages(){
-      if(this.messages.length > 0 && this.loaded === true){
-        let lastMessage = this.messages[this.messages.length-1].id
+      if( this.loaded === true){
+        let lastMessage = -1
+        if(this.messages.length > 0){
+          lastMessage = this.messages[this.messages.length-1].id
+        }
         this.getRequest('/message/'+this.id+'/'+lastMessage+'/new',
       (res)=>{
         if(res.data.new_messages === true){
           this.loadMoreMessages(lastMessage)
+        }
+        else if(res.data.new_messages.length > 0){
+          res.data.new_messages.forEach((mess)=>{
+              this.messages.push(mess)
+          })
         }
       },
       (err)=>{
