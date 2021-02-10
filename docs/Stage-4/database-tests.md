@@ -3,12 +3,12 @@ Ten dokument opisuje sposób przygotowania, przeprowadzania testów bazy danych 
 
 ## Przygotowanie do testów
 Do testów utworzona zostaje baza danych o nazwie ciat_testing. Przed wykonaniem każdego testu zostaje utworzony nowy schemat o nazwie test.  
-Na schematacie zostaje wykonany skrypt: create-test-env.sql z katalogu ./scripts/schemas/  
-Następnie do obu schematu ładowane są dane za pomocą odpowiednio modyfikowanych pod kontem wymagań testu skryptów znajdujących się w ./scripts/placeholder-data/  
+Na schematacie zostaje wykonany skrypt: create-test-env.sql z katalogu /pz-database/src/  
+Następnie do obu schematu ładowane są dane za pomocą odpowiednio modyfikowanych pod kontem wymagań testu skryptów znajdujących się w /pz-database/tests/placeholder-data/  
 Po zakończeniu testu schemat zostaje usunięty z bazy.  
 
 ## Wykonanie testów
-Wykonanie testów polega na uruchomieniu skryptów znajdujących się w katalogu ./scripts/tests oraz weryfikacji wyników.
+Wykonanie testów polega na uruchomieniu skryptów znajdujących się w katalogu /pz-database/tests/ oraz weryfikacji wyników.
 
 ## Wyniki testów
 Poniżej opisane są przebiegi i wyniki testów bazy danych opisanych w dokumentacji. 
