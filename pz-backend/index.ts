@@ -88,8 +88,8 @@ passport.use(
 		if (req.headers.token) {
 			// check for token
 			uh.loginWithToken(req.headers.token.toString())
-				.then((res) => {
-					cb(null, res);
+				.then((user) => {
+					cb(null, user);
 				})
 				.catch((err) => {
 					console.error({ login_failed: err });
