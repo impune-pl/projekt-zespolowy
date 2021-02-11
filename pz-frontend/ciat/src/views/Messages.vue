@@ -194,7 +194,6 @@ export default  {
       clearInterval( this.messageLoader )
     },
     location(){
-      console.log('lokawoanso')
       router.push({ path: '/position/'+this.id+'/'+this.contactId })
     }
   },

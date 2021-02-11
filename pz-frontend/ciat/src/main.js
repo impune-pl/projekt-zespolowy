@@ -31,7 +31,7 @@ const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-    var apiUrl = 'http://ciat.local:4000'
+    var apiUrl = 'https://ciat.local/api'
 
   app.mixin({
     methods:{
