@@ -155,12 +155,12 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania logowania z podanymi danymi, które znajdują się w bazie danych.
+-   Wywołanie żądania logowania z podanymi danymi, które znajdują się w bazie danych.
 
 Spodziewany wynik:
 
 -   W bazie danych został utworzony token dla użytkownika
--   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg logowania
+-   Żądanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg logowania
 
 #### Ad. 2. Test 1:
 
@@ -172,11 +172,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania logowania z podanymi danymi, które nie znajdują się w bazie danych.
+-   Wywołanie żądania logowania z podanymi danymi, które nie znajdują się w bazie danych.
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane logowanie do systemu
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą nieudane logowanie do systemu
 
 #### Ad. 3. Test 1:
 
@@ -188,11 +188,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania rejestracji z podanymi danymi, które znajdują się w bazie danych.
+-   Wywołanie żądania rejestracji z podanymi danymi, które znajdują się w bazie danych.
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudaną rejestrację w systemie
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą nieudaną rejestrację w systemie
 
 ### Ad. 4. Test 1:
 
@@ -204,12 +204,12 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania rejestracji z podanymi danymi, które nie znajdują się w bazie danych.
+-   Wywołanie żądania rejestracji z podanymi danymi, które nie znajdują się w bazie danych.
 
 Spodziewany wynik:
 
 -   W bazie danych pojawił się nowy użytkownik z podanymi przy rejestracji danymi
--   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg rejestracji
+-   Żądanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg rejestracji
 
 ### Ad. 5. Test 1:
 
@@ -223,12 +223,12 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania wysłania wiadomości zawierającymi id autora i adresata oraz wiadomość z jej typem
+-   Wywołanie żądania wysłania wiadomości zawierającymi id autora i adresata oraz wiadomość z jej typem
 
 Spodziewany wynik:
 
 -   W bazie danych w tabeli z wiadomościami pojawi się nowy wpis z wiadomością i jej typem
--   Rządanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg wysłania wiadomosci
+-   Żądanie zwróciło wartość pozytywną (true), oznaczającą pomyślny przebieg wysłania wiadomosci
 
 ### Ad. 5. Test 2:
 
@@ -242,11 +242,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania wysłania wiadomości zawierającymi nieprawidłowe id autora, prawidłowe id adresata oraz wiadomość z jej typem
+-   Wywołanie żądania wysłania wiadomości zawierającymi nieprawidłowe id autora, prawidłowe id adresata oraz wiadomość z jej typem
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 ### Ad. 5. Test 3:
 
@@ -260,11 +260,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania wysłania wiadomości zawierającymi id autora, nieprawidłowe id adresata oraz wiadomość z jej typem
+-   Wywołanie żądania wysłania wiadomości zawierającymi id autora, nieprawidłowe id adresata oraz wiadomość z jej typem
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 ### Ad. 5. Test 4:
 
@@ -278,11 +278,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania wysłania wiadomości zawierającymi id autora, id adresata oraz wiadomość z nieprawidłowy typem
+-   Wywołanie żądania wysłania wiadomości zawierającymi id autora, id adresata oraz wiadomość z nieprawidłowy typem
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 ### Ad. 5. Test 5:
 
@@ -296,11 +296,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania wysłania wiadomości zawierającymi id autora, id adresata oraz pustą wiadomość z jej typem
+-   Wywołanie żądania wysłania wiadomości zawierającymi id autora, id adresata oraz pustą wiadomość z jej typem
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą nieudane wysłanie wiadomości
 
 ### Ad. 6. Test 1:
 
@@ -315,11 +315,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania sprawdzenie nowych wiadomości, podając id 15 wiadomości
+-   Wywołanie żądania sprawdzenie nowych wiadomości, podając id 15 wiadomości
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość pozytywną (true), oznaczającą obecność nowych wiadomości
+-   Żądanie zwróciło wartość pozytywną (true), oznaczającą obecność nowych wiadomości
 
 ### Ad. 6. Test 2:
 
@@ -333,11 +333,11 @@ Przygotowanie testu:
 
 Przeprowadzanie testu:
 
--   Wywołanie rządania sprawdzenie nowych wiadomości, podając id 20 wiadomości
+-   Wywołanie żądania sprawdzenie nowych wiadomości, podając id 20 wiadomości
 
 Spodziewany wynik:
 
--   Rządanie zwróciło wartość negatywną (false), oznaczającą brak nowych wiadomości
+-   Żądanie zwróciło wartość negatywną (false), oznaczającą brak nowych wiadomości
 
 
 ## Testy bazy danych
